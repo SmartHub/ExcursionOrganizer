@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Excursion Organizer" default="bundle-miner" basedir=".">
+  <description>
+    Excursion Organizer
+  </description>
+
+  <!-- Setup general paths -->
+  <property name="project.dir" location="."/>
+  <property name="src.dir" location="${project.dir}/src"/>
+  <property name="src.java.dir" location="${src.dir}/java"/>
+  
+  <property name="build.dir" location="${project.dir}/build"/>
+  <property name="build.classes.dir" location="${build.dir}/classes"/>
+  <property name="build.bin.dir" location="${build.dir}/bin"/>
+
+  <property name="config.dir" location="${project.dir}/config" />
+
+  <!-- Setup project building blocks paths -->
+  <property name="src.miner.dir" location="${src.java.dir}/miner"/>
+  <property name="build.miner.dir" location="${build.classes.dir}/miner"/>
+
+  <!-- Libs -->
+  <path id="libs">
+    <fileset dir="lib" includes="web-harvest/*.jar" excludes="*all*"/>
+  </path>
+
+  <!-- Convert path to the libraries in order to embed it into project manifest -->
+  <pathconvert pathsep=" " property="libraries" refid="libs"/>
+
+  <!-- Targets -->
+
+  <target name="init">
+    <!-- Create the time stamp -->
+    <tstamp/>
+    <!-- Create general build directory structure -->
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes.dir}"/>
+    <mkdir dir="${build.bin.dir}"/>
+
+    <!-- Create specific build directories -->
+    <mkdir dir="${build.miner.dir}"/>
+  </target>
+
+
+  <target name="miner" depends="init" description="compile the miner source ">
+    <javac srcdir="${src.java.dir}"
+           destdir="${build.miner.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false">
+      <classpath refid="libs"/>
+    </javac>
+  </target>
+
+
+  <target name="bundle-miner" depends="miner" description="Packs miner classes into JAR">
+    <jar destfile="${build.bin.dir}/miner.jar">
+      <fileset dir="${build.miner.dir}" includes="**/*.class"/>
+      <fileset dir="${config.dir}" includes="*.xml"/>
+      <manifest>
+        <attribute name="Main-Class" value="ExcursionOrganizer.Miner.Main"/>
+        <attribute name="Class-Path" value="${libraries}"/>
+      </manifest>
+    </jar>
+  </target>
+
+
+  <target name="clean">
+    <delete>
+      <fileset dir="${build.miner.dir}" includes="*class" />
+      <fileset dir="${build.bin.dir}" includes="*jar" />
+    </delete>
+  </target>            
+</project>

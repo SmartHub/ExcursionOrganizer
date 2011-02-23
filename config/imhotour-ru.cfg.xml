@@ -1,0 +1,76 @@
+<config charset="UTF-8">
+  <function name="fetch_http">
+    <return>
+      <html-to-xml outputtype="pretty" omitcomments="true" usecdata="false">
+        <http url="${url.toString().trim()}"/>
+      </html-to-xml>
+    </return>
+  </function>
+
+  <!--
+  <function name="escape">
+    <return>
+      <text>
+        <regex replace="true">
+          <regex-pattern>&lt;br&gt;</regex-pattern>
+          <regex-source>
+            <var name="$src"/>
+          </regex-source>
+          <regex-result/>
+        </regex>
+      </text>
+    </return>
+  </function>
+  -->
+
+  <!-- Fetch a page and hairdress it -->
+  <var-def name="xml-page">
+    <call name="fetch_http"> 
+      <call-param name="url">
+        http://imhotour.ru/city/311486/todo
+      </call-param>
+    </call>
+  </var-def>
+
+  <!-- Make list of sightseeings on this page -->
+  <var-def name="sights">
+    <!--&lt;mined&gt;-->
+    <loop item="i">
+      <list>
+        <!-- Select all four-level header with <A> child node with HREF attribute 
+          Sightseeings are presented in such a way -->
+        <xpath expression="//h4/a[@href]">
+          <var name="xml-page"/>
+        </xpath>
+      </list>
+      <body>
+        <!--&lt;mined-item&gt;-->
+        <!--&lt;name&gt;-->
+        [Name]
+        <xpath expression="a/text()">
+          <var name="i"/>
+        </xpath>
+        <!--&lt;/name&gt;-->
+
+        <!--&lt;description&gt;-->
+        [Description]
+        <!-- Select the sightseeing description-->
+        <!--<html-to-xml> -->
+        <xpath expression="//div[@class='resto_list']/text()">
+          <call name="fetch_http">
+            <call-param name="url">
+              <xpath expression="a/@href">
+                <var name="i"/>
+              </xpath>
+            </call-param>
+          </call>
+        </xpath>
+        <!--</html-to-xml>-->
+        <!--&lt;/description&gt;-->
+        <!--&lt;/mined-item&gt;-->
+      </body>
+    </loop>
+    <!--&lt;mined&gt;-->
+  </var-def>
+  
+</config>
