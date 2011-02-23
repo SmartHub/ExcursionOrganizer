@@ -3,13 +3,6 @@ package ExcursionOrganizer.Miner;
 import java.util.*;
 import java.net.URL;
 
-/*
-import javax.xml.parsers.*;
-import org.w3c.dom.*;
-import org.xml.sax.InputSource;
-import java.io.StringReader;
-*/
-
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
@@ -52,7 +45,7 @@ public class Main {
             
             scraper.execute();
 
-            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");;
+            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");
             LinkedList<MinedItem> sights = new LinkedList<MinedItem>();
 
             for (int i = 0; i < mined.length; i++) {
@@ -65,6 +58,8 @@ public class Main {
             for (MinedItem it : sights) {
                 System.out.println(it.name_ + ": " + it.desc_);
             }
+            
+            //System.out.println(scraper.getContext().getVar("num_of_pages").toString());
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");

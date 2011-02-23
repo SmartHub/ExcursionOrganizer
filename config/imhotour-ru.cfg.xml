@@ -7,70 +7,70 @@
     </return>
   </function>
 
-  <!--
-  <function name="escape">
-    <return>
-      <text>
-        <regex replace="true">
-          <regex-pattern>&lt;br&gt;</regex-pattern>
-          <regex-source>
-            <var name="$src"/>
-          </regex-source>
-          <regex-result/>
-        </regex>
-      </text>
-    </return>
-  </function>
-  -->
+  <var-def name="start_url">http://imhotour.ru/city/311486/todo</var-def>
 
   <!-- Fetch a page and hairdress it -->
-  <var-def name="xml-page">
+  <var-def name="start_page">
     <call name="fetch_http"> 
       <call-param name="url">
-        http://imhotour.ru/city/311486/todo
+        <var name="start_url"/>
       </call-param>
     </call>
   </var-def>
 
+  <!-- We used to be a bit lispy :(-->
+  <var-def name="num_of_pages">
+    <regexp max="1">
+      <regexp-pattern>page=(\d*)</regexp-pattern>
+      <regexp-source>
+        <xpath expression="//span[@class='pages']/a[last()]/@href">
+          <var name="start_page"/>
+        </xpath>
+      </regexp-source>
+      <regexp-result>
+        <template>${_1}</template>
+      </regexp-result>
+    </regexp>
+  </var-def> 
+
   <!-- Make list of sightseeings on this page -->
   <var-def name="sights">
-    <!--&lt;mined&gt;-->
-    <loop item="i">
-      <list>
-        <!-- Select all four-level header with <A> child node with HREF attribute 
-          Sightseeings are presented in such a way -->
-        <xpath expression="//h4/a[@href]">
-          <var name="xml-page"/>
-        </xpath>
-      </list>
-      <body>
-        <!--&lt;mined-item&gt;-->
-        <!--&lt;name&gt;-->
-        [Name]
-        <xpath expression="a/text()">
-          <var name="i"/>
-        </xpath>
-        <!--&lt;/name&gt;-->
-
-        <!--&lt;description&gt;-->
-        [Description]
-        <!-- Select the sightseeing description-->
-        <!--<html-to-xml> -->
-        <xpath expression="//div[@class='resto_list']/text()">
-          <call name="fetch_http">
-            <call-param name="url">
-              <xpath expression="a/@href">
-                <var name="i"/>
-              </xpath>
-            </call-param>
-          </call>
-        </xpath>
-        <!--</html-to-xml>-->
-        <!--&lt;/description&gt;-->
-        <!--&lt;/mined-item&gt;-->
-      </body>
-    </loop>
-    <!--&lt;mined&gt;-->
+    <while condition="1" index="p_num" maxloops="${num_of_pages}">
+      <var-def name="cur_page">
+        <call name="fetch_http"> 
+          <call-param name="url">
+            <template>${start_url}/?page=${p_num}</template>
+          </call-param>
+        </call>
+      </var-def>
+      
+      
+      <loop item="i">
+        <list>
+          <!-- Select all four-level header with <A> child node with HREF attribute 
+               Sightseeings are presented in such a way -->
+          <xpath expression="//h4/a[@href]">
+            <var name="cur_page"/>
+          </xpath>
+        </list>
+        <body>
+          [Name]
+          <xpath expression="a/text()">
+            <var name="i"/>
+          </xpath>
+          
+          [Description]
+          <xpath expression="//div[@class='resto_list']/text()">
+            <call name="fetch_http">
+              <call-param name="url">
+                <xpath expression="a/@href">
+                  <var name="i"/>
+                </xpath>
+              </call-param>
+            </call>
+          </xpath>
+        </body>
+      </loop>
+    </while>
   </var-def>
-  
 </config>
