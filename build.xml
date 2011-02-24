@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Excursion Organizer" default="bundle-miner" basedir=".">
+<project name="Excursion Organizer" default="all" basedir=".">
   <description>
     Excursion Organizer
   </description>
@@ -19,6 +19,9 @@
   <property name="src.miner.dir" location="${src.java.dir}/miner"/>
   <property name="build.miner.dir" location="${build.classes.dir}/miner"/>
 
+  <property name="src.http_server.dir" location="${src.java.dir}/http_server"/>
+  <property name="build.http_server.dir" location="${build.classes.dir}/http_server"/>
+
   <!-- Libs -->
   <path id="libs">
     <fileset dir="lib" includes="web-harvest/*.jar" excludes="*all*"/>
@@ -28,7 +31,6 @@
   <pathconvert pathsep=" " property="libraries" refid="libs"/>
 
   <!-- Targets -->
-
   <target name="init">
     <!-- Create the time stamp -->
     <tstamp/>
@@ -39,12 +41,25 @@
 
     <!-- Create specific build directories -->
     <mkdir dir="${build.miner.dir}"/>
+    <mkdir dir="${build.http_server.dir}"/>
   </target>
 
 
   <target name="miner" depends="init" description="compile the miner source ">
-    <javac srcdir="${src.java.dir}"
+    <javac srcdir="${src.miner.dir}"
            destdir="${build.miner.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false">
+      <classpath refid="libs"/>
+    </javac>
+  </target>
+
+
+  <target name="http_server" depends="init" description="compile the http_server source ">
+    <javac srcdir="${src.http_server.dir}"
+           destdir="${build.http_server.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
@@ -64,6 +79,20 @@
       </manifest>
     </jar>
   </target>
+
+
+  <target name="bundle-http_server" depends="http_server" description="Packs miner classes into JAR">
+    <jar destfile="${build.bin.dir}/http_server.jar">
+      <fileset dir="${build.http_server.dir}" includes="**/*.class"/>
+      <manifest>
+        <attribute name="Main-Class" value="HttpServer"/>
+        <attribute name="Class-Path" value="${libraries}"/>
+      </manifest>
+    </jar>
+  </target>
+
+
+  <target name="all" depends="bundle-http_server, bundle-miner"/>
 
 
   <target name="clean">

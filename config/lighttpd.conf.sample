@@ -1,0 +1,27 @@
+server.modules = ( 
+   "mod_access",
+   "mod_compress",
+   "mod_fastcgi"
+)
+
+server.bind              = "127.0.0.1"
+server.port              = "4000"
+server.document-root     = "/var/www"
+server.username          = "www-data"
+server.groupname         = "www-data"
+
+   
+index-file.names         = ( "index.php", "index.html",
+                             "index.htm", "default.htm",
+                             " index.lighttpd.html" )
+
+fastcgi.server = ( 
+  "/fcgi" => ( 
+               ( 
+                 "host" => "127.0.0.1", 
+                 "port" => 3000, 
+                 "check-local" => "disable", 
+                 "docroot" => "/"
+               ) 
+             ) 
+)
