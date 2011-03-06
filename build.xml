@@ -16,18 +16,29 @@
   <property name="config.dir" location="${project.dir}/config" />
 
   <!-- Setup project building blocks paths -->
+  <!-- Miner -->
   <property name="src.miner.dir" location="${src.java.dir}/miner"/>
   <property name="build.miner.dir" location="${build.classes.dir}/miner"/>
 
+  <!-- HTTP server -->
   <property name="src.http_server.dir" location="${src.java.dir}/http_server"/>
   <property name="build.http_server.dir" location="${build.classes.dir}/http_server"/>
+
+  <!-- DBWrapper -->
+  <property name="src.dbwrapper.dir" location="${src.java.dir}/DB"/>
+  <property name="build.dbwrapper.dir" location="${build.classes.dir}/DB"/>  
 
   <!-- Libs -->
   <path id="libs">
     <fileset dir="lib" includes="web-harvest/*.jar" excludes="*all*"/>
+    <fileset dir="lib" includes="*.jar" excludes="*all*"/>
   </path>
 
-  <!-- Convert path to the libraries in order to embed it into project manifest -->
+  <path id="dbwrapper.classes">
+    <dirset dir="${build.dbwrapper.dir}"/>
+  </path>
+
+  <!-- Convert path to the libraries in order to embed it into the project manifest -->
   <pathconvert pathsep=" " property="libraries" refid="libs"/>
 
   <!-- Targets -->
@@ -42,12 +53,13 @@
     <!-- Create specific build directories -->
     <mkdir dir="${build.miner.dir}"/>
     <mkdir dir="${build.http_server.dir}"/>
+    <mkdir dir="${build.dbwrapper.dir}"/>
   </target>
 
-
-  <target name="miner" depends="init" description="compile the miner source ">
-    <javac srcdir="${src.miner.dir}"
-           destdir="${build.miner.dir}"
+  <!-- DBWrapper -->
+  <target name="dbwrapper" depends="init">
+    <javac srcdir="${src.dbwrapper.dir}"
+           destdir="${build.dbwrapper.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
@@ -57,6 +69,34 @@
   </target>
 
 
+  <!-- Miner -->
+  <target name="miner" depends="init, dbwrapper" description="compile the miner source ">
+    <javac srcdir="${src.miner.dir}"
+           destdir="${build.miner.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false"
+           encoding="UTF-8">
+      <classpath refid="libs"/>
+      <classpath refid="dbwrapper.classes"/>
+    </javac>
+  </target>
+
+
+  <target name="bundle-miner" depends="miner" description="Packs miner classes into JAR">
+    <jar destfile="${build.bin.dir}/miner.jar">
+      <fileset dir="${build.miner.dir}" includes="**/*.class"/>
+      <fileset dir="${build.dbwrapper.dir}" includes="**/*.class"/>
+      <fileset dir="${config.dir}" includes="*.xml"/>
+      <manifest>
+        <attribute name="Main-Class" value="ExcursionOrganizer.Miner.Main"/>
+        <attribute name="Class-Path" value="${libraries}"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <!-- Other :) -->
   <target name="http_server" depends="init" description="compile the http_server source ">
     <javac srcdir="${src.http_server.dir}"
            destdir="${build.http_server.dir}"
@@ -65,19 +105,8 @@
            optimize="false"
            includeAntRuntime="false">
       <classpath refid="libs"/>
+      <classpath refid="libs"/>
     </javac>
-  </target>
-
-
-  <target name="bundle-miner" depends="miner" description="Packs miner classes into JAR">
-    <jar destfile="${build.bin.dir}/miner.jar">
-      <fileset dir="${build.miner.dir}" includes="**/*.class"/>
-      <fileset dir="${config.dir}" includes="*.xml"/>
-      <manifest>
-        <attribute name="Main-Class" value="ExcursionOrganizer.Miner.Main"/>
-        <attribute name="Class-Path" value="${libraries}"/>
-      </manifest>
-    </jar>
   </target>
 
 
@@ -92,11 +121,15 @@
   </target>
 
 
-  <target name="all" depends="bundle-http_server, bundle-miner"/>
+  <!-- All! -->
+  <target name="all" depends="bundle-miner"/>
 
 
+  <!-- If you didn't like it... -->
   <target name="clean">
     <delete>
+      <fileset dir="${build.dbwrapper.dir}" includes="*class" />
+      <fileset dir="${build.http_server.dir}" includes="*class" />
       <fileset dir="${build.miner.dir}" includes="*class" />
       <fileset dir="${build.bin.dir}" includes="*jar" />
     </delete>

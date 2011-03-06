@@ -11,6 +11,11 @@ import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.variables.Variable;
 import org.webharvest.runtime.variables.NodeVariable;
 
+
+import ExcursionOrganizer.DB.*;
+
+import java.nio.charset.Charset;
+
 // ================================================================================
 
 public class Main {
@@ -37,6 +42,20 @@ public class Main {
         try {
             DOMConfigurator.configure(getRes("/log4j.xml"));
 
+            /*
+            DBWrapper.insertPlaceOfInterest(new PlaceOfInterest("Один", "Два"));
+
+            PlaceOfInterest p1 = new PlaceOfInterest("Один", "Два");
+            System.out.println(p1.getName());
+
+            List<PlaceOfInterest> lst = DBWrapper.getAllPlaceOfInterest();
+            for (PlaceOfInterest poi : lst) {
+                System.out.println(poi.getName());
+            }
+            */
+
+            DBWrapper.insertPlaceOfInterest(new PlaceOfInterest("test", "test"));
+
             ScraperConfiguration config = 
                 new ScraperConfiguration("../../config/imhotour-ru.cfg.xml");
             Scraper scraper = new Scraper(config, ".");
@@ -45,19 +64,29 @@ public class Main {
             
             scraper.execute();
 
-            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");
-            LinkedList<MinedItem> sights = new LinkedList<MinedItem>();
-
+            //String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");
+            System.out.println(scraper.getContext().getVar("sights").toString());
+            //LinkedList<MinedItem> sights = new LinkedList<MinedItem>();
+            /*
             for (int i = 0; i < mined.length; i++) {
                 String[] sight = mined[i].split("\\[Description\\]\n");
                 if (sight.length >= 2) {
-                    sights.add(new MinedItem(sight[0].trim(), sight[1].trim()));
+                    if (sight[1].length() < 1000) {
+                        DBWrapper.insertPlaceOfInterest(new PlaceOfInterest(sight[0].trim(), sight[1].trim()));
+                    } else {
+                        System.out.println(sight[0] + "! ");
+                    }
                 }
             }
+            */
 
+            
+
+            /*
             for (MinedItem it : sights) {
                 System.out.println(it.name_ + ": " + it.desc_);
             }
+            */
             
             //System.out.println(scraper.getContext().getVar("num_of_pages").toString());
         } 

@@ -35,14 +35,16 @@
 
   <!-- Make list of sightseeings on this page -->
   <var-def name="sights">
-    <while condition="1" index="p_num" maxloops="${num_of_pages}">
-      <var-def name="cur_page">
-        <call name="fetch_http"> 
-          <call-param name="url">
-            <template>${start_url}/?page=${p_num}</template>
-          </call-param>
-        </call>
-      </var-def>
+    <while condition="1" index="p_num" maxloops="1">
+      <empty>
+        <var-def name="cur_page">
+          <call name="fetch_http"> 
+            <call-param name="url">
+              <template>${start_url}/?page=${p_num}</template>
+            </call-param>
+          </call>
+        </var-def>
+      </empty>
       
       
       <loop item="i">
