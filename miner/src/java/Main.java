@@ -45,10 +45,6 @@ public class Main implements InitializingBean {
 
     public void afterPropertiesSet() {
         try {
-
-            poi_.add("name", "descr");
-
-            /*
             ScraperConfiguration config = 
                 new ScraperConfiguration(config_);
             Scraper scraper = new Scraper(config, ".");
@@ -64,7 +60,6 @@ public class Main implements InitializingBean {
                     poi_.add(sight[0].trim(), sight[1].trim());
                 }
             }
-            */
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");

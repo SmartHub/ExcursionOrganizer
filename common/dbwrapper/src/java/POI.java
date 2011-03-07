@@ -21,21 +21,17 @@ public class POI {
     }
 
     public void add(final String name, final String descr) throws SQLException {
-        System.out.println(name + ", " + descr);
+        //System.out.println(name + ", " + descr);
 
-        /*        try {
+        try {
             String query = "INSERT INTO " + POI_TABLE_NAME +
                     "(" + POI_FIELD_NAME + ", " + POI_FIELD_DESCR + ")" +
-                    "VALUES ('" + name + "', '" + descr + "')";
+                    "VALUES ('" + name + "', '" + descr + "');";
 
             conn_.getJdbcOperations().execute(query);
-        } catch (SQLException e) {
-            System.out.println("SQLException!");
-            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        */
     }
 }
 
