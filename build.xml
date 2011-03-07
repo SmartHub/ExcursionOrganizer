@@ -13,6 +13,9 @@
   <property name="build.miner.dir" location="${project.dir}/miner/build"/>
 
   <!-- DBWrapper -->
+  <property name="src.logger.dir" location="${project.dir}/common/logger/src/java"/>
+  <property name="build.logger.dir" location="${project.dir}/common/logger/build"/>
+
   <property name="src.dbwrapper.dir" location="${project.dir}/common/dbwrapper/src/java"/>
   <property name="build.dbwrapper.dir" location="${project.dir}/common/dbwrapper/build"/>
 
@@ -31,12 +34,13 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create general build directory structure -->
+    <mkdir dir="${build.logger.dir}"/>
     <mkdir dir="${build.dbwrapper.dir}"/>
     <mkdir dir="${build.miner.dir}"/>
   </target>
 
   <!-- DBWrapper -->
-  <target name="dbwrapper" depends="init">
+  <target name="common" depends="init">
     <delete>
       <fileset dir="${lib.dir}" includes="common.jar"/>
     </delete>
@@ -50,14 +54,24 @@
       <classpath refid="libs"/>
     </javac>
 
+    <javac srcdir="${src.logger.dir}"
+           destdir="${build.logger.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false">
+      <classpath refid="libs"/>
+    </javac>
+
     <jar destfile="${lib.dir}/common.jar">
       <fileset dir="${build.dbwrapper.dir}" includes="**/*.class"/>
+      <fileset dir="${build.logger.dir}" includes="**/*.class"/>
     </jar>
   </target>
 
 
   <!-- Miner -->
-  <target name="miner" depends="init, dbwrapper">
+  <target name="miner" depends="init, common">
     <delete>
       <fileset dir="${lib.dir}" includes="miner.jar"/>
     </delete>
@@ -71,6 +85,7 @@
            encoding="UTF-8">
       <classpath refid="libs"/>
     </javac>
+
 
     <jar destfile="${lib.dir}/miner.jar">
       <fileset dir="${build.miner.dir}" includes="**/*.class"/>

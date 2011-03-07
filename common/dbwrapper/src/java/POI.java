@@ -1,4 +1,4 @@
-package ExcursionOrganizer.common;
+package eo.common;
 
 import java.lang.*;
 import java.util.*;

@@ -4,6 +4,8 @@
 
 <beans default-autowire="byName">
   <!--Database configuration-->
+  <bean id="logger" class="eo.common.LoggerInit" />
+
   <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
     <property name="url" value="jdbc:mysql://localhost:3306/excursion_organizer?characterEncoding=utf8"/>
@@ -15,11 +17,11 @@
     <constructor-arg ref="dataSource"/>
   </bean>
 
-  <bean id="poi" class="ExcursionOrganizer.common.POI">
+  <bean id="poi" class="eo.common.POI">
     <constructor-arg ref="jdbcTemplate"/>
   </bean>
 
-  <bean id="miner" class="ExcursionOrganizer.Miner.Main">
+  <bean id="miner" class="eo.miner.Main">
     <property name="POI" ref="poi"/>
     <property name="config" value="miner/config/imhotour-ru.cfg.xml"/>
   </bean>

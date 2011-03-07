@@ -1,10 +1,7 @@
-package ExcursionOrganizer.Miner;
+package eo.miner;
 
 import java.util.*;
 import java.net.URL;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.xml.DOMConfigurator;
 
 import org.webharvest.definition.ScraperConfiguration;
 import org.webharvest.runtime.Scraper;
@@ -14,21 +11,13 @@ import org.webharvest.runtime.variables.NodeVariable;
 import org.springframework.beans.factory.InitializingBean;
 
 
-import ExcursionOrganizer.common.POI;
+import eo.common.POI;
 
 import java.nio.charset.Charset;
 
 // ================================================================================
 
 public class Main implements InitializingBean {
-    /*
-    private static final Class rman = Main.class;
-
-    private static URL getRes(final String rname) {
-        return rman.getResource(rname);
-    }
-    */
-
     private POI poi_;
     private String config_;
 
@@ -56,8 +45,10 @@ public class Main implements InitializingBean {
 
     public void afterPropertiesSet() {
         try {
-            DOMConfigurator.configure("miner/config/log4j.xml");
 
+            poi_.add("name", "descr");
+
+            /*
             ScraperConfiguration config = 
                 new ScraperConfiguration(config_);
             Scraper scraper = new Scraper(config, ".");
@@ -73,6 +64,7 @@ public class Main implements InitializingBean {
                     poi_.add(sight[0].trim(), sight[1].trim());
                 }
             }
+            */
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");
