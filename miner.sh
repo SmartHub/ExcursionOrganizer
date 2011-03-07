@@ -1,6 +1,4 @@
 #!/bin/sh
-LANG=ru_RU.UTF8
 
-cd build/bin
-
-java -jar miner.jar
+java -cp $(echo $(find common/lib -follow -name *jar) | sed 's/ /:/g') \
+     net.sf.xfresh.util.Starter miner/config/config.xml

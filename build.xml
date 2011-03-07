@@ -6,39 +6,21 @@
 
   <!-- Setup general paths -->
   <property name="project.dir" location="."/>
-  <property name="src.dir" location="${project.dir}/src"/>
-  <property name="src.java.dir" location="${src.dir}/java"/>
   
-  <property name="build.dir" location="${project.dir}/build"/>
-  <property name="build.classes.dir" location="${build.dir}/classes"/>
-  <property name="build.bin.dir" location="${build.dir}/bin"/>
-
-  <property name="config.dir" location="${project.dir}/config" />
-
-  <property name="web.dir" location="${project.dir}/src/web" />
-
   <!-- Setup project building blocks paths -->
   <!-- Miner -->
-  <property name="src.miner.dir" location="${src.java.dir}/miner"/>
-  <property name="build.miner.dir" location="${build.classes.dir}/miner"/>
-
-  <!-- HTTP server -->
-  <property name="src.http_server.dir" location="${src.java.dir}/http_server"/>
-  <property name="build.http_server.dir" location="${build.classes.dir}/http_server"/>
+  <property name="src.miner.dir" location="${project.dir}/miner/src/java"/>
+  <property name="build.miner.dir" location="${project.dir}/miner/build"/>
 
   <!-- DBWrapper -->
-  <property name="src.dbwrapper.dir" location="${src.java.dir}/DB"/>
-  <property name="build.dbwrapper.dir" location="${build.classes.dir}/DB"/>  
+  <property name="src.dbwrapper.dir" location="${project.dir}/common/dbwrapper/src/java"/>
+  <property name="build.dbwrapper.dir" location="${project.dir}/common/dbwrapper/build"/>
+
+  <property name="lib.dir" location="${project.dir}/common/lib"/>
 
   <!-- Libs -->
   <path id="libs">
-    <fileset dir="lib" includes="web-harvest/*.jar" excludes="*all*"/>
-    <fileset dir="lib" includes="jetty/*.jar" excludes="*all*"/>
-    <fileset dir="lib" includes="*.jar" excludes="*all*"/>
-  </path>
-
-  <path id="dbwrapper.classes">
-    <dirset dir="${build.dbwrapper.dir}"/>
+    <fileset dir="common/lib" includes="**/*.jar"/>
   </path>
 
   <!-- Convert path to the libraries in order to embed it into the project manifest -->
@@ -49,18 +31,16 @@
     <!-- Create the time stamp -->
     <tstamp/>
     <!-- Create general build directory structure -->
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.classes.dir}"/>
-    <mkdir dir="${build.bin.dir}"/>
-
-    <!-- Create specific build directories -->
-    <mkdir dir="${build.miner.dir}"/>
-    <mkdir dir="${build.http_server.dir}"/>
     <mkdir dir="${build.dbwrapper.dir}"/>
+    <mkdir dir="${build.miner.dir}"/>
   </target>
 
   <!-- DBWrapper -->
   <target name="dbwrapper" depends="init">
+    <delete>
+      <fileset dir="${lib.dir}" includes="common.jar"/>
+    </delete>
+
     <javac srcdir="${src.dbwrapper.dir}"
            destdir="${build.dbwrapper.dir}"
            debug="true"
@@ -69,11 +49,19 @@
            includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
+
+    <jar destfile="${lib.dir}/common.jar">
+      <fileset dir="${build.dbwrapper.dir}" includes="**/*.class"/>
+    </jar>
   </target>
 
 
   <!-- Miner -->
-  <target name="miner" depends="init, dbwrapper" description="compile the miner source ">
+  <target name="miner" depends="init, dbwrapper">
+    <delete>
+      <fileset dir="${lib.dir}" includes="miner.jar"/>
+    </delete>
+
     <javac srcdir="${src.miner.dir}"
            destdir="${build.miner.dir}"
            debug="true"
@@ -82,60 +70,21 @@
            includeAntRuntime="false"
            encoding="UTF-8">
       <classpath refid="libs"/>
-      <classpath refid="dbwrapper.classes"/>
     </javac>
-  </target>
 
-
-  <target name="bundle-miner" depends="miner" description="Packs miner classes into JAR">
-    <jar destfile="${build.bin.dir}/miner.jar">
+    <jar destfile="${lib.dir}/miner.jar">
       <fileset dir="${build.miner.dir}" includes="**/*.class"/>
-      <fileset dir="${build.dbwrapper.dir}" includes="**/*.class"/>
-      <fileset dir="${config.dir}" includes="*.xml"/>
-      <manifest>
-        <attribute name="Main-Class" value="ExcursionOrganizer.Miner.Main"/>
-        <attribute name="Class-Path" value="${libraries}"/>
-      </manifest>
     </jar>
   </target>
-
-  <!-- HTTP server -->
-  <target name="http_server" depends="init" description="compile the http_server source ">
-    <javac srcdir="${src.http_server.dir}"
-           destdir="${build.http_server.dir}"
-           debug="true"
-           deprecation="true"
-           optimize="false"
-           includeAntRuntime="false">
-      <classpath refid="libs"/>
-    </javac>
-  </target>
-
-
-  <target name="bundle-http_server" depends="http_server" description="Packs miner classes into JAR">
-    <jar destfile="${build.bin.dir}/http_server.jar">
-      <fileset dir="${build.http_server.dir}" includes="**/*.class"/>
-      <fileset dir="${web.dir}" includes="*.html"/>
-      
-      <manifest>
-        <attribute name="Main-Class" value="HttpServer"/>
-        <attribute name="Class-Path" value="${libraries}"/>
-      </manifest>
-    </jar>
-  </target>
-
 
   <!-- All! -->
-  <target name="all" depends="bundle-miner, bundle-http_server"/>
+  <target name="all" depends="miner"/>
 
 
   <!-- If you didn't like it... -->
   <target name="clean">
     <delete>
-      <fileset dir="${build.dbwrapper.dir}" includes="*class" />
-      <fileset dir="${build.http_server.dir}" includes="*class" />
-      <fileset dir="${build.miner.dir}" includes="*class" />
-      <fileset dir="${build.bin.dir}" includes="*jar" />
+      <fileset dir="${classes.dir}" includes="**/*class" />
     </delete>
   </target>            
 </project>
