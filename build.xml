@@ -15,6 +15,8 @@
 
   <property name="config.dir" location="${project.dir}/config" />
 
+  <property name="web.dir" location="${project.dir}/src/web" />
+
   <!-- Setup project building blocks paths -->
   <!-- Miner -->
   <property name="src.miner.dir" location="${src.java.dir}/miner"/>
@@ -31,6 +33,7 @@
   <!-- Libs -->
   <path id="libs">
     <fileset dir="lib" includes="web-harvest/*.jar" excludes="*all*"/>
+    <fileset dir="lib" includes="jetty/*.jar" excludes="*all*"/>
     <fileset dir="lib" includes="*.jar" excludes="*all*"/>
   </path>
 
@@ -96,7 +99,7 @@
     </jar>
   </target>
 
-  <!-- Other :) -->
+  <!-- HTTP server -->
   <target name="http_server" depends="init" description="compile the http_server source ">
     <javac srcdir="${src.http_server.dir}"
            destdir="${build.http_server.dir}"
@@ -105,7 +108,6 @@
            optimize="false"
            includeAntRuntime="false">
       <classpath refid="libs"/>
-      <classpath refid="libs"/>
     </javac>
   </target>
 
@@ -113,6 +115,8 @@
   <target name="bundle-http_server" depends="http_server" description="Packs miner classes into JAR">
     <jar destfile="${build.bin.dir}/http_server.jar">
       <fileset dir="${build.http_server.dir}" includes="**/*.class"/>
+      <fileset dir="${web.dir}" includes="*.html"/>
+      
       <manifest>
         <attribute name="Main-Class" value="HttpServer"/>
         <attribute name="Class-Path" value="${libraries}"/>
@@ -122,7 +126,7 @@
 
 
   <!-- All! -->
-  <target name="all" depends="bundle-miner"/>
+  <target name="all" depends="bundle-miner, bundle-http_server"/>
 
 
   <!-- If you didn't like it... -->
