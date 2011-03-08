@@ -22,6 +22,11 @@ public class Main implements InitializingBean {
     private String proxy_;
 
 
+    public Main() {
+        proxy_ = "";
+    }
+
+
     public void setPOI(final POI poi) {
         poi_ = poi;  
     }
@@ -56,8 +61,8 @@ public class Main implements InitializingBean {
             if (proxy_.length() > 0) {
                 String[] proxy_cfg = proxy_.split(":");
                 String proxy_host = proxy_cfg[0];
-                int proxy_port = parseInt(proxy_cfg[1]);
-                scraper.getHttpClientManager().setProxy(proxy_host, proxy_port);
+                int proxy_port = Integer.parseInt(proxy_cfg[1]);
+                scraper.getHttpClientManager().setHttpProxy(proxy_host, proxy_port);
             }
         
             scraper.setDebug(true);
@@ -70,7 +75,7 @@ public class Main implements InitializingBean {
                 Matcher m = p.matcher(mined[i]);
                 if (m.matches()) {
                     //System.out.println(m.group(1) + ": " +  m.group(2) + ": "  + m.group(3));
-                    poi_.add(m.group(1), m.group(2));
+                    poi_.add(m.group(1), m.group(2).replaceAll("[ \t\f\r]+", " ").replaceAll("\n+", "\n"));
                 } else {
                     //System.out.println("No match!");
                 }
