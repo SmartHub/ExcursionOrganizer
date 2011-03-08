@@ -6,18 +6,6 @@
 
   <!-- Setup general paths -->
   <property name="project.dir" location="."/>
-  
-  <!-- Setup project building blocks paths -->
-  <!-- Miner -->
-  <property name="src.miner.dir" location="${project.dir}/miner/src/java"/>
-  <property name="build.miner.dir" location="${project.dir}/miner/build"/>
-
-  <!-- DBWrapper -->
-  <property name="src.logger.dir" location="${project.dir}/common/logger/src/java"/>
-  <property name="build.logger.dir" location="${project.dir}/common/logger/build"/>
-
-  <property name="src.dbwrapper.dir" location="${project.dir}/common/dbwrapper/src/java"/>
-  <property name="build.dbwrapper.dir" location="${project.dir}/common/dbwrapper/build"/>
 
   <property name="lib.dir" location="${project.dir}/common/lib"/>
 
@@ -26,27 +14,50 @@
     <fileset dir="common/lib" includes="**/*.jar"/>
   </path>
 
-  <!-- Convert path to the libraries in order to embed it into the project manifest -->
-  <pathconvert pathsep=" " property="libraries" refid="libs"/>
 
-  <!-- Targets -->
+  <property name="src.common.dbwrapper.dir" location="${project.dir}/common/dbwrapper/src/java"/>
+  <property name="build.common.dbwrapper.dir" location="${project.dir}/common/dbwrapper/build"/>
+
+
+  <property name="src.common.logger.dir" location="${project.dir}/common/logger/src/java"/>
+  <property name="build.common.logger.dir" location="${project.dir}/common/logger/build"/>
+
+
+  <property name="src.miner.dir" location="${project.dir}/miner/src/java"/>
+  <property name="build.miner.dir" location="${project.dir}/miner/build"/>
+
+
+  <property name="src.processing.dir" location="${project.dir}/processing/src/java"/>
+  <property name="build.processing.dir" location="${project.dir}/processing/build"/>
+
+
   <target name="init">
-    <!-- Create the time stamp -->
     <tstamp/>
-    <!-- Create general build directory structure -->
-    <mkdir dir="${build.logger.dir}"/>
-    <mkdir dir="${build.dbwrapper.dir}"/>
+
+
+    <mkdir dir="${build.common.dbwrapper.dir}"/>
+
+
+    <mkdir dir="${build.common.logger.dir}"/>
+
+
     <mkdir dir="${build.miner.dir}"/>
+
+
+    <mkdir dir="${build.processing.dir}"/>
+
+
   </target>
 
-  <!-- DBWrapper -->
+
   <target name="common" depends="init">
     <delete>
       <fileset dir="${lib.dir}" includes="common.jar"/>
     </delete>
 
-    <javac srcdir="${src.dbwrapper.dir}"
-           destdir="${build.dbwrapper.dir}"
+
+    <javac srcdir="${src.common.dbwrapper.dir}"
+           destdir="${build.common.dbwrapper.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
@@ -54,52 +65,91 @@
       <classpath refid="libs"/>
     </javac>
 
-    <javac srcdir="${src.logger.dir}"
-           destdir="${build.logger.dir}"
+
+    <javac srcdir="${src.common.logger.dir}"
+           destdir="${build.common.logger.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
            includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
+
 
     <jar destfile="${lib.dir}/common.jar">
-      <fileset dir="${build.dbwrapper.dir}" includes="**/*.class"/>
-      <fileset dir="${build.logger.dir}" includes="**/*.class"/>
+
+
+      <fileset dir="${build.common.dbwrapper.dir}" includes="**/*.class"/>
+
+
+      <fileset dir="${build.common.logger.dir}" includes="**/*.class"/>
+
+
     </jar>
+
+
   </target>
 
 
-  <!-- Miner -->
   <target name="miner" depends="init, common">
     <delete>
       <fileset dir="${lib.dir}" includes="miner.jar"/>
     </delete>
+
 
     <javac srcdir="${src.miner.dir}"
            destdir="${build.miner.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
-           includeAntRuntime="false"
-           encoding="UTF-8">
+           includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
 
 
     <jar destfile="${lib.dir}/miner.jar">
+
+
       <fileset dir="${build.miner.dir}" includes="**/*.class"/>
+
+
     </jar>
+
+
   </target>
 
-  <!-- All! -->
-  <target name="all" depends="miner"/>
+
+  <target name="processing" depends="common, init">
+    <delete>
+      <fileset dir="${lib.dir}" includes="processing.jar"/>
+    </delete>
+
+
+    <javac srcdir="${src.processing.dir}"
+           destdir="${build.processing.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false">
+      <classpath refid="libs"/>
+    </javac>
+
+
+    <jar destfile="${lib.dir}/processing.jar">
+
+
+      <fileset dir="${build.processing.dir}" includes="**/*.class"/>
+
+
+    </jar>
+
+
+  </target>
+
+
+  <target name="all" depends="common, miner, processing" />
 
 
   <!-- If you didn't like it... -->
-  <target name="clean">
-    <delete>
-      <fileset dir="${classes.dir}" includes="**/*class" />
-    </delete>
-  </target>            
 </project>
+
