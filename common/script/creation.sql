@@ -38,6 +38,7 @@ CREATE TABLE place_of_interest (
 	address VARCHAR(300) NULL,
 	url 	VARCHAR(100) NULL,
 	descr	TEXT NULL,
+        descr_src_url TEXT VARCHAR(100) NULL,
 	photo	BLOB NULL,
 	FOREIGN KEY (type_id) REFERENCES poi_type(id) 	ON UPDATE CASCADE,
 	FOREIGN KEY (city_id) REFERENCES city(id)	ON UPDATE CASCADE

@@ -1,7 +1,8 @@
 package eo.miner;
 
 import java.util.*;
-import java.net.URL;
+import java.lang.*;
+import java.util.regex.*;
 
 import org.webharvest.definition.ScraperConfiguration;
 import org.webharvest.runtime.Scraper;
@@ -13,13 +14,12 @@ import org.springframework.beans.factory.InitializingBean;
 
 import eo.common.POI;
 
-import java.nio.charset.Charset;
-
 // ================================================================================
 
 public class Main implements InitializingBean {
     private POI poi_;
     private String config_;
+    private String proxy_;
 
 
     public void setPOI(final POI poi) {
@@ -29,7 +29,11 @@ public class Main implements InitializingBean {
 
     public void setConfig(final String config) {
         config_ = config;
-    }      
+    }
+
+    public void setProxy(final String proxy) {
+        proxy_ = proxy;
+    }
 
 
     private static class MinedItem {
@@ -48,16 +52,27 @@ public class Main implements InitializingBean {
             ScraperConfiguration config = 
                 new ScraperConfiguration(config_);
             Scraper scraper = new Scraper(config, ".");
+
+            if (proxy_.length() > 0) {
+                String[] proxy_cfg = proxy_.split(":");
+                String proxy_host = proxy_cfg[0];
+                int proxy_port = parseInt(proxy_cfg[1]);
+                scraper.getHttpClientManager().setProxy(proxy_host, proxy_port);
+            }
         
             scraper.setDebug(true);
             scraper.execute();
 
             String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");
 
-            for (int i = 0; i < mined.length; i++) {
-                String[] sight = mined[i].split("\\[Description\\]\n");
-                if (sight.length >= 2) {
-                    poi_.add(sight[0].trim(), sight[1].trim());
+            Pattern p = Pattern.compile("\\s*(.+)\\s*\\[Description\\]\\s*(.+)\\s*\\[Source\\]\\s*(.+)\\s*", Pattern.DOTALL);
+            for (int i = 1; i < mined.length; i++) {
+                Matcher m = p.matcher(mined[i]);
+                if (m.matches()) {
+                    //System.out.println(m.group(1) + ": " +  m.group(2) + ": "  + m.group(3));
+                    poi_.add(m.group(1), m.group(2));
+                } else {
+                    //System.out.println("No match!");
                 }
             }
         } 

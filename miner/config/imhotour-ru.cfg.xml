@@ -35,8 +35,8 @@
 
   <!-- Make list of sightseeings on this page -->
   <var-def name="sights">
-    <while condition="1" index="p_num" maxloops="${num_of_pages}">
-    <!--<while condition="1" index="p_num" maxloops="1">-->
+    <!--<while condition="1" index="p_num" maxloops="${num_of_pages}">-->
+    <while condition="1" index="p_num" maxloops="1">
       <empty>
         <var-def name="cur_page">
           <call name="fetch_http"> 
@@ -57,6 +57,14 @@
           </xpath>
         </list>
         <body>
+          <empty>
+            <var-def name="descr_url">
+              <xpath expression="a/@href">
+                <var name="i"/>
+              </xpath>
+            </var-def>
+          </empty>
+
           [Name]
           <xpath expression="a/text()">
             <var name="i"/>
@@ -66,12 +74,13 @@
           <xpath expression="//div[@class='resto_list']/text()">
             <call name="fetch_http">
               <call-param name="url">
-                <xpath expression="a/@href">
-                  <var name="i"/>
-                </xpath>
+                <var name="descr_url"/>
               </call-param>
             </call>
           </xpath>
+
+          [Source]
+          <var name="descr_url" />
         </body>
       </loop>
     </while>
