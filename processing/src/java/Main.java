@@ -62,7 +62,7 @@ public class Main implements InitializingBean{
     public Main(POI poi, final String proxy) {
         poi_ = poi;
 
-        if (proxy != null) {
+        if (proxy.length() > 0) {
             String[] proxy_conf = proxy.split(":");
             proxy_host_ = proxy_conf[0];
             proxy_port_ = Integer.parseInt(proxy_conf[1]);
@@ -73,8 +73,9 @@ public class Main implements InitializingBean{
         try {
             Map<String, String> p = new TreeMap<String, String>();
             p.put("address", "");
-        
 
+            //java.text.DecimalFormatSymbols.setDecimalSeparator('.');
+        
             Iterator it = poi_.poiIterator();
             while (it.hasNext()) {
                 POI.Entry e = (POI.Entry)it.next();
@@ -89,8 +90,8 @@ public class Main implements InitializingBean{
                         JSONObject first_res = (JSONObject)results.get(i);
                         String address = (String)first_res.get("formatted_address");
                         JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
-                        double lat = Double.parseDouble((String)loc.get("lat"));
-                        double lng = Double.parseDouble((String)loc.get("lng"));
+                        double lat = ((Double)loc.get("lat")).doubleValue();
+                        double lng = ((Double)loc.get("lng")).doubleValue();
 
                         e.addRawGeoInfo(address, lat, lng);
                     }                    

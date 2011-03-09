@@ -23,5 +23,6 @@
 
   <bean id="processingDaemon" class="eo.processing.Main">
     <constructor-arg ref="poi"/>
+    <constructor-arg value=""/>
   </bean>
 </beans>

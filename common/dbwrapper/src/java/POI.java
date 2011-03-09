@@ -60,10 +60,15 @@ public class POI {
             ops_.execute(q);
         }
 
+
+        private String hack(double d) {
+            return String.valueOf(d).replace(',', '.');
+        }
+
         public void addRawGeoInfo(final String address, double lat, double lng) {
             String q = String.format(
-                                     "INSERT INTO poi_raw_geo(poi_id, address, lat, lng) VALUES (%d, '%s', %f, %f);",
-                                     id_, address, lat, lng
+                                     "INSERT INTO poi_raw_geo(poi_id, address, lat, lng) VALUES (%d, '%s', '%s', '%s');",
+                                     id_, address, hack(lat), hack(lng)
                                      );
             ops_.execute(q);
         }
@@ -85,7 +90,7 @@ public class POI {
 
         public POIIterator(JdbcOperations ops) {
             ops_ = ops;
-            pois_ = ops_.queryForRowSet("SELECT (id, name, descr) FROM place_of_interest;");
+            pois_ = ops_.queryForRowSet("SELECT id, name FROM place_of_interest;");
 
             valid_ = pois_.first();
         }
