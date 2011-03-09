@@ -1,14 +1,16 @@
 /*** СОЗДАНИЕ БАЗЫ базы excursion_organizer ***/
-DROP DATABASE IF EXISTS excursion_organizer;
-CREATE DATABASE excursion_organizer CHARACTER SET = utf8;
-USE excursion_organizer;
+
+-- DROP DATABASE IF EXISTS excursion_organizer;
+-- CREATE DATABASE excursion_organizer CHARACTER SET = utf8;
+-- USE excursion_organizer;
 
 /***** СОЗДАНИЕ ТАБЛИЦ *****/
 
 /*** ГЛАВНЫЙ ДОМЕН ***/
 
-
 /* ОБЩИЕ */
+
+SET CHARSET utf8;
 
 /* таблица городов */
 DROP TABLE IF EXISTS city;
@@ -25,7 +27,15 @@ DROP TABLE IF EXISTS poi_type;
 CREATE TABLE poi_type (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	name 	VARCHAR(100) NOT NULL	
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
+
+DROP TABLE IF EXISTS poi_type_heuristics;
+CREATE TABLE poi_type_heuristics (
+       type_id INT,
+       keyword VARCHAR(100),
+
+       FOREIGN KEY (type_id) REFERENCES poi_type(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+);
 
 /* таблица достопримечательностей */
 DROP TABLE IF EXISTS place_of_interest;
@@ -37,17 +47,35 @@ CREATE TABLE place_of_interest (
 
 	address VARCHAR(300) NULL,
 	url 	VARCHAR(100) NULL,
-	descr	TEXT NULL,
-        descr_src_url TEXT VARCHAR(100) NULL,
+	
 	photo	BLOB NULL,
 	FOREIGN KEY (type_id) REFERENCES poi_type(id) 	ON UPDATE CASCADE,
 	FOREIGN KEY (city_id) REFERENCES city(id)	ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
+
+DROP TABLE IF EXISTS poi_raw_geo;
+CREATE TABLE poi_raw_geo (
+       poi_id INT,
+       address VARCHAR(300),
+       lat     FLOAT,
+       lng     FLOAT,
+
+       FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+) DEFAULT CHARACTER SET=utf8;
+
+DROP TABLE IF EXISTS poi_raw_descr;
+CREATE TABLE poi_raw_descr (
+     poi_id  INT,
+     descr   TEXT NULL,
+     src_url VARCHAR(300) NULL,
+
+     FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+) DEFAULT CHARACTER SET=utf8;
 
 /* цены на посещение достопримечательностей */
 DROP TABLE IF EXISTS poi_cost;
 CREATE TABLE poi_cost (
-	id 	 INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 	 INT AUTO_INCREMENT PRIMARY KEY, */
 	poi_id	 INT NOT NULL,
 	category VARCHAR(50) NULL,	/* категория посетителей (пенсионер, студент и т.п.) */
 	workday	 BOOL NULL, 		/* true - будний день, false - выходной/праздничный день */
@@ -58,7 +86,7 @@ CREATE TABLE poi_cost (
 /* расписание работы достопримечательности */
 DROP TABLE IF EXISTS poi_timetable;
 CREATE TABLE poi_timetable (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	poi_id		INT NOT NULL,
 	weekday		VARCHAR(10) NULL,	
 	start_time	TIME NOT NULL,	
@@ -103,7 +131,7 @@ CREATE TABLE cafe (
 /* расписание работы пунктов питания */
 DROP TABLE IF EXISTS cafe_timetable;
 CREATE TABLE cafe_timetable (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	cafe_id		INT NOT NULL,
 	workday	 	BOOL NULL, 		/* true - будний день, false - выходной/праздничный день */
 	start_time	TIME NOT NULL,	
@@ -121,7 +149,7 @@ CREATE TABLE cafe_timetable (
 /* таблица хранящее расстояние по широте, характерное для каждого города */
 DROP TABLE IF EXISTS geo_city_lat_coeff;
 CREATE TABLE geo_city_lat_coeff (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	city_id 	INT NOT NULL,
 	lat_coeff	FLOAT NOT NULL,
 	FOREIGN KEY (city_id) REFERENCES city(id) ON UPDATE CASCADE	
@@ -133,7 +161,7 @@ CREATE TABLE geo_city_lat_coeff (
 /* таблица координат достопримечательностей */
 DROP TABLE IF EXISTS geo_poi_coordinate;
 CREATE TABLE geo_poi_coordinate (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	poi_id		INT NOT NULL,
 	lat		FLOAT NOT NULL,
 	lng		FLOAT NOT NULL,
@@ -143,7 +171,7 @@ CREATE TABLE geo_poi_coordinate (
 /* таблица расстояний от достопримечательности до других ближайших достопримечательностей */
 DROP TABLE IF EXISTS geo_poi_poi_distance;
 CREATE TABLE geo_poi_poi_distance (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	poi_id1		INT NOT NULL,
 	poi_id2		INT NOT NULL,
 	distance	FLOAT NOT NULL,
@@ -154,7 +182,7 @@ CREATE TABLE geo_poi_poi_distance (
 /* таблица расстояний от достопримечательности до ближайших пунктов питания */
 DROP TABLE IF EXISTS geo_poi_cafe_distance;
 CREATE TABLE geo_poi_cafe_distance (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	poi_id		INT NOT NULL,
 	cafe_id		INT NOT NULL,
 	distance	FLOAT NOT NULL,
@@ -168,7 +196,7 @@ CREATE TABLE geo_poi_cafe_distance (
 /* таблица координат пунктов питания */
 DROP TABLE IF EXISTS geo_cafe_coordinate;
 CREATE TABLE geo_cafe_coordinate (
-	id 		INT AUTO_INCREMENT PRIMARY KEY,
+/*	id 		INT AUTO_INCREMENT PRIMARY KEY, */
 	cafe_id		INT NOT NULL,
 	lat		FLOAT NOT NULL,
 	lng		FLOAT NOT NULL,

@@ -29,24 +29,6 @@ public class Main implements InitializingBean{
 
 
     private JSONObject queryGAPI(final Map<String, String> query) throws Exception {
-        /*
-          URL url = new URL(GAPI_PROTO + GAPI_SERVER + GAPI_PATH + query + GAPI_Q_FOOTER);
-          
-          URLConnection conn = url.openConnection();
-          conn.addRequestProperty("Connection", "close");
-          conn.addRequestProperty("Cache-Control", "max-age=0");
-          conn.addRequestProperty("Accept", "application/json");
-          conn.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US)");
-          conn.addRequestProperty("Accept-Language", "ru"); 
-          conn.addRequestProperty("Accept-Charset", "utf-8");
-
-          conn.setDoInput(true);
-          byte buf[] = new byte[conn.getContentLength()];
-          ((InputStream)conn.getContent()).read(buf);
-          
-          System.out.println(new String(buf));
-        */
-
         StringBuilder qs = new StringBuilder();
         for (Map.Entry<String, String> e : query.entrySet()) {
             qs.append(e.getKey() + "=" + URLEncoder.encode(e.getValue(), "UTF-8"));
@@ -74,14 +56,6 @@ public class Main implements InitializingBean{
         get_meth.addRequestHeader("Accept-Charset", "utf-8");
         get_meth.execute(state, conn);
         
-        /*
-          StringBuilder out = new StringBuilder();
-          GZIPInputStream s = new GZIPInputStream(new ByteArrayInputStream(get_meth.getResponseBody()));
-          byte[] buf = new byte[1024];
-          while (s.read(buf) > 0) {
-          out.append(buf);
-          }
-        */
         return (JSONObject)JSONValue.parse(new String(get_meth.getResponseBody()));
     }
 
@@ -110,10 +84,16 @@ public class Main implements InitializingBean{
 
                 if (((String)r.get("status")).equals("OK")) {
                     JSONArray results = (JSONArray)r.get("results");
-                    JSONObject first_res = (JSONObject)results.get(0);
-                    String address = (String)first_res.get("formatted_address");
-                    
-                    e.setAddress(address.toString());
+
+                    for (int i = 0; i < results.size(); ++i) {
+                        JSONObject first_res = (JSONObject)results.get(i);
+                        String address = (String)first_res.get("formatted_address");
+                        JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
+                        double lat = Double.parseDouble((String)loc.get("lat"));
+                        double lng = Double.parseDouble((String)loc.get("lng"));
+
+                        e.addRawGeoInfo(address, lat, lng);
+                    }                    
                 }
             }
         } catch (Exception e) {

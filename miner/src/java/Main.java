@@ -75,7 +75,10 @@ public class Main implements InitializingBean {
                 Matcher m = p.matcher(mined[i]);
                 if (m.matches()) {
                     //System.out.println(m.group(1) + ": " +  m.group(2) + ": "  + m.group(3));
-                    poi_.add(m.group(1), m.group(2).replaceAll("[ \t\f\r]+", " ").replaceAll("\n+", "\n"));
+                    String name = m.group(1);
+                    String descr = m.group(2).replaceAll("[ \t\f\r]+", " ").replaceAll("\n+", "\n");
+                    String descr_src = m.group(3);
+                    poi_.add(name).addRawDescr(descr, descr_src);
                 } else {
                     //System.out.println("No match!");
                 }

@@ -23,13 +23,18 @@ public class POI {
     public static class Entry {
         private long id_;
         private String name_;
-        private String descr_;
         private JdbcOperations ops_;
 
         public Entry(final SqlRowSet poi, JdbcOperations ops) {
             id_ = poi.getLong("id");
             name_ = poi.getString("name");
-            descr_ = poi.getString("descr");
+
+            ops_ = ops;
+        }
+
+        public Entry(int id, final String name, JdbcOperations ops) {
+            id_ = id;
+            name_ = name_;
 
             ops_ = ops;
         }
@@ -39,9 +44,36 @@ public class POI {
         }
 
         public void setAddress(final String address) {
-            ops_.execute("UPDATE " + POI_TABLE_NAME + 
-                         "   SET " + POI_FIELD_ADDRESS + " = '" + address + "' " + 
-                         " WHERE " + POI_FIELD_ID + " = " + String.valueOf(id_) + ";");
+            String q = String.format(
+                                     "UPDATE place_of_interest SET address='%s' WHERE id=%d;",
+                                     address, id_
+                                     );
+            ops_.execute(q);
+        }
+
+
+        public void clearRawGeoInfo() {
+            String q = String.format(
+                                     "DELETE FROM poi_raw WHERE id=%d;",
+                                     id_
+                                     );
+            ops_.execute(q);
+        }
+
+        public void addRawGeoInfo(final String address, double lat, double lng) {
+            String q = String.format(
+                                     "INSERT INTO poi_raw_geo(poi_id, address, lat, lng) VALUES (%d, '%s', %f, %f);",
+                                     id_, address, lat, lng
+                                     );
+            ops_.execute(q);
+        }
+
+        public void addRawDescr(final String descr, final String source) {
+            String q = String.format(
+                                     "INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (%d, '%s', '%s');",
+                                     id_, descr, source
+                                     );
+            ops_.execute(q);
         }
     }
 
@@ -53,14 +85,13 @@ public class POI {
 
         public POIIterator(JdbcOperations ops) {
             ops_ = ops;
-            pois_ = ops_.queryForRowSet("SELECT " + POI_FIELD_ID + ", " + POI_FIELD_NAME + ", " + POI_FIELD_DESCR + " FROM place_of_interest;");
+            pois_ = ops_.queryForRowSet("SELECT (id, name, descr) FROM place_of_interest;");
 
             valid_ = pois_.first();
         }
 
         public boolean hasNext() {
             return valid_;
-            //return pois_.isAfterLast();
         }
 
         public Entry next() {
@@ -90,18 +121,17 @@ public class POI {
     }        
 
 
-    public void add(final String name, final String descr) {
+    public Entry add(final String name) throws Exception {
         //System.out.println(name + ", " + descr);
 
-        try {
-            String query = "INSERT INTO " + POI_TABLE_NAME +
-                    "(" + POI_FIELD_NAME + ", " + POI_FIELD_DESCR + ")" +
-                    "VALUES ('" + name + "', '" + descr + "');";
+        String q = String.format(
+                                 "INSERT INTO %s(%s) VALUES ('%s');",
+                                 POI_TABLE_NAME, POI_FIELD_NAME, name
+                                 );
+        ops_.execute(q);
 
-            ops_.execute(query);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        int new_poi_id = ops_.queryForInt("SELECT LAST_INSERT_ID();");
+        return new Entry(new_poi_id, name, ops_);
     }
 }
 
