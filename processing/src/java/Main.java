@@ -74,8 +74,6 @@ public class Main implements InitializingBean{
             Map<String, String> p = new TreeMap<String, String>();
             p.put("address", "");
 
-            //java.text.DecimalFormatSymbols.setDecimalSeparator('.');
-        
             Iterator it = poi_.poiIterator();
             while (it.hasNext()) {
                 POI.Entry e = (POI.Entry)it.next();
@@ -94,6 +92,8 @@ public class Main implements InitializingBean{
                         double lng = ((Double)loc.get("lng")).doubleValue();
 
                         e.addRawGeoInfo(address, lat, lng);
+
+                        Thread.sleep(2500);
                     }                    
                 }
             }

@@ -35,8 +35,8 @@
 
   <!-- Make list of sightseeings on this page -->
   <var-def name="sights">
-    <!--<while condition="1" index="p_num" maxloops="${num_of_pages}">-->
-    <while condition="1" index="p_num" maxloops="1">
+    <while condition="1" index="p_num" maxloops="${num_of_pages}">-
+    <!--<while condition="1" index="p_num" maxloops="1">-->
       <empty>
         <var-def name="cur_page">
           <call name="fetch_http"> 
