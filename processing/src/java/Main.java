@@ -18,7 +18,10 @@ import eo.common.POI;
 
 public class Main implements InitializingBean{
     private POI poi_;
-
+    private String proxy_host_ = "";
+    private int proxy_port_ = 0;
+    
+    private int    http_port = 80;
     private String GAPI_PROTO = "http://";
     private String GAPI_SERVER = "maps.googleapis.com";
     private String GAPI_PATH = "/maps/api/geocode/json?";
@@ -52,7 +55,13 @@ public class Main implements InitializingBean{
         String path = GAPI_PATH + qs.toString() + GAPI_Q_FOOTER;
 
         HttpState state = new HttpState();
-        HttpConnection conn = new HttpConnection(host_name, 80);
+        HttpConnection conn;
+
+        if (proxy_host_.length() == 0) {
+            conn = new HttpConnection(host_name, http_port);
+        } else {
+            conn = new HttpConnection(proxy_host_, proxy_port_, host_name, http_port);
+        }
         HttpMethod get_meth = new GetMethod();
         conn.open();
         get_meth.setPath(path);
@@ -76,8 +85,14 @@ public class Main implements InitializingBean{
         return (JSONObject)JSONValue.parse(new String(get_meth.getResponseBody()));
     }
 
-    public Main(POI poi) {
+    public Main(POI poi, final String proxy) {
         poi_ = poi;
+
+        if (proxy != null) {
+            String[] proxy_conf = proxy.split(":");
+            proxy_host_ = proxy_conf[0];
+            proxy_port_ = Integer.parseInt(proxy_conf[1]);
+        }
     }
 
     public void afterPropertiesSet() {
