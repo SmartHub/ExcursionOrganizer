@@ -1,6 +1,7 @@
 package eo.processing;
 
 import java.util.*;
+import java.util.regex.*;
 import java.net.*;
 import java.io.*;
 
@@ -16,7 +17,7 @@ import eo.common.POI;
 
 // ================================================================================
 
-public class Main implements InitializingBean{
+public class Main implements InitializingBean {
     private POI poi_;
     private String proxy_host_ = "";
     private int proxy_port_ = 0;
@@ -69,36 +70,79 @@ public class Main implements InitializingBean{
         }
     }
 
-    public void afterPropertiesSet() {
-        try {
+
+    private void addRawGeo(POI.Entry e) throws Exception {
+        if (!e.hasRawGeo()) {
+            System.out.println("Need GEO");
+
             Map<String, String> p = new TreeMap<String, String>();
             p.put("address", "");
+
+            p.put("address", e.name());
+            JSONObject r = queryGAPI(p);
+            System.out.println(r.toString());
+
+            if (((String)r.get("status")).equals("OK")) {
+                JSONArray results = (JSONArray)r.get("results");
+
+                for (int i = 0; i < results.size(); ++i) {
+                    JSONObject first_res = (JSONObject)results.get(i);
+                    String address = (String)first_res.get("formatted_address");
+                    JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
+                    double lat = ((Double)loc.get("lat")).doubleValue();
+                    double lng = ((Double)loc.get("lng")).doubleValue();
+
+                    e.addRawGeoInfo(address, lat, lng);
+                } 
+
+                Thread.sleep(2500);
+            }
+        }
+    }
+
+    private void guessType(POI.Entry e) {
+        if (!e.hasType()) {
+            e.guessType();
+            /*
+            Map<Integer, List<String>> types = poi_.getTypeKeywords();
+
+            for (Map.Entry t : types.entrySet()) {
+                List lst = (List)t.getValue();
+                for (Object o : lst) {
+                    String s = (String)o;
+                    //System.out.println(".*" + s + ".*; " + e.name());
+
+                    if (Pattern.matches(".*" + s + ".*", e.name())) {
+                        System.out.println("Something matched");
+                        e.setType((Integer)t.getKey());
+                        return;
+                    }
+                }
+            }
+            */
+        }
+    }
+
+    public void afterPropertiesSet() {
+        try {
+            /*
+            if (java.util.regex.Pattern.matches(".*музей.*", "Государственный Русский музей")) {
+                System.out.println("Not Fucking Java?");
+            } 
+            */
 
             Iterator it = poi_.poiIterator();
             while (it.hasNext()) {
                 POI.Entry e = (POI.Entry)it.next();
 
-                p.put("address", e.name());
-                JSONObject r = queryGAPI(p);
+                addRawGeo(e);
+                guessType(e);
 
-                if (((String)r.get("status")).equals("OK")) {
-                    JSONArray results = (JSONArray)r.get("results");
-
-                    for (int i = 0; i < results.size(); ++i) {
-                        JSONObject first_res = (JSONObject)results.get(i);
-                        String address = (String)first_res.get("formatted_address");
-                        JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
-                        double lat = ((Double)loc.get("lat")).doubleValue();
-                        double lng = ((Double)loc.get("lng")).doubleValue();
-
-                        e.addRawGeoInfo(address, lat, lng);
-
-                        Thread.sleep(2500);
-                    }                    
-                }
+                //
             }
         } catch (Exception e) {
             System.out.println(e.toString());
+            e.printStackTrace();
         }
     }
 }

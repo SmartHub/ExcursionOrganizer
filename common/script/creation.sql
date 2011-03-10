@@ -17,7 +17,7 @@ DROP TABLE IF EXISTS city;
 CREATE TABLE city (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	name 	VARCHAR(100) NOT NULL	
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 
 /* ДОСТОПРИМЕЧАТЕЛЬНОСТИ. Замечание: poi - place of interest */
@@ -25,8 +25,9 @@ CREATE TABLE city (
 /* таблица с типами достопримечательностей (музей, выставочный зал и т.п.) */
 DROP TABLE IF EXISTS poi_type;
 CREATE TABLE poi_type (
-	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	name 	VARCHAR(100) NOT NULL	
+       id 	 INT AUTO_INCREMENT PRIMARY KEY,
+       name 	 VARCHAR(100) NOT NULL,
+       guess_rx VARCHAR(300) NULL
 ) DEFAULT CHARACTER SET=utf8;
 
 DROP TABLE IF EXISTS poi_type_heuristics;
@@ -81,7 +82,7 @@ CREATE TABLE poi_cost (
 	workday	 BOOL NULL, 		/* true - будний день, false - выходной/праздничный день */
 	cost	 INT NOT NULL,	
 	FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* расписание работы достопримечательности */
 DROP TABLE IF EXISTS poi_timetable;
@@ -92,7 +93,7 @@ CREATE TABLE poi_timetable (
 	start_time	TIME NOT NULL,	
 	finish_time  	TIME NOT NULL,
 	FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 
 /* ПУНКТЫ ПИТАНИЯ */
@@ -102,14 +103,14 @@ DROP TABLE IF EXISTS cafe_type;
 CREATE TABLE cafe_type (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	name 	VARCHAR(100) NOT NULL	
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* таблица с видами кухни (азиатская, фастфуд и т.п.) */
 DROP TABLE IF EXISTS cuisine;
 CREATE TABLE cuisine (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
 	name 	VARCHAR(100) NOT NULL	
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* пункты питания */
 DROP TABLE IF EXISTS cafe;
@@ -126,7 +127,7 @@ CREATE TABLE cafe (
 	FOREIGN KEY (type_id) 	 REFERENCES cafe_type(id) ON UPDATE CASCADE,
 	FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)	  ON UPDATE CASCADE,
 	FOREIGN KEY (city_id) 	 REFERENCES city(id) 	  ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* расписание работы пунктов питания */
 DROP TABLE IF EXISTS cafe_timetable;
@@ -137,7 +138,7 @@ CREATE TABLE cafe_timetable (
 	start_time	TIME NOT NULL,	
 	finish_time  	TIME NOT NULL,
 	FOREIGN KEY (cafe_id) REFERENCES cafe(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 
 
@@ -153,7 +154,7 @@ CREATE TABLE geo_city_lat_coeff (
 	city_id 	INT NOT NULL,
 	lat_coeff	FLOAT NOT NULL,
 	FOREIGN KEY (city_id) REFERENCES city(id) ON UPDATE CASCADE	
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 
 /* ДОСТОПРИМЕЧАТЕЛЬНОСТИ */
@@ -166,7 +167,7 @@ CREATE TABLE geo_poi_coordinate (
 	lat		FLOAT NOT NULL,
 	lng		FLOAT NOT NULL,
 	FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* таблица расстояний от достопримечательности до других ближайших достопримечательностей */
 DROP TABLE IF EXISTS geo_poi_poi_distance;
@@ -177,7 +178,7 @@ CREATE TABLE geo_poi_poi_distance (
 	distance	FLOAT NOT NULL,
 	FOREIGN KEY (poi_id1) REFERENCES place_of_interest(id) ON UPDATE CASCADE,
 	FOREIGN KEY (poi_id2) REFERENCES place_of_interest(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 /* таблица расстояний от достопримечательности до ближайших пунктов питания */
 DROP TABLE IF EXISTS geo_poi_cafe_distance;
@@ -188,7 +189,7 @@ CREATE TABLE geo_poi_cafe_distance (
 	distance	FLOAT NOT NULL,
 	FOREIGN KEY (poi_id)  REFERENCES place_of_interest(id) 	ON UPDATE CASCADE,
 	FOREIGN KEY (cafe_id) REFERENCES cafe(id) 		ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 
 /* ПУНКТЫ ПИТАНИЯ */
@@ -201,6 +202,6 @@ CREATE TABLE geo_cafe_coordinate (
 	lat		FLOAT NOT NULL,
 	lng		FLOAT NOT NULL,
 	FOREIGN KEY (cafe_id) REFERENCES cafe(id) ON UPDATE CASCADE
-) DEFAULT CHARSET=utf8;
+) DEFAULT CHARACTER SET=utf8;
 
 

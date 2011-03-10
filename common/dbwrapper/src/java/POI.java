@@ -19,7 +19,7 @@ public class POI {
     private static final String POI_FIELD_DESCR = "descr";
     private static final String POI_FIELD_ADDRESS = "address";
 
-
+    /* A place of interest item */
     public static class Entry {
         private long id_;
         private String name_;
@@ -43,12 +43,59 @@ public class POI {
             return name_;
         }
 
+        /* Clean GEO information management */
         public void setAddress(final String address) {
             String q = String.format(
                                      "UPDATE place_of_interest SET address='%s' WHERE id=%d;",
                                      address, id_
                                      );
             ops_.execute(q);
+        }
+
+
+        public boolean hasType() {
+            String q = String.format(
+                                     "SELECT type_id FROM place_of_interest WHERE id=%d;",
+                                     id_
+                                     );
+
+            int t = ops_.queryForInt(q);
+            return t != 0 && t != 1;
+        }
+
+        public void setType(int t) {
+            String q = String.format(
+                                     "UPDATE place_of_interest SET type_id = %d WHERE id = %d;",
+                                     t, id_
+                                     );
+
+            ops_.execute(q);
+        }
+
+        public void guessType() {
+            String q = String.format(
+                                     "SELECT id FROM poi_type WHERE lcase('%s') rlike poi_type.guess_rx;",
+                                     name_
+                                     );
+            try {
+                int t = ops_.queryForInt(q);
+                if (t != 0) {
+                    setType(t);
+                }
+            } catch (Exception e) {
+                setType(1);
+            }
+        }
+
+
+        /* Raw GEO information management */
+        public boolean hasRawGeo() {
+            String q = String.format(
+                                     "SELECT COUNT(*) FROM poi_raw_geo WHERE poi_id=%d;",
+                                     id_
+                                     );
+
+            return ops_.queryForInt(q) > 0;
         }
 
 
@@ -61,7 +108,7 @@ public class POI {
         }
 
 
-        private String hack(double d) {
+        private static String hack(double d) {
             return String.valueOf(d).replace(',', '.');
         }
 
@@ -114,7 +161,6 @@ public class POI {
     }
 
 
-
     public POI(SimpleJdbcTemplate conn) {
         conn_ = conn;
         ops_ = conn_.getJdbcOperations();
@@ -137,6 +183,28 @@ public class POI {
 
         int new_poi_id = ops_.queryForInt("SELECT LAST_INSERT_ID();");
         return new Entry(new_poi_id, name, ops_);
+    }
+
+    
+    public Map<Integer, List<String>> getTypeKeywords() {
+        SqlRowSet rs = ops_.queryForRowSet("SELECT id, name FROM poi_type UNION SELECT type_id id, keyword FROM poi_type_heuristics;");
+        boolean valid = rs.first();
+        Map<Integer, List<String>> res = new TreeMap<Integer, List<String>>();
+        
+        while (valid) {
+            int type_id = rs.getInt("id");
+
+            if (res.get(type_id) == null) {
+                res.put(type_id, new ArrayList<String>());
+            }
+
+            res.get(type_id).add(rs.getString("name"));
+
+            valid = rs.next();
+        }
+
+        //System.out.println("Left Get Keywords");
+        return res;
     }
 }
 

@@ -23,6 +23,6 @@
 
   <bean id="processingDaemon" class="eo.processing.Main">
     <constructor-arg ref="poi"/>
-    <constructor-arg value=""/>
+    <constructor-arg value="192.168.0.2:3128"/>
   </bean>
 </beans>
