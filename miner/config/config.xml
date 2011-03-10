@@ -24,6 +24,7 @@
   <bean id="miner" class="eo.miner.Main">
     <property name="POI" ref="poi"/>
     <property name="config" value="miner/config/imhotour-ru.cfg.xml"/>
-    <property name="proxy" value="192.168.0.2:3128"/>
+    <!--<property name="proxy" value="192.168.0.2:3128"/>-->
+    <constructor-arg value=""/>
   </bean>
 </beans>

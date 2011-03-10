@@ -73,14 +73,14 @@ public class Main implements InitializingBean {
 
     private void addRawGeo(POI.Entry e) throws Exception {
         if (!e.hasRawGeo()) {
-            System.out.println("Need GEO");
+            //System.out.println("Need GEO");
 
             Map<String, String> p = new TreeMap<String, String>();
             p.put("address", "");
 
             p.put("address", e.name());
             JSONObject r = queryGAPI(p);
-            System.out.println(r.toString());
+            //System.out.println(r.toString());
 
             if (((String)r.get("status")).equals("OK")) {
                 JSONArray results = (JSONArray)r.get("results");
@@ -103,42 +103,17 @@ public class Main implements InitializingBean {
     private void guessType(POI.Entry e) {
         if (!e.hasType()) {
             e.guessType();
-            /*
-            Map<Integer, List<String>> types = poi_.getTypeKeywords();
-
-            for (Map.Entry t : types.entrySet()) {
-                List lst = (List)t.getValue();
-                for (Object o : lst) {
-                    String s = (String)o;
-                    //System.out.println(".*" + s + ".*; " + e.name());
-
-                    if (Pattern.matches(".*" + s + ".*", e.name())) {
-                        System.out.println("Something matched");
-                        e.setType((Integer)t.getKey());
-                        return;
-                    }
-                }
-            }
-            */
         }
     }
 
     public void afterPropertiesSet() {
         try {
-            /*
-            if (java.util.regex.Pattern.matches(".*музей.*", "Государственный Русский музей")) {
-                System.out.println("Not Fucking Java?");
-            } 
-            */
-
             Iterator it = poi_.poiIterator();
             while (it.hasNext()) {
                 POI.Entry e = (POI.Entry)it.next();
 
                 addRawGeo(e);
                 guessType(e);
-
-                //
             }
         } catch (Exception e) {
             System.out.println(e.toString());
