@@ -53,6 +53,14 @@ public class POI {
         }
 
 
+        public void setURL(final String url) {
+            String q = String.format(
+                                     "UPDATE place_of_interest SET url='%s' WHERE id=%d;",
+                                     url, id_
+                                     );
+            ops_.execute(q);
+        }
+
         public boolean hasType() {
             String q = String.format(
                                      "SELECT type_id FROM place_of_interest WHERE id=%d;",

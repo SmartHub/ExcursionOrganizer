@@ -52,6 +52,35 @@ public class Main implements InitializingBean {
     }
 
 
+    private static class Vars extends TreeMap<String, String> { }
+    
+    private static Vars parseMinedItem(final String info) {
+        Vars v = new Vars();
+
+        String[] fields = info.split("[\\[\\]]");
+        for (int i = 1; i + 1 < fields.length; i += 2) {
+            //System.out.println(fields[i] + ":" + fields[i+1]);
+            if (fields[i+1].length() > 0) {
+                v.put(fields[i], fields[i+1]);
+            }
+        }
+
+        /*Pattern p = Pattern.compile("(\\[.+?\\])", Pattern.DOTALL);      
+
+        Matcher m = p.matcher(data);
+        if (m.matches()) {
+            do {
+                System.out.println(m.group(1));
+                //System.out.println(m.group(1) + ":" + m.group(2));
+                //v.put(m.group(1), m.group(2));
+            } while(m.find());
+        }
+        */
+
+        return v;
+    }
+
+
     public void afterPropertiesSet() {
         try {
             ScraperConfiguration config = 
@@ -68,8 +97,25 @@ public class Main implements InitializingBean {
             scraper.setDebug(true);
             scraper.execute();
 
-            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Name\\]\n");
+            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Sight\\]\n");
 
+            for (int i = 1; i < mined.length; ++i) {
+                Vars v = parseMinedItem(mined[i]);
+
+                POI.Entry e = poi_.add(v.get("Name"));
+
+                if (v.containsKey("Description")) {
+                    e.addRawDescr(v.get("Description"), v.get("Source"));
+                }
+                if (v.containsKey("Address")) {
+                    e.setAddress(v.get("Address"));
+                }
+                if (v.containsKey("Site")) {
+                    e.setURL(v.get("Site"));
+                }
+            }
+
+            /*
             Pattern p = Pattern.compile("\\s*(.+)\\s*\\[Description\\]\\s*(.+)\\s*\\[Source\\]\\s*(.+)\\s*", Pattern.DOTALL);
             for (int i = 1; i < mined.length; i++) {
                 Matcher m = p.matcher(mined[i]);
@@ -83,6 +129,7 @@ public class Main implements InitializingBean {
                     //System.out.println("No match!");
                 }
             }
+            */
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");
