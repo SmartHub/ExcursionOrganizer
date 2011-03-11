@@ -23,11 +23,18 @@ public class POI {
     public static class Entry {
         private long id_;
         private String name_;
+        private String address_;
+
         private JdbcOperations ops_;
 
         public Entry(final SqlRowSet poi, JdbcOperations ops) {
             id_ = poi.getLong("id");
             name_ = poi.getString("name");
+
+            address_ = poi.getString("address");
+            if (poi.wasNull()) {
+                address_ = "";
+            }
 
             ops_ = ops;
         }
@@ -44,6 +51,10 @@ public class POI {
         }
 
         /* Clean GEO information management */
+        public String address() {
+            return address_;
+        }
+
         public void setAddress(final String address) {
             String q = String.format(
                                      "UPDATE place_of_interest SET address='%s' WHERE id=%d;",
@@ -52,6 +63,20 @@ public class POI {
             ops_.execute(q);
         }
 
+        public boolean hasAddress() {
+            /*
+            String q = String.format(
+                                     "SELECT address FROM place_of_interest WHERE poi_id=%d;",
+                                     id_
+                                     );
+
+            return ((String)ops_.queryForObject(q, String)).length() > 0;
+            */
+
+            return address_.length() > 0;
+        }
+
+        // --------------------------------------------------------------------------------
 
         public void setURL(final String url) {
             String q = String.format(
@@ -61,6 +86,9 @@ public class POI {
             ops_.execute(q);
         }
 
+        // --------------------------------------------------------------------------------
+
+        /* Type management */
         public boolean hasType() {
             String q = String.format(
                                      "SELECT type_id FROM place_of_interest WHERE id=%d;",
@@ -94,6 +122,8 @@ public class POI {
                 setType(1);
             }
         }
+
+        // --------------------------------------------------------------------------------
 
 
         /* Raw GEO information management */
@@ -145,7 +175,7 @@ public class POI {
 
         public POIIterator(JdbcOperations ops) {
             ops_ = ops;
-            pois_ = ops_.queryForRowSet("SELECT id, name FROM place_of_interest;");
+            pois_ = ops_.queryForRowSet("SELECT id, name, address FROM place_of_interest;");
 
             valid_ = pois_.first();
         }
@@ -181,8 +211,6 @@ public class POI {
 
 
     public Entry add(final String name) throws Exception {
-        //System.out.println(name + ", " + descr);
-
         String q = String.format(
                                  "INSERT INTO %s(%s) VALUES ('%s');",
                                  POI_TABLE_NAME, POI_FIELD_NAME, name
@@ -193,7 +221,7 @@ public class POI {
         return new Entry(new_poi_id, name, ops_);
     }
 
-    
+    /*
     public Map<Integer, List<String>> getTypeKeywords() {
         SqlRowSet rs = ops_.queryForRowSet("SELECT id, name FROM poi_type UNION SELECT type_id id, keyword FROM poi_type_heuristics;");
         boolean valid = rs.first();
@@ -211,9 +239,9 @@ public class POI {
             valid = rs.next();
         }
 
-        //System.out.println("Left Get Keywords");
         return res;
     }
+    */
 }
 
 // ================================================================================

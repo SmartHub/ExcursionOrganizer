@@ -59,23 +59,10 @@ public class Main implements InitializingBean {
 
         String[] fields = info.split("[\\[\\]]");
         for (int i = 1; i + 1 < fields.length; i += 2) {
-            //System.out.println(fields[i] + ":" + fields[i+1]);
             if (fields[i+1].length() > 0) {
                 v.put(fields[i], fields[i+1]);
             }
         }
-
-        /*Pattern p = Pattern.compile("(\\[.+?\\])", Pattern.DOTALL);      
-
-        Matcher m = p.matcher(data);
-        if (m.matches()) {
-            do {
-                System.out.println(m.group(1));
-                //System.out.println(m.group(1) + ":" + m.group(2));
-                //v.put(m.group(1), m.group(2));
-            } while(m.find());
-        }
-        */
 
         return v;
     }
@@ -114,22 +101,6 @@ public class Main implements InitializingBean {
                     e.setURL(v.get("Site"));
                 }
             }
-
-            /*
-            Pattern p = Pattern.compile("\\s*(.+)\\s*\\[Description\\]\\s*(.+)\\s*\\[Source\\]\\s*(.+)\\s*", Pattern.DOTALL);
-            for (int i = 1; i < mined.length; i++) {
-                Matcher m = p.matcher(mined[i]);
-                if (m.matches()) {
-                    //System.out.println(m.group(1) + ": " +  m.group(2) + ": "  + m.group(3));
-                    String name = m.group(1);
-                    String descr = m.group(2).replaceAll("[ \t\f\r]+", " ").replaceAll("\n+", "\n");
-                    String descr_src = m.group(3);
-                    poi_.add(name).addRawDescr(descr, descr_src);
-                } else {
-                    //System.out.println("No match!");
-                }
-            }
-            */
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");

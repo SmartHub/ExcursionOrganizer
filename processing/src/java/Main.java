@@ -73,14 +73,15 @@ public class Main implements InitializingBean {
 
     private void addRawGeo(POI.Entry e) throws Exception {
         if (!e.hasRawGeo()) {
-            //System.out.println("Need GEO");
-
             Map<String, String> p = new TreeMap<String, String>();
-            p.put("address", "");
+            
+            if (e.hasAddress()) {            
+                p.put("address", e.address());
+            } else {
+                p.put("address", e.name());
+            }
 
-            p.put("address", e.name());
             JSONObject r = queryGAPI(p);
-            //System.out.println(r.toString());
 
             if (((String)r.get("status")).equals("OK")) {
                 JSONArray results = (JSONArray)r.get("results");
@@ -91,10 +92,10 @@ public class Main implements InitializingBean {
                     JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
                     double lat = ((Double)loc.get("lat")).doubleValue();
                     double lng = ((Double)loc.get("lng")).doubleValue();
-
+                        
                     e.addRawGeoInfo(address, lat, lng);
                 } 
-
+                
                 Thread.sleep(2500);
             }
         }
