@@ -96,7 +96,7 @@ public class Main implements InitializingBean {
                     e.addRawGeoInfo(address, lat, lng);
                 } 
                 
-                Thread.sleep(2500);
+                Thread.sleep(1500);
             }
         }
     }

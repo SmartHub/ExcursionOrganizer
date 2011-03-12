@@ -73,7 +73,7 @@ public class POI {
             return ((String)ops_.queryForObject(q, String)).length() > 0;
             */
 
-            return address_.length() > 0;
+            return address_.length() > 1;
         }
 
         // --------------------------------------------------------------------------------

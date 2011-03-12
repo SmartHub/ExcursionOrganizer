@@ -18,7 +18,7 @@ import eo.common.POI;
 
 public class Main implements InitializingBean {
     private POI poi_;
-    private String config_;
+    private String[] config_files_;
     private String proxy_;
 
 
@@ -33,7 +33,7 @@ public class Main implements InitializingBean {
 
 
     public void setConfig(final String config) {
-        config_ = config;
+        config_files_ = config.split(";");
     }
 
     public void setProxy(final String proxy) {
@@ -70,36 +70,38 @@ public class Main implements InitializingBean {
 
     public void afterPropertiesSet() {
         try {
-            ScraperConfiguration config = 
-                new ScraperConfiguration(config_);
-            Scraper scraper = new Scraper(config, ".");
+            for (int j = 0; j < config_files_.length; ++j) {
+                ScraperConfiguration config = 
+                    new ScraperConfiguration(config_files_[j]);
+                Scraper scraper = new Scraper(config, ".");
 
-            if (proxy_.length() > 0) {
-                String[] proxy_cfg = proxy_.split(":");
-                String proxy_host = proxy_cfg[0];
-                int proxy_port = Integer.parseInt(proxy_cfg[1]);
-                scraper.getHttpClientManager().setHttpProxy(proxy_host, proxy_port);
-            }
+                if (proxy_.length() > 0) {
+                    String[] proxy_cfg = proxy_.split(":");
+                    String proxy_host = proxy_cfg[0];
+                    int proxy_port = Integer.parseInt(proxy_cfg[1]);
+                    scraper.getHttpClientManager().setHttpProxy(proxy_host, proxy_port);
+                }
         
-            scraper.setDebug(true);
-            scraper.execute();
+                scraper.setDebug(true);
+                scraper.execute();
 
-            String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Sight\\]\n");
-            //System.out.println(scraper.getContext().getVar("sights").toString());
+                String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Sight\\]\n");
+                //System.out.println(scraper.getContext().getVar("sights").toString());
             
-            for (int i = 1; i < mined.length; ++i) {
-                Vars v = parseMinedItem(mined[i]);
+                for (int i = 1; i < mined.length; ++i) {
+                    Vars v = parseMinedItem(mined[i]);
+                    
+                    POI.Entry e = poi_.add(v.get("Name"));
 
-                POI.Entry e = poi_.add(v.get("Name"));
-
-                if (v.containsKey("Description")) {
-                    e.addRawDescr(v.get("Description"), v.get("Source"));
-                }
-                if (v.containsKey("Address")) {
-                    e.setAddress(v.get("Address"));
-                }
-                if (v.containsKey("Site")) {
-                    e.setURL(v.get("Site"));
+                    if (v.containsKey("Description")) {
+                        e.addRawDescr(v.get("Description"), v.get("Source"));
+                    }
+                    if (v.containsKey("Address")) {
+                        e.setAddress(v.get("Address"));
+                    }
+                    if (v.containsKey("Site")) {
+                        e.setURL(v.get("Site"));
+                    }
                 }
             }
             

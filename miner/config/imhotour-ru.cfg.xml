@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <config charset="UTF-8">
-  <include path="miner/config/common.xml"/>
+  <include path="common.xml"/>
 
   <var-def name="start_url">http://imhotour.ru/city/311486/todo</var-def>
 
@@ -31,8 +31,8 @@
 
   <!-- Make list of sightseeings on this page -->
   <var-def name="sights">
-    <!--<while condition="1" index="p_num" maxloops="${num_of_pages}">-->
-    <while condition="1" index="p_num" maxloops="1">
+    <while condition="1" index="p_num" maxloops="${num_of_pages}">
+    <!--<while condition="1" index="p_num" maxloops="1">-->
       <empty>
         <var-def name="cur_page">
           <call name="fetch_http"> 
