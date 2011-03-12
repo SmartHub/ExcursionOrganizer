@@ -1,11 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <config charset="UTF-8">
-  <function name="fetch_http">
-    <return>
-      <html-to-xml outputtype="pretty" omitcomments="true" usecdata="false">
-        <http url="${url.toString().trim()}"/>
-      </html-to-xml>
-    </return>
-  </function>
+  <include path="miner/config/common.xml"/>
 
   <var-def name="start_url">http://imhotour.ru/city/311486/todo</var-def>
 

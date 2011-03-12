@@ -59,7 +59,7 @@ public class Main implements InitializingBean {
 
         String[] fields = info.split("[\\[\\]]");
         for (int i = 1; i + 1 < fields.length; i += 2) {
-            if (fields[i+1].length() > 0) {
+            if (fields[i+1].length() > 1) {
                 v.put(fields[i], fields[i+1]);
             }
         }
@@ -85,7 +85,8 @@ public class Main implements InitializingBean {
             scraper.execute();
 
             String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Sight\\]\n");
-
+            //System.out.println(scraper.getContext().getVar("sights").toString());
+            
             for (int i = 1; i < mined.length; ++i) {
                 Vars v = parseMinedItem(mined[i]);
 
@@ -101,6 +102,7 @@ public class Main implements InitializingBean {
                     e.setURL(v.get("Site"));
                 }
             }
+            
         } 
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");
