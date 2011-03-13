@@ -85,6 +85,9 @@
           }
         ]]></script>
 
+        [City]
+        Санкт-Петербург
+
         <!--<template>${address.toString()}</template>-->
       </body>
     </loop>    

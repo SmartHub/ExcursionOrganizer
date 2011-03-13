@@ -94,6 +94,9 @@
             <var name="info"/>
           </xpath>
 
+          [City]
+          Санкт-Петербург
+
           [Site]
           <xpath expression="/wrap/div[4]/noindex/div/div[2]/a/@href">
             <var name="info"/>

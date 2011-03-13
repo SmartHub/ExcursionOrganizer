@@ -19,9 +19,31 @@ public class POI {
     private static final String POI_FIELD_DESCR = "descr";
     private static final String POI_FIELD_ADDRESS = "address";
 
+    public static class Loc {
+        public double lat;
+        public double lng;
+
+        public Loc(double lat_i, double lng_i) {
+            lat = lat_i;
+            lng = lng_i;
+        }
+    }
+
+    /*
+    public static class City {
+        private int id_;
+        private Loc ne_, sw_;
+
+        City(final SqlRowSet city) {
+            id_.
+        }
+    }
+    */
+
     /* A place of interest item */
     public static class Entry {
         private long id_;
+        private long city_id_;
         private String name_;
         private String address_;
 
@@ -30,6 +52,7 @@ public class POI {
         public Entry(final SqlRowSet poi, JdbcOperations ops) {
             id_ = poi.getLong("id");
             name_ = poi.getString("name");
+            city_id_ = poi.getLong("city_id");
 
             address_ = poi.getString("address");
             if (poi.wasNull()) {
@@ -51,7 +74,7 @@ public class POI {
         }
 
         /* Clean GEO information management */
-        public String address() {
+        public String getAddress() {
             return address_;
         }
 
@@ -74,6 +97,24 @@ public class POI {
             */
 
             return address_.length() > 1;
+        }
+
+        public long getCityId() {
+            return city_id_;
+        }
+
+        public void setCity(final String city) {
+            String q = String.format(
+                                     "SELECT id FROM city WHERE name='%s';",
+                                     city
+                                     );
+
+            city_id_ = ops_.queryForInt(q);
+            q = String.format(
+                              "UPDATE place_of_interest SET city_id=%d WHERE id=%d;",
+                              city_id_, id_
+                              );
+            ops_.execute(q);
         }
 
         // --------------------------------------------------------------------------------
@@ -167,6 +208,7 @@ public class POI {
         }
     }
 
+    // --------------------------------------------------------------------------------
 
     private static class POIIterator implements Iterator {
         private JdbcOperations ops_;
@@ -175,7 +217,7 @@ public class POI {
 
         public POIIterator(JdbcOperations ops) {
             ops_ = ops;
-            pois_ = ops_.queryForRowSet("SELECT id, name, address FROM place_of_interest;");
+            pois_ = ops_.queryForRowSet("SELECT id, name, address, city_id FROM place_of_interest;");
 
             valid_ = pois_.first();
         }
@@ -198,6 +240,7 @@ public class POI {
         }
     }
 
+    // --------------------------------------------------------------------------------
 
     public POI(SimpleJdbcTemplate conn) {
         conn_ = conn;
@@ -219,6 +262,30 @@ public class POI {
 
         int new_poi_id = ops_.queryForInt("SELECT LAST_INSERT_ID();");
         return new Entry(new_poi_id, name, ops_);
+    }
+
+    // --------------------------------------------------------------------------------
+
+    public boolean isWithinCity(long city_id, Loc loc) {
+        String q = String.format(
+                                 "SELECT sw_lat, sw_lng, ne_lat, ne_lng FROM city WHERE id=%d;",
+                                 city_id
+                                 );
+
+        SqlRowSet rs = ops_.queryForRowSet(q);
+        rs.first();
+        return (loc.lat >= rs.getDouble("sw_lat") && loc.lat <= rs.getDouble("ne_lat")) 
+            && 
+            (loc.lng >= rs.getDouble("sw_lng") && loc.lng <= rs.getDouble("ne_lng"));
+    }
+
+    public int getCityId(final String city_name) {
+        String q = String.format(
+                                 "SELECT id FROM city WHERE name='%s';",
+                                 city_name
+                                 );
+
+        return ops_.queryForInt(q);
     }
 
     /*

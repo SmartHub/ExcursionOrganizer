@@ -16,7 +16,11 @@ SET CHARSET utf8;
 DROP TABLE IF EXISTS city;
 CREATE TABLE city (
 	id 	INT AUTO_INCREMENT PRIMARY KEY,
-	name 	VARCHAR(100) NOT NULL	
+	name 	VARCHAR(100) NOT NULL,
+        ne_lat  DECIMAL(11, 8),
+        ne_lng  DECIMAL(11, 8),
+        sw_lat  DECIMAL(11, 8),
+        sw_lng  DECIMAL(11, 8)
 ) DEFAULT CHARACTER SET=utf8;
 
 

@@ -90,18 +90,22 @@ public class Main implements InitializingBean {
             
                 for (int i = 1; i < mined.length; ++i) {
                     Vars v = parseMinedItem(mined[i]);
-                    
-                    POI.Entry e = poi_.add(v.get("Name"));
 
-                    if (v.containsKey("Description")) {
-                        e.addRawDescr(v.get("Description"), v.get("Source"));
+                    if (v.containsKey("City")) {
+                        POI.Entry e = poi_.add(v.get("Name").trim());
+                        e.setCity(v.get("City"));
+
+                        if (v.containsKey("Description")) {
+                            e.addRawDescr(v.get("Description"), v.get("Source"));
+                        }
+                        if (v.containsKey("Address")) {
+                            e.setAddress(v.get("Address").trim());
+                        }
+                        if (v.containsKey("Site")) {
+                            e.setURL(v.get("Site"));
+                        }
                     }
-                    if (v.containsKey("Address")) {
-                        e.setAddress(v.get("Address"));
-                    }
-                    if (v.containsKey("Site")) {
-                        e.setURL(v.get("Site"));
-                    }
+                  
                 }
             }
             

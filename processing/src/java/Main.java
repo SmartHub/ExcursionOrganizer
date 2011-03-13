@@ -76,7 +76,7 @@ public class Main implements InitializingBean {
             Map<String, String> p = new TreeMap<String, String>();
             
             if (e.hasAddress()) {            
-                p.put("address", e.address());
+                p.put("address", e.getAddress());
             } else {
                 p.put("address", e.name());
             }
@@ -92,8 +92,10 @@ public class Main implements InitializingBean {
                     JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
                     double lat = ((Double)loc.get("lat")).doubleValue();
                     double lng = ((Double)loc.get("lng")).doubleValue();
-                        
-                    e.addRawGeoInfo(address, lat, lng);
+
+                    if (poi_.isWithinCity(e.getCityId(), new POI.Loc(lat, lng))) {
+                        e.addRawGeoInfo(address, lat, lng);
+                    }
                 } 
                 
                 Thread.sleep(1500);
