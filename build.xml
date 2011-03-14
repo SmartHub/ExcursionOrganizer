@@ -19,8 +19,8 @@
   <property name="build.common.dbwrapper.dir" location="${project.dir}/common/dbwrapper/build"/>
 
 
-  <property name="src.common.logger.dir" location="${project.dir}/common/logger/src/java"/>
-  <property name="build.common.logger.dir" location="${project.dir}/common/logger/build"/>
+  <property name="src.common.util.dir" location="${project.dir}/common/util/src/java"/>
+  <property name="build.common.util.dir" location="${project.dir}/common/util/build"/>
 
 
   <property name="src.miner.dir" location="${project.dir}/miner/src/java"/>
@@ -31,6 +31,10 @@
   <property name="build.processing.dir" location="${project.dir}/processing/build"/>
 
 
+  <property name="src.frontend.http_server.dir" location="${project.dir}/frontend/http_server/src/java"/>
+  <property name="build.frontend.http_server.dir" location="${project.dir}/frontend/http_server/build"/>
+
+
   <target name="init">
     <tstamp/>
 
@@ -38,13 +42,16 @@
     <mkdir dir="${build.common.dbwrapper.dir}"/>
 
 
-    <mkdir dir="${build.common.logger.dir}"/>
+    <mkdir dir="${build.common.util.dir}"/>
 
 
     <mkdir dir="${build.miner.dir}"/>
 
 
     <mkdir dir="${build.processing.dir}"/>
+
+
+    <mkdir dir="${build.frontend.http_server.dir}"/>
 
 
   </target>
@@ -66,8 +73,8 @@
     </javac>
 
 
-    <javac srcdir="${src.common.logger.dir}"
-           destdir="${build.common.logger.dir}"
+    <javac srcdir="${src.common.util.dir}"
+           destdir="${build.common.util.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
@@ -82,7 +89,7 @@
       <fileset dir="${build.common.dbwrapper.dir}" includes="**/*.class"/>
 
 
-      <fileset dir="${build.common.logger.dir}" includes="**/*.class"/>
+      <fileset dir="${build.common.util.dir}" includes="**/*.class"/>
 
 
     </jar>
@@ -91,7 +98,7 @@
   </target>
 
 
-  <target name="miner" depends="init, common">
+  <target name="miner" depends="init">
     <delete>
       <fileset dir="${lib.dir}" includes="miner.jar"/>
     </delete>
@@ -119,7 +126,7 @@
   </target>
 
 
-  <target name="processing" depends="common, init">
+  <target name="processing" depends="init">
     <delete>
       <fileset dir="${lib.dir}" includes="processing.jar"/>
     </delete>
@@ -147,8 +154,35 @@
   </target>
 
 
-  <target name="all" depends="common, miner, processing" />
+  <target name="frontend" depends="init">
+    <delete>
+      <fileset dir="${lib.dir}" includes="frontend.jar"/>
+    </delete>
 
+
+    <javac srcdir="${src.frontend.http_server.dir}"
+           destdir="${build.frontend.http_server.dir}"
+           debug="true"
+           deprecation="true"
+           optimize="false"
+           includeAntRuntime="false">
+      <classpath refid="libs"/>
+    </javac>
+
+
+    <jar destfile="${lib.dir}/frontend.jar">
+
+
+      <fileset dir="${build.frontend.http_server.dir}" includes="**/*.class"/>
+
+
+    </jar>
+
+
+  </target>
+
+
+  <target name="all" depends="common, miner, processing, frontend" />
 
   <!-- If you didn't like it... -->
 </project>

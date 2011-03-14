@@ -1,32 +1,42 @@
-import java.io.*;
-import java.net.*;
+package eo.frontend.httpserver;
+
 import java.lang.*;
+import java.net.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
  
-import java.io.IOException;
- 
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.handler.AbstractHandler;
+import org.eclipse.jetty.server.*;
+import org.eclipse.jetty.server.handler.*;
+
+import org.springframework.beans.factory.InitializingBean;
 
 // ================================================================================
  
-public class HttpServer extends AbstractHandler
-{
-    private static final Class rman = HttpServer.class;
+public class Main implements InitializingBean {
+    private HandlerCollection hc_;
+    private String bind_host_;
+    private int bind_port_;
 
+    public Main(final Handler[] handlers, final String iface) {
+        String[] iface_cfg = iface.split(":");
+        bind_host_ = iface_cfg[0];
+        bind_port_ = Integer.parseInt(iface_cfg[1]);
 
-    private static URL getRes(final String rname) {
-        return rman.getResource(rname);
+        hc_ = new HandlerCollection();
+        hc_.setHandlers(handlers);        
     }
 
-    private static InputStream getResStream(final String rname) {
-        return rman.getResourceAsStream(rname);
+    public void afterPropertiesSet() throws Exception {
+        Server s = new Server(new InetSocketAddress(bind_host_, bind_port_));
+        s.setHandler(hc_);
+
+        s.start();
+        s.join();
     }
 
+    /*
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -49,11 +59,6 @@ public class HttpServer extends AbstractHandler
         catch (Exception e) {
             System.out.println(e.toString());
         }
-            /*fr.read(buf);
-        
-        
-        
-        */
     }
  
     public static void main(String[] args) throws Exception
@@ -64,4 +69,6 @@ public class HttpServer extends AbstractHandler
         server.start();
         server.join();
     }
+    */
+    
 }
