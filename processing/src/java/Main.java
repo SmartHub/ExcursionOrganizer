@@ -78,7 +78,7 @@ public class Main implements InitializingBean {
             if (e.hasAddress()) {            
                 p.put("address", e.getAddress());
             } else {
-                p.put("address", e.name());
+                p.put("address", e.getName());
             }
 
             JSONObject r = queryGAPI(p);

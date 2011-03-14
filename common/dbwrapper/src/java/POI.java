@@ -9,6 +9,14 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 // ================================================================================
 
+/**
+ *  Place of Interest Service
+ *  
+ *  poiIterator() method returns an object that iterates over all POIs
+ *                in the database. POI is incapsulated into an object
+ *                of type POI.Entry.
+ *
+ */
 public class POI {
     private SimpleJdbcTemplate conn_;
     private JdbcOperations ops_;
@@ -29,6 +37,16 @@ public class POI {
         }
     }
 
+    public static class Description {
+        public String text;
+        public String source_url;
+
+        public Description(final String t, final String s) {
+            text = t;
+            source_url = s;
+        }
+    }
+
     /*
     public static class City {
         private int id_;
@@ -40,7 +58,16 @@ public class POI {
     }
     */
 
-    /* A place of interest item */
+    /** 
+     *  A place of interest item.
+     * 
+     *  Indexer interface:
+     *  getName() - returns a name of the POI.
+     *  
+     *  getDescriptions() - returns a list of POI descriptions.
+     *
+     *  getLocation() - returns a locatoin of the POI.
+     */
     public static class Entry {
         private long id_;
         private long city_id_;
@@ -49,6 +76,10 @@ public class POI {
 
         private JdbcOperations ops_;
 
+        /**
+         *  Constructs a POI item from a rowset. 
+         *  Used internally within a POI iterator
+         */
         public Entry(final SqlRowSet poi, JdbcOperations ops) {
             id_ = poi.getLong("id");
             name_ = poi.getString("name");
@@ -62,18 +93,51 @@ public class POI {
             ops_ = ops;
         }
 
+        /**
+         *  Constructs a POI item, given a name.
+         *  Used iternally.
+         */
         public Entry(int id, final String name, JdbcOperations ops) {
             id_ = id;
             name_ = name_;
+            address_ = "";
 
             ops_ = ops;
         }
 
-        public String name() {
+        /**
+         *  Returns a name of POI
+         */
+        public String getName() {
             return name_;
         }
 
+        /**
+         *  Returns a list of POI descriptions
+         */
+        public List<Description> getDescription() {
+            String q = String.format(
+                                     "SELECT descr, src_url FROM poi_raw_descr WHERE poi_id=%d;",
+                                     id_
+                                     );
+
+            SqlRowSet rs = ops_.queryForRowSet(q);
+            List<Description> d = new ArrayList<Description>();
+
+            if (rs.first()) {
+                do {
+                    d.add(new Description(rs.getString("descr"), rs.getString("src_url")));
+                } while (rs.next());
+            }
+
+            return d;
+        }
+
         /* Clean GEO information management */
+
+        /**
+         *  Address management routines
+         */
         public String getAddress() {
             return address_;
         }
@@ -87,18 +151,28 @@ public class POI {
         }
 
         public boolean hasAddress() {
-            /*
-            String q = String.format(
-                                     "SELECT address FROM place_of_interest WHERE poi_id=%d;",
-                                     id_
-                                     );
-
-            return ((String)ops_.queryForObject(q, String)).length() > 0;
-            */
-
             return address_.length() > 1;
         }
 
+        // --------------------------------------------------------------------------------
+
+        public Loc getLocation() {
+            String q = String.format(
+                                     "SELECT lat, lng FROM poi_raw_geo WHERE poi_id=%d LIMIT 1;",
+                                     id_
+                                     );
+
+            SqlRowSet rs = ops_.queryForRowSet(q);
+            rs.first();
+
+            return new Loc(rs.getDouble("lat"), rs.getDouble("lng"));
+        }
+
+        // --------------------------------------------------------------------------------
+
+        /**
+         *  City management routines
+         */
         public long getCityId() {
             return city_id_;
         }
@@ -129,7 +203,9 @@ public class POI {
 
         // --------------------------------------------------------------------------------
 
-        /* Type management */
+        /**
+         *  Type management 
+         */
         public boolean hasType() {
             String q = String.format(
                                      "SELECT type_id FROM place_of_interest WHERE id=%d;",
@@ -160,6 +236,7 @@ public class POI {
                     setType(t);
                 }
             } catch (Exception e) {
+                /* Query result is empty */
                 setType(1);
             }
         }
@@ -167,7 +244,10 @@ public class POI {
         // --------------------------------------------------------------------------------
 
 
-        /* Raw GEO information management */
+        /* 
+           Raw GEO information management. 
+           Intended to be used in the processing and miner modules
+        */
         public boolean hasRawGeo() {
             String q = String.format(
                                      "SELECT COUNT(*) FROM poi_raw_geo WHERE poi_id=%d;",
@@ -186,7 +266,7 @@ public class POI {
             ops_.execute(q);
         }
 
-
+        /* Localization is implemented differently everywhere :( */
         private static String hack(double d) {
             return String.valueOf(d).replace(',', '.');
         }
@@ -279,13 +359,13 @@ public class POI {
             (loc.lng >= rs.getDouble("sw_lng") && loc.lng <= rs.getDouble("ne_lng"));
     }
 
-    public int getCityId(final String city_name) {
+    public long getCityId(final String city_name) {
         String q = String.format(
                                  "SELECT id FROM city WHERE name='%s';",
                                  city_name
                                  );
 
-        return ops_.queryForInt(q);
+        return ops_.queryForLong(q);
     }
 
     /*
