@@ -58,6 +58,11 @@
           <var name="sight_info" />
         </xpath>
 
+        [Image]
+        <xpath expression="/wrap/div[@class='image-box']//img/@src">
+          <var name="sight_info" />
+        </xpath>
+
         [Description]
         <xpath expression="/wrap/div[@style='font-size:16px;']/node()">
           <var name="sight_info" />

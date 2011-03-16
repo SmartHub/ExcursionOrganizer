@@ -68,15 +68,25 @@
           </xpath>
 
           <empty>
+            <var-def name="cont"> 
+              <call name="fetch_http">
+                <call-param name="url">
+                  <var name="descr_url"/>
+                </call-param>
+              </call>
+            </var-def>
+
+            <var-def name="raw_img_src">
+              <xpath expression="//div[@class='acc_label']/img/@src">
+                <var name="cont" />
+              </xpath>
+            </var-def>
+
             <var-def name="info">
               &lt;wrap&gt;
-                <xpath expression="//div[@class='incenter']/node()">
-                  <call name="fetch_http">
-                    <call-param name="url">
-                      <var name="descr_url"/>
-                    </call-param>
-                  </call>
-                </xpath>
+              <xpath expression="//div[@class='incenter']/node()">
+                <var name="cont" />
+              </xpath>
               &lt;/wrap&gt;
             </var-def>            
           </empty>
@@ -89,6 +99,20 @@
           [Source]
           <var name="descr_url" />
 
+          [Image]
+          <var name="raw_img_src" />
+          <!--
+          <script return="clean_img_src"><![CDATA[
+            p = java.util.regex.Pattern.compile("url\\((\\w*)\\)");
+            m = p.matcher(raw_img_src.toString());
+            if (m.matches()) {
+              clean_img_src = m.group(1);
+            } else {
+              clean_img_src = "";
+            }
+          ]]></script>
+          -->
+
           [Address]
           <xpath expression="/wrap/div[4]/div[1]/div[2]/text()">
             <var name="info"/>
@@ -96,7 +120,6 @@
 
           [City]
           Санкт-Петербург
-
           [Site]
           <xpath expression="/wrap/div[4]/noindex/div/div[2]/a/@href">
             <var name="info"/>

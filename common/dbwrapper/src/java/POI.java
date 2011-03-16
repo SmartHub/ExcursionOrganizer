@@ -286,6 +286,18 @@ public class POI {
                                      );
             ops_.execute(q);
         }
+
+        public void addRawImages(final String[] imgs) {
+            for (int i = 0; i < imgs.length; ++i) {
+                if (imgs[i].length() > 1) {
+                    String q = String.format(
+                                     "INSERT INTO poi_raw_images(poi_id, img_url) VALUES (%d, '%s');",
+                                     id_, imgs[i]
+                                     );
+                    ops_.execute(q);
+                }
+            }
+        }
     }
 
     // --------------------------------------------------------------------------------

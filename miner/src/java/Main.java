@@ -60,11 +60,23 @@ public class Main implements InitializingBean {
         String[] fields = info.split("[\\[\\]]");
         for (int i = 1; i + 1 < fields.length; i += 2) {
             if (fields[i+1].length() > 1) {
-                v.put(fields[i], fields[i+1]);
+                v.put(fields[i], beautify(fields[i+1]));
             }
         }
 
         return v;
+    }
+
+
+    private static String beautify(final String str) {
+        //final String spaces = "[\r\n\ \t]*";
+
+        return str
+            .trim()
+            .replaceAll("^[\r\n \t]*", "")
+            .replaceAll("[\r\n \t]*$", "")
+            .replaceAll("[ \t]+", " ")
+            .replaceAll("[\r\n]+[\r\n ]*", "\n");
     }
 
 
@@ -87,13 +99,17 @@ public class Main implements InitializingBean {
 
                 String[] mined = scraper.getContext().getVar("sights").toString().split("\\[Sight\\]\n");
                 //System.out.println(scraper.getContext().getVar("sights").toString());
-            
+
                 for (int i = 1; i < mined.length; ++i) {
                     Vars v = parseMinedItem(mined[i]);
 
                     if (v.containsKey("City")) {
                         POI.Entry e = poi_.add(v.get("Name").trim());
                         e.setCity(v.get("City"));
+
+                        if (v.containsKey("Image")) {
+                            e.addRawImages(v.get("Image").split("\n"));
+                        }
 
                         if (v.containsKey("Description")) {
                             e.addRawDescr(v.get("Description"), v.get("Source"));
@@ -113,6 +129,7 @@ public class Main implements InitializingBean {
         catch(java.lang.Exception e) {
             System.out.println("Exception was caught");
             System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
