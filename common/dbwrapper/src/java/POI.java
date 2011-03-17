@@ -2,10 +2,12 @@ package eo.common;
 
 import java.lang.*;
 import java.util.*;
+import java.sql.*;
 
 import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 
 // ================================================================================
 
@@ -280,11 +282,47 @@ public class POI {
         }
 
         public void addRawDescr(final String descr, final String source) {
+            /*
             String q = String.format(
                                      "INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (%d, '%s', '%s');",
                                      id_, descr, source
                                      );
             ops_.execute(q);
+            */
+
+            /*
+
+            PreparedStatement s 
+                = conn_.prepareStatement("INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (?, ?, ?);");
+
+            s.setInt(1, id_);
+            s.setString(2, descr);
+            s.setString(3, source);
+            */
+
+            class Updater implements PreparedStatementCreator {
+                private String s_, d_;
+                private long id_;
+
+                public Updater(long id, final String d, final String s) {
+                    s_ = s;
+                    d_ = d;
+                    id_ = id;
+                }
+
+                public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
+                    PreparedStatement s 
+                        = conn.prepareStatement("INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (?, ?, ?);");
+
+                    s.setLong(1, id_);
+                    s.setString(2, d_);
+                    s.setString(3, s_);
+
+                    return s;
+                }
+            }
+
+            ops_.update(new Updater(id_, descr, source));
         }
 
         public void addRawImages(final String[] imgs) {

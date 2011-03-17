@@ -21,8 +21,8 @@
   </var-def>
 
   <var-def name="sights">
-    <loop item="i" maxloops="20">
-    <!--<loop item="i">-->
+    <!--<loop item="i" maxloops="20">-->
+    <loop item="i">
       <list>
         <var name="sight-refs"/>
       </list>
@@ -64,19 +64,25 @@
         </xpath>
 
         [Description]
-        <xpath expression="/wrap/div[@style='font-size:16px;']/node()">
+        <xpath expression="/wrap//div[@style='font-size:16px;']/node()">
           <var name="sight_info" />
         </xpath>
+      
+        <!--
+        <script return="escaped_desc"><![CDATA[
+          escaped_desc = desc.toString().replaceAll("\'", "\\\'");
+        ]]></script>
+        -->
 
         [Source]
         <var name="sight_page_url"/>
 
         [Address]
-          <var-def name="address">
-            <xpath expression="/wrap//table//table/tbody/tr[2]/td[2]/node()">
-              <var name="sight_info" />
-            </xpath>
-          </var-def>
+        <var-def name="address">
+          <xpath expression="/wrap//table//table/tbody/tr[2]/td[2]/node()">
+            <var name="sight_info" />
+          </xpath>
+        </var-def>
 
         <!--
         <script return="fixed_addr"><![CDATA[

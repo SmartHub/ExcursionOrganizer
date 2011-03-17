@@ -18,9 +18,11 @@ INSERT INTO poi_type(id, name, guess_rx) VALUES
 
 /********************************************************************************/
 
+/*
 TRUNCATE poi_type_heuristics;
 INSERT INTO poi_type_heuristics(type_id, keyword) VALUES
        (2, 'площадь'),
        (2, 'проспект');
+*/
 
 /********************************************************************************/

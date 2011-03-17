@@ -11,7 +11,6 @@ import org.webharvest.runtime.variables.NodeVariable;
 
 import org.springframework.beans.factory.InitializingBean;
 
-
 import eo.common.POI;
 
 // ================================================================================
@@ -27,16 +26,16 @@ public class Main implements InitializingBean {
     }
 
 
-    public void setPOI(final POI poi) {
-        poi_ = poi;  
+    final public void setPOI(final POI poi) {
+        poi_ = poi;
     }
 
 
-    public void setConfig(final String config) {
+    final public void setConfig(final String config) {
         config_files_ = config.split(";");
     }
 
-    public void setProxy(final String proxy) {
+    final public void setProxy(final String proxy) {
         proxy_ = proxy;
     }
 
@@ -44,7 +43,7 @@ public class Main implements InitializingBean {
     private static class MinedItem {
         public String name_;
         public String desc_;
-        
+
         public MinedItem(final String name, final String desc) {
             name_ = name;
             desc_ = desc;
@@ -53,14 +52,14 @@ public class Main implements InitializingBean {
 
 
     private static class Vars extends TreeMap<String, String> { }
-    
+
     private static Vars parseMinedItem(final String info) {
         Vars v = new Vars();
 
         String[] fields = info.split("[\\[\\]]");
         for (int i = 1; i + 1 < fields.length; i += 2) {
-            if (fields[i+1].length() > 1) {
-                v.put(fields[i], beautify(fields[i+1]));
+            if (fields[i + 1].length() > 1) {
+                v.put(fields[i], beautify(fields[i + 1]));
             }
         }
 
@@ -103,8 +102,8 @@ public class Main implements InitializingBean {
                 for (int i = 1; i < mined.length; ++i) {
                     Vars v = parseMinedItem(mined[i]);
 
-                    if (v.containsKey("City")) {
-                        POI.Entry e = poi_.add(v.get("Name").trim());
+                    if (v.containsKey("City") && v.containsKey("Name")) {
+                        POI.Entry e = poi_.add(v.get("Name"));
                         e.setCity(v.get("City"));
 
                         if (v.containsKey("Image")) {
@@ -121,12 +120,9 @@ public class Main implements InitializingBean {
                             e.setURL(v.get("Site"));
                         }
                     }
-                  
                 }
             }
-            
-        } 
-        catch(java.lang.Exception e) {
+        } catch (java.lang.Exception e) {
             System.out.println("Exception was caught");
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -135,3 +131,4 @@ public class Main implements InitializingBean {
 }
 
 // ================================================================================
+
