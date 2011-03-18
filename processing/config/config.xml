@@ -3,9 +3,6 @@
         "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-autowire="byName">
-  <!--Database configuration-->
-  <bean id="logger" class="eo.common.LoggerInit" />
-
   <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
     <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
     <property name="url" value="jdbc:mysql://localhost:3306/excursion_organizer?characterEncoding=utf8"/>
@@ -23,7 +20,7 @@
 
   <bean id="processingDaemon" class="eo.processing.Main">
     <constructor-arg ref="poi"/>
-    <!--<constructor-arg value="192.168.0.2:3128"/>-->
+    <!--<constructor-arg value="127.0.0.1:3128"/>-->
     <constructor-arg value=""/>
   </bean>
 </beans>

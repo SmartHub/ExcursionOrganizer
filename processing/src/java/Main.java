@@ -50,7 +50,7 @@ public class Main implements InitializingBean {
         get_meth.setPath(path);
         get_meth.addRequestHeader("Host", "maps.googleapis.com");
         get_meth.addRequestHeader("Connection", "close");
-        get_meth.addRequestHeader("Cache-Control", "max-age=0");
+        /*get_meth.addRequestHeader("Cache-Control", "max-age=0");*/
         get_meth.addRequestHeader("Accept", "application/json");
         get_meth.addRequestHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US)");
         get_meth.addRequestHeader("Accept-Language", "ru"); 
