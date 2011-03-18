@@ -49,12 +49,17 @@ public class Main implements InitializingBean {
         conn.open();
         get_meth.setPath(path);
         get_meth.addRequestHeader("Host", "maps.googleapis.com");
-        get_meth.addRequestHeader("Connection", "close");
         /*get_meth.addRequestHeader("Cache-Control", "max-age=0");*/
         get_meth.addRequestHeader("Accept", "application/json");
         get_meth.addRequestHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US)");
         get_meth.addRequestHeader("Accept-Language", "ru"); 
         get_meth.addRequestHeader("Accept-Charset", "utf-8");
+
+        if (proxy_host_.length() == 0) {
+            get_meth.addRequestHeader("Connection", "close");
+        } else {
+            get_meth.addRequestHeader("Proxy-Connection", "keep-alive");
+        }
         get_meth.execute(state, conn);
         
         return (JSONObject)JSONValue.parse(new String(get_meth.getResponseBody()));
