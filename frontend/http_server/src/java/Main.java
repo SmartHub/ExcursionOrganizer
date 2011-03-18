@@ -13,6 +13,8 @@ import org.eclipse.jetty.server.handler.*;
 
 import org.springframework.beans.factory.InitializingBean;
 
+import com.thoughtworks.xstream.XStream;
+
 // ================================================================================
  
 public class Main implements InitializingBean {
@@ -20,8 +22,19 @@ public class Main implements InitializingBean {
     private String bind_host_;
     private int bind_port_;
 
-    
-    private class TestServer extends AbstractHandler {
+    private static class TestServer extends AbstractHandler {
+        private static class POI {
+            private String name;
+            private String description;
+            private String location;
+
+            public POI(String n, String d, String l) {
+                name = n;
+                description = d;
+                location = l;
+            }
+        }
+
         public void handle(String target,
                            Request baseRequest,
                            HttpServletRequest request,
@@ -29,15 +42,23 @@ public class Main implements InitializingBean {
             throws IOException, ServletException {
 
             //System.out.println("TestServer was called");
+
+            XStream xs = new XStream();
+            POI[] ps = new POI[3];
+            ps[0] = new POI("poi1", "poi1 description", "10 10");
+            ps[1] = new POI("poi2", "poi2 description", "40 11");
+            ps[2] = new POI("poi3", "poi3 description", "60 12");
+            
+            xs.alias("poi", POI.class);
+            xs.alias("poi-list", POI[].class);
+            String s = xs.toXML(ps);
+            
         
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/xml");
             response.setCharacterEncoding("UTF-8");
-
-            String s = "<test></test>";
             response.setContentLength(s.length());
             
-            //response.setHeader("Content-Type", "application/xml");
             PrintWriter w = response.getWriter();
             w.print(s);
             w.flush();
