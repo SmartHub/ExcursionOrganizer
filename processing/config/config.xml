@@ -19,8 +19,7 @@
   </bean>
 
   <bean id="processingDaemon" class="eo.processing.Main">
-    <constructor-arg ref="poi"/>
-    <constructor-arg value="127.0.0.1:3128"/>
-    <!--<constructor-arg value=""/>-->
+    <property name="POI" ref="poi"/>
+    <property name="proxy" value="127.0.0.1:3128"/>
   </bean>
 </beans>

@@ -29,6 +29,17 @@ public class Main implements InitializingBean {
     private String GAPI_Q_FOOTER = "&sensor=true";
 
 
+    public void setPOI(POI poi) {
+        poi_ = poi;
+    }
+
+    public void setProxy(final String proxy) {
+        String[] proxy_conf = proxy.split(":");
+        proxy_host_ = proxy_conf[0];
+        proxy_port_ = Integer.parseInt(proxy_conf[1]);
+    }
+
+
     private JSONObject queryGAPI(final Map<String, String> query) throws Exception {
         StringBuilder qs = new StringBuilder();
         for (Map.Entry<String, String> e : query.entrySet()) {
@@ -64,17 +75,6 @@ public class Main implements InitializingBean {
         
         return (JSONObject)JSONValue.parse(new String(get_meth.getResponseBody()));
     }
-
-    public Main(POI poi, final String proxy) {
-        poi_ = poi;
-
-        if (proxy.length() > 0) {
-            String[] proxy_conf = proxy.split(":");
-            proxy_host_ = proxy_conf[0];
-            proxy_port_ = Integer.parseInt(proxy_conf[1]);
-        }
-    }
-
 
     private void addRawGeo(POI.Entry e) throws Exception {
         if (!e.hasRawGeo()) {
