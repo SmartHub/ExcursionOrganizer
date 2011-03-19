@@ -49,7 +49,7 @@ source exorg
 	# main document fetch query
 	# mandatory, integer document ID field MUST be the first selected column
 	sql_query		= \
-		SELECT id, name, descr, address \
+		SELECT id, name, address \
 		FROM place_of_interest
 
 
