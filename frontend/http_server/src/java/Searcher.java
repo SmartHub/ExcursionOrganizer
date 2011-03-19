@@ -1,4 +1,4 @@
-package eo.frontend.http_server;
+package eo.frontend.httpserver;
 
 import java.lang.*;
 import java.util.*;
