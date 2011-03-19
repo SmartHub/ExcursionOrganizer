@@ -23,6 +23,8 @@ public class Main implements InitializingBean {
     private int bind_port_;
 
     private static class TestServer extends AbstractHandler {
+        private final String XML_HEADER = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n";
+
         private static class POI {
             private String name;
             private String description;
@@ -51,8 +53,9 @@ public class Main implements InitializingBean {
             
             xs.alias("poi", POI.class);
             xs.alias("poi-list", POI[].class);
-            String s = xs.toXML(ps);
-            
+            String s = XML_HEADER + xs.toXML(ps);
+
+            //System.out.println(s);
         
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("application/xml");
