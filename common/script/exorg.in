@@ -19,7 +19,7 @@ source exorg
   # mandatory, integer document ID field MUST be the first selected column
 
   sql_query = \
-    SELECT poi.id, poi.name, poi_type.name type, poi_raw_geo.address, poi_raw_descr.descr, poi_raw_images.img_url, poi_raw_geo.lat, poi_raw_geo.lng \
+    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi_raw_geo.address, poi_raw_descr.descr, poi_raw_images.img_url, poi_raw_geo.lat, poi_raw_geo.lng \
       FROM place_of_interest poi \
            LEFT JOIN poi_raw_descr ON poi.id = poi_raw_descr.poi_id \
            LEFT JOIN poi_raw_geo ON poi.id = poi_raw_geo.poi_id     \
@@ -29,6 +29,7 @@ source exorg
   # It take me about an hour to learn that this is nessesary :(
   sql_query_pre = SET CHARSET utf8
 
+  sql_field_string = id
   sql_field_string = name
   sql_field_string = type
   sql_field_string = address

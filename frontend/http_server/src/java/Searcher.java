@@ -8,6 +8,9 @@ import org.sphx.api.*;
 // ================================================================================
 
 public class Searcher {
+    private final static String sphinx_host_ = "localhost";
+    private final static int sphinx_port_ = 9312;
+
     public static class POI {
         public String name;
         public String address;
@@ -39,19 +42,33 @@ public class Searcher {
             img_url = inf.get(IMG_URL);
             lat = Double.parseDouble(inf.get(LAT));
             lng = Double.parseDouble(inf.get(LNG));
-        }
+        }       
     }
 
 
-    public static POI[] query(final String keyword) throws Exception{
-        SphinxClient sc = new SphinxClient("localhost", 9312);
+    public static SphinxClient getClient() throws Exception {
+        SphinxClient c = new SphinxClient(sphinx_host_, sphinx_port_);
+        c.SetMatchMode(SphinxClient.SPH_MATCH_EXTENDED);
+        return c;
+    }
 
-        SphinxResult qr = sc.Query(keyword);
+    public static POI[] query(final String keyword) throws Exception {
+        SphinxResult qr = getClient().Query(keyword);
         POI[] r = new POI[qr.matches.length];
         for (int i = 0; i < r.length; ++i) {
             r[i] = new POI(qr.matches[i]);
         }
 
         return r;
+    }
+
+    public static POI queryById(int id) throws Exception {
+        String q = String.format("@id %d", id);
+
+        SphinxResult qr = getClient().Query(q);
+
+        System.out.println(qr.matches.length);
+        System.out.println(q);
+        return new POI(qr.matches[0]);
     }
 }
