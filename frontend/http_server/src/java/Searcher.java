@@ -37,14 +37,17 @@ public class Searcher {
         public POI(final SphinxMatch match) {
             ArrayList<String> inf = match.attrValues;
 
-            id = Integer.parseInteger(inf.get(ID));
+            id = Integer.parseInt(inf.get(ID));
             name = inf.get(NAME);
             type = inf.get(TYPE);
             address = inf.get(ADDRESS);
             description = inf.get(DESCRIPTION);
             img_url = inf.get(IMG_URL);
-            lat = Double.parseDouble(inf.get(LAT));
-            lng = Double.parseDouble(inf.get(LNG));
+
+            if (inf.get(LAT).length() > 1) {
+                lat = Double.parseDouble(inf.get(LAT));
+                lng = Double.parseDouble(inf.get(LNG));
+            }
         }       
     }
 
@@ -70,8 +73,8 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
 
-        System.out.println(qr.matches.length);
-        System.out.println(q);
+        //System.out.println(qr.matches.length);
+        //System.out.println(q);
         return new POI(qr.matches[0]);
     }
 }

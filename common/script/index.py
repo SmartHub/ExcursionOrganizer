@@ -1,3 +1,8 @@
+#!/usr/bin/python
+
+import os
+
+sphinx_cfg_template = """
 ################################################################################
 ## Data source description
 ################################################################################
@@ -49,7 +54,7 @@ index PlaceOfInterestIndex
 
   # index files path and file name, without extension
   # mandatory, path must be writable, extensions will be auto-appended
-  path   = ../../frontend/index/poi
+  path   = %(EO_PATH)s/frontend/index/poi
 
   # document attribute values (docinfo) storage mode
   # optional, default is 'extern'
@@ -118,3 +123,11 @@ searchd
 
   pid_file = searchd
 }
+"""
+
+sphx_cfg = open("exorg.sphinx", "w")
+sphx_cfg.write(sphinx_cfg_template % {"EO_PATH" : os.environ["EO_ROOT"] } )
+sphx_cfg.close()
+
+os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : os.environ["EO_ROOT"] });
+os.system("indexer --all -c exorg.sphinx");
