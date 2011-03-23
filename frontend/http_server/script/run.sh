@@ -2,5 +2,5 @@
 
 cd $EO_ROOT/frontend/http_server/src/config
 
-java -cp $EO_LIB \
+java -cp $EO_CP \
      eo.common.Starter config.xml
