@@ -82,6 +82,8 @@ public class Main implements InitializingBean {
     public void afterPropertiesSet() {
         try {
             for (int j = 0; j < config_files_.length; ++j) {
+                System.out.println("Working on" + config_files_[j]);
+
                 ScraperConfiguration config = 
                     new ScraperConfiguration(config_files_[j]);
                 Scraper scraper = new Scraper(config, ".");

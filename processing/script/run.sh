@@ -1,4 +1,6 @@
 #!/bin/sh
 
-java -cp $(echo $(find common/lib -follow -name *jar) | sed 's/ /:/g') \
-     eo.common.Starter ../src/config/config.xml
+cd $EO_ROOT/processing/src/config/config.xml
+
+java -cp $EO_LIB \
+     eo.common.Starter config.xml

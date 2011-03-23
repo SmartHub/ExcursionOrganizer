@@ -34,16 +34,6 @@ CREATE TABLE poi_type (
        guess_rx VARCHAR(300) NULL
 ) DEFAULT CHARACTER SET=utf8;
 
-/*
-DROP TABLE IF EXISTS poi_type_heuristics;
-CREATE TABLE poi_type_heuristics (
-       type_id INT,
-       keyword VARCHAR(100),
-
-       FOREIGN KEY (type_id) REFERENCES poi_type(id) ON UPDATE RESTRICT ON DELETE RESTRICT
-);
-*/
-
 /* таблица достопримечательностей */
 DROP TABLE IF EXISTS place_of_interest;
 CREATE TABLE place_of_interest (
@@ -60,4 +50,5 @@ CREATE TABLE place_of_interest (
 	FOREIGN KEY (city_id) REFERENCES city(id)     ON UPDATE CASCADE
 ) DEFAULT CHARACTER SET=utf8;
 
-\. common/script/raw-tables.sql
+/* Заливаем информацию, которую иы не сможем получить автоматически */
+\. raw-tables.sql
