@@ -12,6 +12,7 @@ public class Searcher {
     private final static int sphinx_port_ = 9312;
 
     public static class POI {
+        public long id;
         public String name;
         public String address;
         public String description;
@@ -19,13 +20,14 @@ public class Searcher {
         public String img_url;
         public double lat, lng;
 
-        private final static int NAME = 0;
-        private final static int TYPE = 1;
-        private final static int ADDRESS = 2;
-        private final static int DESCRIPTION = 3;
-        private final static int IMG_URL = 4;
-        private final static int LAT = 5;
-        private final static int LNG = 6;
+        private final static int ID = 0;
+        private final static int NAME = 1;
+        private final static int TYPE = 2;
+        private final static int ADDRESS = 3;
+        private final static int DESCRIPTION = 4;
+        private final static int IMG_URL = 5;
+        private final static int LAT = 6;
+        private final static int LNG = 7;
 
 
         public POI() {
@@ -35,6 +37,7 @@ public class Searcher {
         public POI(final SphinxMatch match) {
             ArrayList<String> inf = match.attrValues;
 
+            id = Integer.parseInteger(inf.get(ID));
             name = inf.get(NAME);
             type = inf.get(TYPE);
             address = inf.get(ADDRESS);

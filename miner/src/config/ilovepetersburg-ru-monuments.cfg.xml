@@ -59,9 +59,21 @@
         </xpath>
 
         [Image]
-        <xpath expression="/wrap/div[@class='image-box']//img/@src">
-          <var name="sight_info" />
-        </xpath>
+        <empty>
+          <var-def name="img_path">
+            <xpath expression="/wrap/div[@class='image-box']//img/@src">
+              <var name="sight_info" />
+            </xpath>
+          </var-def>
+        </empty>
+
+        <script return="img_src"><![CDATA[
+          if (img_path.toString().length() > 1) {
+            img_src = host.toString() + img_path.toString();
+          } else {
+            img_src = "";
+          }
+        ]]></script>
 
         [Description]
         <xpath expression="/wrap/div[@style='font-size:16px;']/node()">
