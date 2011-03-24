@@ -38,6 +38,7 @@ source exorg
   sql_field_string = name
   sql_field_string = type
   sql_field_string = address
+  sql_field_string = descr
   sql_field_string = img_url
   sql_field_string = lat
   sql_field_string = lng

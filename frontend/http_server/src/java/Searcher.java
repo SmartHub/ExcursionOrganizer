@@ -73,6 +73,12 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
 
+        /*
+        for (int i = 0; i < 7; ++i) {
+            System.out.println(String.valueOf(i) + ": " + qr.matches[0].attrValues.get(i));
+        }
+        */
+
         //System.out.println(qr.matches.length);
         //System.out.println(q);
         return new POI(qr.matches[0]);
