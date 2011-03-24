@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+        "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans default-autowire="byName">
+  <bean id="serverDaemon" class="eo.frontend.httpserver.Main">
+    <property name="interface" value="localhost:8080"/>
+
+    <property name="handler">
+      <bean class="org.eclipse.jetty.server.handler.HandlerCollection">
+        <property name="handlers">
+            <list>
+              <bean class="eo.frontend.httpserver.POIService" />
+
+              <bean class="eo.frontend.httpserver.DynamicHandlerCollection">
+                <property name="base" value="../../content"/>
+                <property name="handlers">
+                  <map>
+                    <entry key="test-poi">
+                      <bean class="eo.frontend.httpserver.TestPOI"/>
+                    </entry>
+                  </map>
+                </property>
+              </bean>
+
+              <bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+                <property name="resourceBase" value="../../content"/>
+              </bean>
+            </list>
+        </property>
+      </bean>
+    </property>
+  </bean>
+</beans>
