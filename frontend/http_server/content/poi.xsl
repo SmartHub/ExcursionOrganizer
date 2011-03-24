@@ -10,11 +10,21 @@
 
 		<link rel="stylesheet" href="map.css" type="text/css" media="all" />
     		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-    		<script type="text/javascript"> 
-      function initialize() {
-        var myLatlng = new google.maps.LatLng(50,50);
+    		<!--script type="text/javascript" src="map.js"></script--> 
+
+		<script type="text/javascript">
+      function initialize_() {
+	//alert('Map map map');  
+      }
+		</script>
+
+    		<script type="text/javascript">
+
+      function initialize(lat, long, caption) {
+	//alert('Map map map');
+        var myLatlng = new google.maps.LatLng(lat, long, name);
         var myOptions = {
-          zoom: 4,
+          zoom: 16,
           center: myLatlng,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         }
@@ -23,12 +33,12 @@
         var marker = new google.maps.Marker({
           position: myLatlng, 
           map: map,
-          title:"Hello World!"
+          title: caption
         });   
       }
-    </script>
+	</script> 
 	</head>
-	<body onload="initialize()">
+	<body onload="initialize({poi/lat}, {poi/lng}, '{poi/name}')">
     	<!-- Begin Wrapper -->
 		<div id="wrapper">
         	<!-- Begin Header -->
@@ -60,8 +70,8 @@
 					<table cellpadding = "10">
 						<tr>
 							<td>
-								<xsl:apply-templates select="poi/name"/>
-								<br/>
+								<B><xsl:apply-templates select="poi/name"/></B>
+								<br/><br/>
 									
 								<img src="{poi/img__url}"  alt="pic1" />
 							</td>
@@ -80,16 +90,15 @@
 			</div>
             <!-- End Main -->
 			<div id="rightcolumn">
-
 				<div class="innertube">
-				<div id="map"></div>
-				<input type="checkbox" name="option3" value="a3"/>Показать достопримечательности рядом!	
+					<div id="map"></div>
 				</div>
+				<input type="checkbox" name="option3" value="a3"/>Показать достопримечательности рядом!	
 			</div>
+		</div>
             <!-- Begin Footer -->
 			<div id="footer">Footer</div>
             <!-- End Footer -->
-		</div>
 	</body>
 </html>
 
