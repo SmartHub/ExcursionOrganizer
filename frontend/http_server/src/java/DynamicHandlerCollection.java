@@ -58,7 +58,7 @@ public class DynamicHandlerCollection extends AbstractHandler {
                 String xml = xs.toXML(resp.result);
                 String html;
 
-                if (!baseRequest.getParameters().containsKey("_ox")) {
+                if (baseRequest.getParameters() == null || !baseRequest.getParameters().containsKey("_ox")) {
                     /* Apply XSLT */
                     Source xml_source = new StreamSource(new StringReader(xml));
                     Source xsl_source = new StreamSource(new File(base_ + "/" + hn + ".xsl"));
