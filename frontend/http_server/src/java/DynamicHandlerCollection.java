@@ -48,7 +48,7 @@ public class DynamicHandlerCollection extends AbstractHandler {
             //System.out.println(hn);
 
             if (handlers_.containsKey(hn)) {
-                DynamicHandler.Response resp = handlers_.get(hn).handle(request);
+                DynamicHandler.Response resp = handlers_.get(hn).handle(baseRequest);
                 
                 /* Serialize handler response */
                 XStream xs = new XStream();
@@ -58,7 +58,7 @@ public class DynamicHandlerCollection extends AbstractHandler {
                 String xml = xs.toXML(resp.result);
                 String html;
 
-                if (baseRequest.getParameters() == null || !baseRequest.getParameters().containsKey("_ox")) {
+                if (baseRequest.getParameterValues("_ox") == null) {
                     /* Apply XSLT */
                     Source xml_source = new StreamSource(new StringReader(xml));
                     Source xsl_source = new StreamSource(new File(base_ + "/" + hn + ".xsl"));

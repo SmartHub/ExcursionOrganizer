@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletException;
 
+import org.eclipse.jetty.server.Request;
+
 // ================================================================================
 
 public interface DynamicHandler {
@@ -24,5 +26,5 @@ public interface DynamicHandler {
         }
     }
 
-    public Response handle(final HttpServletRequest request);
+    public Response handle(final Request request);
 }
