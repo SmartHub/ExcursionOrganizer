@@ -101,6 +101,7 @@ public class Searcher {
     public static POI[] query(final String keyword) throws Exception {
         SphinxResult qr = getClient().Query(keyword);
         POI[] r = new POI[qr.matches.length];
+
         for (int i = 0; i < r.length; ++i) {
             r[i] = new POI(qr.matches[i]);
         }
@@ -113,6 +114,18 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
         return new POI(qr.matches[0]);
+    }
+
+    public static int[] queryByType(final String type) throws Exception {
+        String q = String.format("@type %s", type);
+        SphinxResult qr = getClient().Query(q);
+
+        int[] poi_ids = new int[qr.matches.length];
+        for (int i = 0; i < qr.matches.length; ++i) {
+            poi_ids[i] = Integer.parseInt(qr.matches[i].attrValues.get(0).toString());
+        }
+
+        return poi_ids;
     }
 
     public static String[] queryTypes() throws Exception {

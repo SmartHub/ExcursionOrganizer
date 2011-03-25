@@ -15,6 +15,17 @@ import com.thoughtworks.xstream.XStream;
 // ================================================================================
 
 public class POIService extends AbstractHandler {
+    private static void writeResponse(final String content, HttpServletResponse response) throws Exception {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/xml");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentLength(content.getBytes().length);
+
+        PrintWriter pw = response.getWriter();
+        pw.print(content);
+        pw.flush();
+    }
+
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -23,41 +34,36 @@ public class POIService extends AbstractHandler {
 
         try {
             if (target.substring(target.lastIndexOf("/") + 1).equals("poi")) {
-                //System.out.println(baseRequest.);
-                
+                XStream xs = new XStream();
+                String xml;
+
                 if (baseRequest.getParameterValues("id") != null) {
                     int poi_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
                     Searcher.POI poi = Searcher.queryById(poi_id);
 
-                    XStream xs = new XStream();
                     xs.alias("poi", Searcher.POI.class);
-                    String xml = xs.toXML(poi);
-            
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.setContentType("application/xml");
-                    response.setCharacterEncoding("UTF-8");
-                    response.setContentLength(xml.getBytes().length);
-
-                    PrintWriter pw = response.getWriter();
-                    pw.print(xml);
-                    pw.flush();
+                    xml = xs.toXML(poi);
+                    
+                    writeResponse(xml, response);
                 } else if (baseRequest.getParameterValues("types") != null) {
                     String[] types = Searcher.queryTypes();
 
-                    XStream xs = new XStream();
                     xs.alias("poi-types", String[].class);
                     xs.alias("type", String.class);
-                    String xml = xs.toXML(types);
+                    xml = xs.toXML(types);
 
-                    response.setStatus(HttpServletResponse.SC_OK);
-                    response.setContentType("application/xml");
-                    response.setCharacterEncoding("UTF-8");
-                    response.setContentLength(xml.getBytes().length);
+                    writeResponse(xml, response);
+                } else if (baseRequest.getParameterValues("type") != null) {
+                    String poi_type = baseRequest.getParameterValues("type")[0];
 
-                    PrintWriter pw = response.getWriter();
-                    pw.print(xml);
-                    pw.flush();
-                }                
+                    int[] poi_ids = Searcher.queryByType(poi_type);
+
+                    xs.alias("pois", int[].class);
+                    xs.alias("id", int.class);
+                    xml = xs.toXML(poi_ids);
+
+                    writeResponse(xml, response);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
