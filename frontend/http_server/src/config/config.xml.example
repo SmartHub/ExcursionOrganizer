@@ -3,6 +3,22 @@
         "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <beans default-autowire="byName">
+  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
+    <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+    <property name="url" value="jdbc:mysql://localhost:3306/excursion_organizer?characterEncoding=utf8"/>
+    <property name="username" value="exorg"/>
+    <property name="password" value=""/>
+  </bean>
+  
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
+    <constructor-arg ref="dataSource"/>
+  </bean>
+
+  <!-- Is it OK to initialize static members in such a way??? -->
+  <bean id="searcher" class="eo.frontend.httpserver.Searcher.InitJDBC">
+    <constructor-arg ref="jdbcTemplate" />
+  </bean>
+
   <bean id="serverDaemon" class="eo.frontend.httpserver.Main">
     <property name="interface" value="localhost:8080"/>
 
@@ -11,6 +27,8 @@
         <property name="handlers">
             <list>
               <bean class="eo.frontend.httpserver.POIService" />
+
+              <bean class="eo.frontend.httpserver.RouteService" />
 
               <bean class="eo.frontend.httpserver.DynamicHandlerCollection">
                 <property name="base" value="../../content"/>
