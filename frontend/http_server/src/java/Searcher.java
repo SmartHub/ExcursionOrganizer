@@ -115,6 +115,13 @@ public class Searcher {
         return new POI(qr.matches[0]);
     }
 
+    public static String[] queryTypes() throws Exception {
+        String q = String.format("SELECT name FROM poi_type;");
+
+        List<String> r = ops.queryForList(q, String.class);
+        return r.toArray(new String[1]);
+    }
+
     public static Route queryRoute(int id) {
         return new Route(id);
     }

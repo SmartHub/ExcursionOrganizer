@@ -25,21 +25,39 @@ public class POIService extends AbstractHandler {
             if (target.substring(target.lastIndexOf("/") + 1).equals("poi")) {
                 //System.out.println(baseRequest.);
                 
-                int poi_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
-                Searcher.POI poi = Searcher.queryById(poi_id);
+                if (baseRequest.getParameterValues("id") != null) {
+                    int poi_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
+                    Searcher.POI poi = Searcher.queryById(poi_id);
 
-                XStream xs = new XStream();
-                xs.alias("poi", Searcher.POI.class);
-                String xml = xs.toXML(poi);
+                    XStream xs = new XStream();
+                    xs.alias("poi", Searcher.POI.class);
+                    String xml = xs.toXML(poi);
             
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/xml");
-                response.setCharacterEncoding("UTF-8");
-                response.setContentLength(xml.getBytes().length);
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/xml");
+                    response.setCharacterEncoding("UTF-8");
+                    response.setContentLength(xml.getBytes().length);
 
-                PrintWriter pw = response.getWriter();
-                pw.print(xml);
-                pw.flush();
+                    PrintWriter pw = response.getWriter();
+                    pw.print(xml);
+                    pw.flush();
+                } else if (baseRequest.getParameterValues("types") != null) {
+                    String[] types = Searcher.queryTypes();
+
+                    XStream xs = new XStream();
+                    xs.alias("poi-types", String[].class);
+                    xs.alias("type", String.class);
+                    String xml = xs.toXML(types);
+
+                    response.setStatus(HttpServletResponse.SC_OK);
+                    response.setContentType("application/xml");
+                    response.setCharacterEncoding("UTF-8");
+                    response.setContentLength(xml.getBytes().length);
+
+                    PrintWriter pw = response.getWriter();
+                    pw.print(xml);
+                    pw.flush();
+                }                
             }
         } catch (Exception e) {
             e.printStackTrace();
