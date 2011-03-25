@@ -120,7 +120,7 @@ public class Main implements InitializingBean {
             while (it.hasNext()) {
                 POI.Entry e = (POI.Entry)it.next();
 
-                //addRawGeo(e);
+                addRawGeo(e);
                 guessType(e);
             }
         } catch (Exception e) {
