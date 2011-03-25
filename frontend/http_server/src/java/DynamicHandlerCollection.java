@@ -44,9 +44,9 @@ public class DynamicHandlerCollection extends AbstractHandler {
             
             /* DIRTY HACK!!!*/
             //String hn = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
-            String hn = baseRequest.getServletName();
+            String hn = baseRequest.getUri().getPath();
 
-            //System.out.println(hn);
+            System.out.println(hn);
 
             if (handlers_.containsKey(hn)) {
                 DynamicHandler.Response resp = handlers_.get(hn).handle(baseRequest);

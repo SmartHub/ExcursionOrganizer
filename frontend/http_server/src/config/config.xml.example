@@ -34,7 +34,7 @@
                 <property name="base" value="../../content"/>
                 <property name="handlers">
                   <map>
-                    <entry key="test-poi">
+                    <entry key="/test-poi">
                       <bean class="eo.frontend.httpserver.TestPOI"/>
                     </entry>
                   </map>
