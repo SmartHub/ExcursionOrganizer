@@ -7,7 +7,7 @@ sphinx_cfg_template = """
 ## Data source description
 ################################################################################
 
-source exorg
+source poi
 {
   # data source type. mandatory, no default value
   # known types are mysql, pgsql, mssql, xmlpipe, xmlpipe2, odbc
@@ -31,7 +31,7 @@ source exorg
            LEFT JOIN poi_type ON poi.type_id = poi_type.id          \
            LEFT JOIN poi_raw_images ON poi_raw_images.poi_id = poi.id
            
-  # It take me about an hour to learn that this is nessesary :(
+  # It took me about an hour to learn that this is nessesary :(
   sql_query_pre = SET CHARSET utf8
 
   sql_field_string = id
@@ -48,40 +48,20 @@ source exorg
 ## Index definition
 ################################################################################
 
-index PlaceOfInterestIndex
+index poi_index
 {	
-  # document source(s) to index
-  source = exorg
+  source  = poi
 
-  # index files path and file name, without extension
-  # mandatory, path must be writable, extensions will be auto-appended
-  path   = %(EO_PATH)s/frontend/index/poi
-
-  # document attribute values (docinfo) storage mode
-  # optional, default is 'extern'
-  # known values are 'none', 'extern' and 'inline'
+  path    = %(EO_PATH)s/frontend/index/poi
   docinfo = extern
 
-  # memory locking for cached data (.spa and .spi), to prevent swapping
-  # optional, default is 0 (do not mlock)
-  # requires searchd to be run from root
-  mlock = 0
+  mlock   = 0
 
-  # a list of morphology preprocessors to apply
   morphology = none
-
-  # minimum indexed word length
-  # default is 1 (index everything)
   min_word_len = 1
 
-  # charset encoding type
-  # optional, default is 'sbcs'
-  # known types are 'sbcs' (Single Byte CharSet) and 'utf-8'
   charset_type = utf-8
-
-  #rt_field = name
 }
-
 
 #############################################################################
 ## indexer settings

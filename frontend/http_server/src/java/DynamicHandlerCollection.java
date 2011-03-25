@@ -40,10 +40,11 @@ public class DynamicHandlerCollection extends AbstractHandler {
         try {
             //System.out.println(path);
             
-            String path = target;
+            //String path = target;
             
             /* DIRTY HACK!!!*/
-            String hn = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+            //String hn = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+            String hn = baseRequest.getServletName();
 
             //System.out.println(hn);
 

@@ -3,6 +3,10 @@ package eo.frontend.httpserver;
 import java.lang.*;
 import java.util.*;
 
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+
 import org.sphx.api.*;
 
 // ================================================================================
@@ -10,6 +14,14 @@ import org.sphx.api.*;
 public class Searcher {
     private final static String sphinx_host_ = "localhost";
     private final static int sphinx_port_ = 9312;
+
+    public static JdbcOperations ops;
+
+    public static class InitJDBC {
+        public InitJDBC(SimpleJdbcTemplate conn) {
+            ops = conn.getJdbcOperations();
+        }
+    }
 
     public static class POI {
         public long id;
@@ -51,6 +63,34 @@ public class Searcher {
         }       
     }
 
+    public static class Route {
+        /*
+        public static class Item {
+            public int poi_id;
+            public int ord_num;
+
+            public Item(int _poi, int _ord_num) {
+                poi_id = _poi;
+                ord_num = _ord_num;
+            }
+        }
+        */
+
+        public int[] pois;
+
+        public Route(int route_id) {
+            String q = String.format("SELECT poi_id FROM route_poi WHERE route_id = %d ORDER BY order_num;",
+                                     route_id);
+
+            List<Integer> r = ops.queryForList(q, Integer.class);
+            pois = new int[r.size()];
+            
+            for (int i = 0; i < r.size(); ++i) {
+                pois[i] = r.get(i).intValue();
+            }
+        }
+    }    
+
 
     public static SphinxClient getClient() throws Exception {
         SphinxClient c = new SphinxClient(sphinx_host_, sphinx_port_);
@@ -72,15 +112,10 @@ public class Searcher {
         String q = String.format("@id %d", id);
 
         SphinxResult qr = getClient().Query(q);
-
-        /*
-        for (int i = 0; i < 7; ++i) {
-            System.out.println(String.valueOf(i) + ": " + qr.matches[0].attrValues.get(i));
-        }
-        */
-
-        //System.out.println(qr.matches.length);
-        //System.out.println(q);
         return new POI(qr.matches[0]);
+    }
+
+    public static Route queryRoute(int id) {
+        return new Route(id);
     }
 }
