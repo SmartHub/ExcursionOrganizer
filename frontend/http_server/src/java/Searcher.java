@@ -3,8 +3,9 @@ package eo.frontend.httpserver;
 import java.lang.*;
 import java.util.*;
 
+import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
-// import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import org.sphx.api.*;
 
@@ -37,7 +38,7 @@ public class Searcher {
 
         public POI() {
         }
-        
+
         @SuppressWarnings("unchecked")
         public POI(final SphinxMatch match) {
             ArrayList<String> inf = match.attrValues;
@@ -53,7 +54,7 @@ public class Searcher {
                 lat = Double.parseDouble(inf.get(LAT));
                 lng = Double.parseDouble(inf.get(LNG));
             }
-        }       
+        }
     }
 
     public static class Route {
@@ -77,12 +78,12 @@ public class Searcher {
 
             List<Integer> r = ops.queryForList(q, Integer.class);
             pois = new int[r.size()];
-            
+
             for (int i = 0; i < r.size(); ++i) {
                 pois[i] = r.get(i).intValue();
             }
         }
-    }    
+    }
 
 
     public static SphinxClient getClient() throws Exception {
@@ -94,6 +95,7 @@ public class Searcher {
     public static POI[] query(final String keyword) throws Exception {
         SphinxResult qr = getClient().Query(keyword);
         POI[] r = new POI[qr.matches.length];
+
         for (int i = 0; i < r.length; ++i) {
             r[i] = new POI(qr.matches[i]);
         }
@@ -106,6 +108,25 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
         return new POI(qr.matches[0]);
+    }
+
+    public static int[] queryByType(final String type) throws Exception {
+        String q = String.format("@type %s", type);
+        SphinxResult qr = getClient().Query(q);
+
+        int[] poi_ids = new int[qr.matches.length];
+        for (int i = 0; i < qr.matches.length; ++i) {
+            poi_ids[i] = Integer.parseInt(qr.matches[i].attrValues.get(0).toString());
+        }
+
+        return poi_ids;
+    }
+
+    public static String[] queryTypes() throws Exception {
+        String q = String.format("SELECT name FROM poi_type;");
+
+        List<String> r = ops.queryForList(q, String.class);
+        return r.toArray(new String[1]);
     }
 
     public static Route queryRoute(int id) {
