@@ -39,7 +39,7 @@
     			mapTypeId: google.maps.MapTypeId.ROADMAP,
     			center: posLatlng
   			}
-	
+
   			map = new google.maps.Map(document.getElementById("map"), options);
 			var marker = new google.maps.Marker({
 				position: posLatlng,
@@ -85,7 +85,7 @@
 							<td>
 								<B><xsl:apply-templates select="poi/name"/></B>
 								<br/><br/>
-									
+
 								<img src="{poi/img__url}"  alt="pic1" />
 							</td>
 						</tr>
