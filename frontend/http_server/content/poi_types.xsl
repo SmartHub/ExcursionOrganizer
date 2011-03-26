@@ -23,7 +23,18 @@
 		</script>
 
     		<script type="text/javascript">
+var map;
 
+function show_infowindow(marker, name_poi, address, url){
+	var contentString = '<div style="color: black;">' + name_poi + ' Адрес: ' + address + '<a href="' + url + '" >подробнее...</a></div>';
+  var infowindow = new google.maps.InfoWindow({
+  	content: contentString
+  }); 
+  		
+  google.maps.event.addListener(marker, 'click', function() {
+  	infowindow.open(map,marker);
+  }); 
+}
       function initialize(lat, long, caption) {
 	//alert('Map map map');
         var myLatlng = new google.maps.LatLng(lat, long, name);
