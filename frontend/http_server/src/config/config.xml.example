@@ -15,7 +15,7 @@
   </bean>
 
   <!-- Is it OK to initialize static members in such a way??? -->
-  <bean id="searcher" class="eo.frontend.httpserver.Searcher.InitJDBC">
+  <bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
     <constructor-arg ref="jdbcTemplate" />
   </bean>
 
