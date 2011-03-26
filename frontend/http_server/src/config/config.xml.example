@@ -34,8 +34,16 @@
                 <property name="base" value="../../content"/>
                 <property name="handlers">
                   <map>
-                    <entry key="/test-poi">
+                    <entry key="/test-poi.html">
                       <bean class="eo.frontend.httpserver.TestPOI"/>
+                    </entry>
+
+                    <entry key="/poi_types.html">
+                      <bean class="eo.frontend.httpserver.POITypesHandler"/>
+                    </entry>
+
+                    <entry key="/type.html">
+                      <bean class="eo.frontend.httpserver.POITypeHandler"/>
                     </entry>
                   </map>
                 </property>

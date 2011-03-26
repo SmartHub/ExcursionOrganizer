@@ -45,14 +45,6 @@ public class POIService extends AbstractHandler {
                     xml = xs.toXML(poi);
                     
                     writeResponse(xml, response);
-                } else if (baseRequest.getParameterValues("types") != null) {
-                    String[] types = Searcher.queryTypes();
-
-                    xs.alias("poi-types", String[].class);
-                    xs.alias("type", String.class);
-                    xml = xs.toXML(types);
-
-                    writeResponse(xml, response);
                 } else if (baseRequest.getParameterValues("type") != null) {
                     String poi_type = baseRequest.getParameterValues("type")[0];
 
@@ -61,6 +53,14 @@ public class POIService extends AbstractHandler {
                     xs.alias("pois", int[].class);
                     xs.alias("id", int.class);
                     xml = xs.toXML(poi_ids);
+
+                    writeResponse(xml, response);
+                } else {
+                    String[] types = Searcher.queryTypes();
+
+                    xs.alias("poi-types", String[].class);
+                    xs.alias("type", String.class);
+                    xml = xs.toXML(types);
 
                     writeResponse(xml, response);
                 }
