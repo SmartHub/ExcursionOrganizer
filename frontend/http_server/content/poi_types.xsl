@@ -62,9 +62,9 @@
             <!-- Begin Left column -->
 			<div id="leftcolumn">
       				<ul>
-        				<li><a href="index.html" title="">Готовые экскурсии</a></li>
-        				<li><a href="constructor.html" title="">Конструктор маршрута</a></li>
-        				<li><a href="editor.html" title="">Редактирование</a></li>
+        				<li><a href="#" title="">Готовые экскурсии</a></li>
+        				<li><a href="poi_types.html" title="">Конструктор маршрута</a></li>
+        				<li><a href="#" title="">Редактирование</a></li>
 				</ul>
 			</div>
             <!-- End Left column -->
@@ -86,7 +86,6 @@
 					<!-- iframe src="frame.html" width="80%" height="80%"-->
 					<div class="innertube">
 						<!--iframe src="frame.html" width="40%" height="80%"></frame-->
-						<input type='text' id='myText' />
  						<iframe id="inner-frame" src="type.html?name=музей" width="85%" height="450"></iframe>
 					</div>
 				</div>

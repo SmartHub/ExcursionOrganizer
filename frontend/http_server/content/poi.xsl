@@ -57,9 +57,9 @@
             <!-- Begin Left column -->
 			<div id="leftcolumn">
       				<ul>
-        				<li><a href="index.html" title="">Готовые экскурсии</a></li>
-        				<li><a href="constructor.html" title="">Конструктор маршрута</a></li>
-        				<li><a href="editor.html" title="">Редактирование</a></li>
+        				<li><a href="#" title="">Готовые экскурсии</a></li>
+        				<li><a href="poi_types.html" title="">Конструктор маршрута</a></li>
+        				<li><a href="#" title="">Редактирование</a></li>
 				</ul>
 			</div>
             <!-- End Left column -->
@@ -84,8 +84,6 @@
 							</td>
 						</tr>
 					</table>
-					<INPUT TYPE="button" onload="alert('this')" ></INPUT>
-
 				</div>
                 <!-- End Content -->
 			</div>

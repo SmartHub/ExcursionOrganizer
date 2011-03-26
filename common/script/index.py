@@ -15,7 +15,7 @@ source poi
 
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
-  sql_user = exorg
+  sql_user = root
   sql_pass =
   sql_db   = excursion_organizer
   sql_port = 3306	# optional, default is 3306
