@@ -3,7 +3,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	<head>
-		<title>Layout 013 - Liquid Width of CSS Layouts</title>
+		<title>POI</title>
 		<link rel="stylesheet" type="text/css" href="style.css" />
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -84,6 +84,7 @@
 							</td>
 						</tr>
 					</table>
+					<INPUT TYPE="button" onload="alert('this')" ></INPUT>
 
 				</div>
                 <!-- End Content -->
