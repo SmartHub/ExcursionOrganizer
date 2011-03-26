@@ -4,27 +4,83 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" /> 
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/> 
     <title>Google Maps JavaScript API v3 Example: Marker Simple</title> 
-    <link href="default.css" rel="stylesheet" type="text/css" /> 
+    <link href="default.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+ 		 #map_canvas { width: 500px; height: 600px; float: right; margin-right: 10px;}
+	 </style> 
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
     <script type="text/javascript"> 
-      function initialize() {
-        var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-        var myOptions = {
-        zoom: 4,
-        center: myLatlng,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      }
-      var map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
-    
-      var marker = new google.maps.Marker({
-        position: myLatlng, 
-        map: map,
-        title:"Hello World!"
-      });   
+		
+		var directionDisplay;
+var directionsService = new google.maps.DirectionsService();
+var map;
+
+function initialize() {
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  var chicago = new google.maps.LatLng(58.850033, 31.6500523);
+  var myOptions = {
+    zoom:7,
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    center: chicago
+  }
+  map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+  directionsDisplay.setMap(map);
+}
+  
+function calcRoute() {
+	
+  var start = document.getElementById("start").value;
+  var stopov = document.getElementById("stopover").value;
+  var end = document.getElementById("end").value;
+  var request = {
+    origin:start, 
+    destination:end,
+    travelMode: google.maps.DirectionsTravelMode.WALKING,
+    waypoints: [
+		{
+      location:stopov, 
+      stopover:true
+    }    
+    ],
+    optimizeWaypoints: true,
+    provideRouteAlternatives: false,
+    avoidHighways: true
+  };
+  directionsService.route(request, function(result, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      
+      directionsDisplay.setDirections(result);
     }
-    </script> 
-  </head> 
+  });
+}
+
+    </script>
+    
+    </head> 
   <body onload="initialize()"> 
-    <div id="map_canvas"></div> 
+    <div id="map_canvas" ></div> 
+    <div>
+<b>Start: </b>
+<select id="start" onchange="calcRoute();">
+  <option value="Hermitage museum, ru">Эрмитаж</option>
+  <option value="Saint Isaac's Cathedral, ru">Исаакий</option>
+  <option value="Central Naval Museum, ru">еще какой-то музей</option>
+  <option value="Мариинский дворец, ru">Мариинский</option>
+  
+</select>
+<select id="stopover" onchange="calcRoute();">
+  <option value="Hermitage museum, ru">Эрмитаж</option>
+  <option value="Saint Isaac's Cathedral, ru">Исаакий</option>
+  <option value="Central Naval Museum, ru">еще какой-то музей</option>
+  
+</select>
+<b>End: </b>
+<select id="end" onchange="calcRoute();">
+  <option value="Hermitage museum, ru">Эрмитаж</option>
+  <option value="Saint Isaac's Cathedral, ru">Исаакий</option>
+  <option value="Central Naval Museum, ru">еще какой-то музей</option>
+  
+</select>
+</div>
   </body> 
 </html> 
