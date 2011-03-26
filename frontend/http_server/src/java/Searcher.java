@@ -3,9 +3,8 @@ package eo.frontend.httpserver;
 import java.lang.*;
 import java.util.*;
 
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+// import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import org.sphx.api.*;
 
@@ -16,12 +15,6 @@ public class Searcher {
     private final static int sphinx_port_ = 9312;
 
     public static JdbcOperations ops;
-
-    public static class InitJDBC {
-        public InitJDBC(SimpleJdbcTemplate conn) {
-            ops = conn.getJdbcOperations();
-        }
-    }
 
     public static class POI {
         public long id;
@@ -101,7 +94,6 @@ public class Searcher {
     public static POI[] query(final String keyword) throws Exception {
         SphinxResult qr = getClient().Query(keyword);
         POI[] r = new POI[qr.matches.length];
-
         for (int i = 0; i < r.length; ++i) {
             r[i] = new POI(qr.matches[i]);
         }
@@ -114,25 +106,6 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
         return new POI(qr.matches[0]);
-    }
-
-    public static int[] queryByType(final String type) throws Exception {
-        String q = String.format("@type %s", type);
-        SphinxResult qr = getClient().Query(q);
-
-        int[] poi_ids = new int[qr.matches.length];
-        for (int i = 0; i < qr.matches.length; ++i) {
-            poi_ids[i] = Integer.parseInt(qr.matches[i].attrValues.get(0).toString());
-        }
-
-        return poi_ids;
-    }
-
-    public static String[] queryTypes() throws Exception {
-        String q = String.format("SELECT name FROM poi_type;");
-
-        List<String> r = ops.queryForList(q, String.class);
-        return r.toArray(new String[1]);
     }
 
     public static Route queryRoute(int id) {
