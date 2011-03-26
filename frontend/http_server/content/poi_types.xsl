@@ -87,7 +87,7 @@ function show_infowindow(marker, name_poi, address, url){
 					<div class="menu">
 						<ul>
                                     			<xsl:for-each select="poi-types/type">
-								<li><a>
+								<li><a href="#">
 									<xsl:attribute name="onClick">document.getElementById('inner-frame').src = 'type.html?name=<xsl:value-of select="name"/>'</xsl:attribute>
                                             				<xsl:value-of select="name"/>
 								</a></li>
@@ -97,7 +97,7 @@ function show_infowindow(marker, name_poi, address, url){
 					<!-- iframe src="frame.html" width="80%" height="80%"-->
 					<div class="innertube">
 						<!--iframe src="frame.html" width="40%" height="80%"></frame-->
- 						<iframe id="inner-frame" src="type.html?name=музей" width="85%" height="450"></iframe>
+ 						<iframe frameborder="0" id="inner-frame" src="type.html?name=музей" width="85%" height="450"></iframe>
 					</div>
 				</div>
 					
