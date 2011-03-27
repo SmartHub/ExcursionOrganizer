@@ -52,3 +52,4 @@ CREATE TABLE place_of_interest (
 
 /* Заливаем информацию, которую иы не сможем получить автоматически */
 \. raw-tables.sql
+\. user-session.sql

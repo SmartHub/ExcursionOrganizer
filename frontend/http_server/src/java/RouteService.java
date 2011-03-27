@@ -15,6 +15,23 @@ import com.thoughtworks.xstream.XStream;
 // ================================================================================
 
 public class RouteService extends AbstractHandler {
+    private SessionManager sm_;
+
+    public void setSM(SessionManager sm) {
+        sm_ = sm;
+    }
+
+    private void writeXMLResponse(final String xml, HttpServletResponse response) throws Exception {
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.setContentType("application/xml");
+        response.setCharacterEncoding("UTF-8");
+        response.setContentLength(xml.getBytes().length);
+                    
+        PrintWriter pw = response.getWriter();
+        pw.print(xml);
+        pw.flush();
+    }
+
     public void handle(String target,
                        Request baseRequest,
                        HttpServletRequest request,
@@ -22,23 +39,29 @@ public class RouteService extends AbstractHandler {
         throws IOException, ServletException {
         try {
             if (target.substring(target.lastIndexOf("/") + 1).equals("route")) {
-                int route_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
-                Searcher.Route route = Searcher.queryRoute(route_id);
+                if (baseRequest.getParameterValues("sid") != null) {
+                    int sid = Integer.parseInt(baseRequest.getParameterValues("sid")[0]);
 
-                XStream xs = new XStream();
-                xs.alias("route", Searcher.Route.class);
-                xs.alias("poi", int.class);
-                //xs.alias("item", Searcher.Route.Item.class);
-                String xml = xs.toXML(route);
+                    SessionManager.UserRoute route = sm_.getRoute(sid);
+                    XStream xs = new XStream();
+                    xs.alias("route", SessionManager.UserRoute.class);
+                    xs.alias("points", SessionManager.UserRoute.Point[].class);
+                    xs.alias("point", SessionManager.UserRoute.Point.class);
+                    String xml = xs.toXML(route);
+
+                    writeXMLResponse(xml, response);
+                } else {
+                    int route_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
+                    Searcher.Route route = Searcher.queryRoute(route_id);
+
+                    XStream xs = new XStream();
+                    xs.alias("route", Searcher.Route.class);
+                    xs.alias("poi", int.class);
+                    //xs.alias("item", Searcher.Route.Item.class);
+                    String xml = xs.toXML(route);
             
-                response.setStatus(HttpServletResponse.SC_OK);
-                response.setContentType("application/xml");
-                response.setCharacterEncoding("UTF-8");
-                response.setContentLength(xml.getBytes().length);
-
-                PrintWriter pw = response.getWriter();
-                pw.print(xml);
-                pw.flush();
+                    writeXMLResponse(xml, response);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
