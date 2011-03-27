@@ -74,8 +74,8 @@ function show_infowindow(marker, name_poi, address, url){
 			<div id="leftcolumn">
       				<ul>
         				<li><a href="#" title="">Готовые экскурсии</a></li>
-        				<li><a href="poi_types.html" title="">Конструктор маршрута</a></li>
-        				<li><a href="#" title="">Редактирование</a></li>
+        				<li><a href="poi_types.html" title="">Конструктор</a></li>
+        				<li><a href="#" title="">Маршрут</a></li>
 				</ul>
 			</div>
             <!-- End Left column -->
