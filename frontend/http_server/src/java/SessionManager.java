@@ -67,8 +67,14 @@ class SessionManager implements InitializingBean {
         String q = String.format("DELETE FROM user_route WHERE sid=%d;", r.sid);
         ops_.execute(q);
 
+        // For debug purposes only
+        if (isAvailableSID(r.sid)) {
+            q = String.format("INSERT INTO user_session(id) VALUES (%d);", r.sid);
+            ops_.execute(q);
+        }
+
         for (int i = 0; i < r.ps.length; ++i) {
-            addPOI(r.sid, r.ps[i].poi_id, r.ps[i].ord_num);
+            addPOI(r.sid, r.ps[i].poi_id, i);
         }
     }
 
@@ -80,7 +86,7 @@ class SessionManager implements InitializingBean {
         UserRoute route = new UserRoute(route_len);
         route.sid = sid;
 
-        q = String.format("SELECT (poi_id, ord_num) FROM user_route WHERE sid=%d;",
+        q = String.format("SELECT poi_id, ord_num FROM user_route WHERE sid=%d;",
                           sid);
         SqlRowSet ur = ops_.queryForRowSet(q);
         ur.first();

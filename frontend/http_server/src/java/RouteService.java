@@ -40,16 +40,38 @@ public class RouteService extends AbstractHandler {
         try {
             if (target.substring(target.lastIndexOf("/") + 1).equals("route")) {
                 if (baseRequest.getParameterValues("sid") != null) {
-                    int sid = Integer.parseInt(baseRequest.getParameterValues("sid")[0]);
+                    if (baseRequest.getParameterValues("poi_list") != null) {
+                        // We have to update the user route
 
-                    SessionManager.UserRoute route = sm_.getRoute(sid);
-                    XStream xs = new XStream();
-                    xs.alias("route", SessionManager.UserRoute.class);
-                    xs.alias("points", SessionManager.UserRoute.Point[].class);
-                    xs.alias("point", SessionManager.UserRoute.Point.class);
-                    String xml = xs.toXML(route);
+                        String[] pois = baseRequest.getParameterValues("poi_list")[0].split(",");
+                        SessionManager.UserRoute r = new SessionManager.UserRoute(pois.length);
+                        r.sid = Integer.parseInt(baseRequest.getParameterValues("sid")[0]);
 
-                    writeXMLResponse(xml, response);
+                        //System.out.println(r.ps.length);
+
+                        for (int i = 0; i < pois.length; ++i) {
+                            //System.out.println(pois[i]);
+                            r.ps[i] = new SessionManager.UserRoute.Point(Integer.parseInt(pois[i]), 0);
+
+                            //System.out.println(String.valueOf(r.ps[i].poi_id));
+                        }
+
+                        sm_.setRoute(r);
+
+                        response.setStatus(HttpServletResponse.SC_OK);
+                    } else {
+                        // We should return the specified user route
+                        int sid = Integer.parseInt(baseRequest.getParameterValues("sid")[0]);
+                        
+                        SessionManager.UserRoute route = sm_.getRoute(sid);
+                        XStream xs = new XStream();
+                        xs.alias("route", SessionManager.UserRoute.class);
+                        xs.alias("points", SessionManager.UserRoute.Point[].class);
+                        xs.alias("point", SessionManager.UserRoute.Point.class);
+                        String xml = xs.toXML(route);
+
+                        writeXMLResponse(xml, response);
+                    }
                 } else {
                     int route_id = Integer.parseInt(baseRequest.getParameterValues("id")[0]);
                     Searcher.Route route = Searcher.queryRoute(route_id);
