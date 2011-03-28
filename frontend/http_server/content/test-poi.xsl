@@ -33,7 +33,8 @@
 			<tr>
 				<td>
 						<xsl:apply-templates select="poi/description"/>
-						<br/><B>Адрес:</B>
+						<br/><br/>
+						<B>Адрес:</B>
 						<xsl:apply-templates select="poi/address"/>
 				</td>
 			</tr>

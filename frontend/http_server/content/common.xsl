@@ -3,9 +3,9 @@
 
         <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 	        <head>
-		        <title>
-                    <xsl:call-template name="template-title"/>
-                </title>
+		    	<title>
+                    		<xsl:call-template name="template-title"/>
+                	</title>
 		        <link rel="stylesheet" type="text/css" href="style.css" />
 		        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <xsl:call-template name="template-header"/>
@@ -67,8 +67,8 @@
 		        </div>
             <!-- Begin Footer -->
 			<div id="footer">
-                Footer
-            </div>
+                		Footer
+           		 </div>
             <!-- End Footer -->
 	    </body>
     </html>
