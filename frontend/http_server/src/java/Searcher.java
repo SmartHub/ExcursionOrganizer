@@ -58,19 +58,9 @@ public class Searcher {
     }
 
     public static class Route {
-        /*
-        public static class Item {
-            public int poi_id;
-            public int ord_num;
-
-            public Item(int _poi, int _ord_num) {
-                poi_id = _poi;
-                ord_num = _ord_num;
-            }
-        }
-        */
-
+        public int id;
         public int[] pois;
+        public String descr;
 
         public Route(int route_id) {
             String q = String.format("SELECT poi_id FROM route_poi WHERE route_id = %d ORDER BY order_num;",
@@ -82,6 +72,11 @@ public class Searcher {
             for (int i = 0; i < r.size(); ++i) {
                 pois[i] = r.get(i).intValue();
             }
+
+            q = String.format("SELECT descr FROM route_recommended WHERE id=%d;", route_id);
+            descr = (String)ops.queryForObject(q, String.class);
+
+            id = route_id;
         }
     }
 
@@ -131,5 +126,17 @@ public class Searcher {
 
     public static Route queryRoute(int id) {
         return new Route(id);
+    }
+
+    public static Route[] queryRoutes() {
+        String q = String.format("SELECT id FROM route_recommended;");
+
+        List<Integer> r = ops.queryForList(q, Integer.class);
+        Route[] routes = new Route[r.size()];
+        for (int i = 0; i < r.size(); ++i) {
+            routes[i] = queryRoute(r.get(i));
+        }
+
+        return routes;
     }
 }

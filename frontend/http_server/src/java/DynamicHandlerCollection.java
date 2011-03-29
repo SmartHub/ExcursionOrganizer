@@ -14,7 +14,8 @@ import javax.xml.transform.stream.*;
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.*;
 
-import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.*;
+import com.thoughtworks.xstream.converters.*;
 
 // ================================================================================
 
@@ -55,6 +56,9 @@ public class DynamicHandlerCollection extends AbstractHandler {
                     XStream xs = new XStream();
                     for (Map.Entry e : resp.aliases.entrySet()) {
                         xs.alias((String)e.getKey(), (Class)e.getValue());
+                    }
+                    for (SingleValueConverter c : resp.convs) {
+                        xs.registerConverter(c);
                     }
                     xml = xs.toXML(resp.result);
                 } else {
