@@ -15,6 +15,8 @@
     		<link rel="stylesheet" type="text/css" href="style_menu.css" />
     		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
     		<script type="text/javascript" src="poi_map.js"></script>
+		<script type="text/javascript" src="jquery-latest.min.js"></script>
+		<script type="text/javascript" src="ajax.js"></script>
 	</xsl:template>
 
 
@@ -37,7 +39,7 @@
 		</div>
 
 		<div class="innertube">
- 			<iframe frameborder="0" id="inner-frame" src="type.html?name=музей" width="85%" height="450"></iframe>
+ 			<iframe frameborder="0" id="inner-frame" src="type.html?name=музей" width="100%" height="80%"></iframe>
 		</div>
 	</xsl:template>
 

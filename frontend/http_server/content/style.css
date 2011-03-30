@@ -65,6 +65,12 @@ a{
 	margin-bottom: -32767px;
 }
 
+#leftcolumn ul{
+	list-style:none;
+	text-align:left;
+	padding:20px 20px 20px 20px;
+}
+
 #rightcolumn{
 	float:left;
 	width:401px;

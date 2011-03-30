@@ -21,7 +21,7 @@
 							<xsl:attribute name="onClick">parent.location.href='test-poi.html?id=<xsl:value-of select="id" />'</xsl:attribute>
 								<img><xsl:attribute name="src"><xsl:value-of select="img__url" /></xsl:attribute></img>
 						</a>
-						<input type="checkbox" name="option1" value="a1"/>Хочу посетить!<br/>
+						<input type="checkbox" onclick="parent.show_on_map(this.id)"><xsl:attribute name="id"><xsl:value-of select="id" /></xsl:attribute></input>Хочу посетить!<br/>
 
     					</li>
 					</xsl:for-each>
