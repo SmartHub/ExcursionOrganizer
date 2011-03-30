@@ -17,7 +17,7 @@
 
 
 	<!-- писать только одной строкой! -->
-	<xsl:template name="template-init-function">initialize(<xsl:value-of select="/poi/lat"/>, <xsl:value-of select="/poi/lng"/>, '<xsl:value-of select="/poi/name"/>')</xsl:template>
+	<xsl:template name="template-init-function">initialize(<xsl:value-of select="/poi/lat"/>, <xsl:value-of select="/poi/lng"/>, '<xsl:value-of select="/poi/name"/>', '<xsl:value-of select="/poi/address"/>')</xsl:template>
 
 
 	<xsl:template name="template-content">
