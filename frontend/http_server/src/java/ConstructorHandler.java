@@ -71,7 +71,7 @@ public class ConstructorHandler implements DynamicHandler {
         try {
             Response r = new Response();
 			
-            if ((request.getParameterValues("sid") != null) && (request.getParameterValues("poi_id") != null)) {
+            if ( (request.getParameterValues("sid") != null) && (request.getParameterValues("sid")[0] != "") && (request.getParameterValues("poi_id") != null) ) {
 				//we have to add poi to existing user`s route
                 int poi_id = Integer.parseInt(request.getParameterValues("poi_id")[0]);
 				int sid = Integer.parseInt(request.getParameterValues("sid")[0]);
@@ -91,7 +91,7 @@ public class ConstructorHandler implements DynamicHandler {
 				r.aliases.put("route", Route.class);
                 r.aliases.put("poi", Route.POI.class);            
 			} else {
-				if((request.getParameterValues("sid") == null) && (request.getParameterValues("poi_id") != null)) {
+				if(((request.getParameterValues("sid") == null) || (request.getParameterValues("sid")[0] == "")) && (request.getParameterValues("poi_id") != null)) {
 					
 					int sid = sm_.createSession();
 					
