@@ -78,9 +78,14 @@ public class ConstructorHandler implements DynamicHandler {
 				
 				//sm_.addPOI(sid, poi_id, 1);
 				SessionManager.UserRoute ur = sm_.getRoute(sid);
-				ur.ps[ur.ps.length] = new SessionManager.UserRoute.Point(poi_id, 1);
-				sm_.setRoute(ur);
-                Route route = new Route(ur);
+				SessionManager.UserRoute newRoute = new SessionManager.UserRoute(ur.ps.length + 1);
+				newRoute.sid = ur.sid;
+				for (int i = 0; i < ur.ps.length; ++i) {
+					newRoute.ps[i] = ur.ps[i];
+				}
+				newRoute.ps[ur.ps.length] = new SessionManager.UserRoute.Point(poi_id, 1);
+				sm_.setRoute(newRoute);
+                Route route = new Route(newRoute);
                 
                 r.result = route;
 				r.aliases.put("route", Route.class);
