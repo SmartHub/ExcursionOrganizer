@@ -33,6 +33,11 @@
 			<tr>
 				<td>
 						<xsl:apply-templates select="poi/description"/>
+							<a href="{poi/src__url}" color = "blue">
+								<font color = "blue">
+									[дальше]
+								</font>
+							</a>
 						<br/><br/>
 						<B>Адрес:</B>
 						<xsl:apply-templates select="poi/address"/>

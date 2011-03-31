@@ -47,6 +47,9 @@
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
+		<div id="poi-print">
+			Selected pois:
+		</div>
 	</xsl:template>
 
 
