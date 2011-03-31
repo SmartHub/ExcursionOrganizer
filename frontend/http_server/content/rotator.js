@@ -55,6 +55,10 @@ function rotate_back() {
 	current.animate({opacity: 0.0}, 1000)
 	.removeClass('show');
 };
+
+function init_rotator() {
+	$('div#rotator ul li:first').addClass('show');
+};
  
 $(document).ready(function() {		
 	// Запускаем слайдшоу

@@ -41,7 +41,7 @@
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
-		<input type="checkbox" name="option3" value="a3">Показать достопримечательности рядом!_<input/>
+		<input type="checkbox" name="option3" value="a3">Показать достопримечательности рядом!_</input>
 	</xsl:template>
 
 	<xsl:include href="common.xsl"/>
