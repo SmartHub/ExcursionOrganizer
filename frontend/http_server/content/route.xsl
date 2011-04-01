@@ -16,7 +16,6 @@
     		<script src="js/route_constructor.js"></script>
 		<script src="js/route_show.js"></script>
 		<script src="js/jquery-latest.min.js"></script>
-		<script src="js/ajax.js"></script>
 	</xsl:template>
 
 	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>

@@ -29,7 +29,7 @@ function initialize() {
 }
 
 function calculate_route(data){
-	alert('123');
+
 	var waypts = [];
 	var count = data.length;
 	for (var i = 1; i < count - 1; i++) {

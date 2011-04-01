@@ -14,7 +14,7 @@ function init_points()
 				Lng : $(this).find('lng').text()
 			};
 			PoiList.push(Poi);
-			//alert(Poi.Name);
+			alert(Poi.Name);
         	});
 		
 		calculate_route(PoiList);
