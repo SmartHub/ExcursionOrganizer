@@ -21,13 +21,13 @@
 
 
 	<!-- писать только одной строкой! -->
-	<xsl:template name="template-init-function">initialize();change_frame('музей');set_sid(<xsl:value-of select="user-constructor/sid"/>)</xsl:template>
+	<xsl:template name="template-init-function">initialize();change_frame('музей');</xsl:template>
 
 
 	<xsl:template name="template-content">
 		<div class="menu" id = "menu_obj">
 			<ul>
-				<xsl:for-each select="user-constructor/poi-types/type">
+				<xsl:for-each select="poi-types/type">
 					<li>
 						<a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'type.html?name={name}';">
                                             		<xsl:value-of select="name"/>

@@ -39,7 +39,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" onClick="top.location.href= 'poi_types.html?sid=' + sid;" title="">
+                                    <a href="poi_types.html" title="">
                                         Конструктор
                                     </a>
                                 </li>
