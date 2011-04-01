@@ -22,6 +22,7 @@ public class Searcher {
         public String name;
         public String address;
         public String description;
+        public String description_source;
         public String type;
         public String img_url;
 	public double lat, lng;
@@ -32,9 +33,10 @@ public class Searcher {
         private final static int TYPE = 2;
         private final static int ADDRESS = 3;
         private final static int DESCRIPTION = 4;
-        private final static int IMG_URL = 5;
-        private final static int LAT = 6;
-        private final static int LNG = 7;
+        private final static int DESCRIPTION_SOURCE = 5;
+        private final static int IMG_URL = 6;
+        private final static int LAT = 7;
+        private final static int LNG = 8;
 		
 
 
@@ -71,7 +73,7 @@ public class Searcher {
             src_url = (String)ops.queryForObject(q, String.class);
             */
 
-            src_url = "";
+            src_url = inf.get(DESCRIPTION_SOURCE);
         }
     }
 
