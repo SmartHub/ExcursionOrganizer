@@ -29,8 +29,7 @@
 			<ul>
 				<xsl:for-each select="poi-types/type">
 					<li>
-						<a href="#">
-							<xsl:attribute name="onClick">document.getElementById('inner-frame').src = 'type.html?name=<xsl:value-of select="name"/>'</xsl:attribute>
+						<a href="#" onClick="document.getElementById('inner-frame').src= 'type.html?name={name}';">
                                             		<xsl:value-of select="name"/>
 						</a>
 					</li>
