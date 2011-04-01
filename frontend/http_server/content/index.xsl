@@ -30,7 +30,7 @@
 				<xsl:for-each select="routes/route">
     					<li> <!-- class="show"-->
 						<a>
-							<xsl:attribute name="href">route?id=<xsl:value-of select="id" />
+							<xsl:attribute name="href">route.html?id=<xsl:value-of select="id" />
 							</xsl:attribute>
 							<img>
 								<xsl:attribute name="src">
