@@ -51,7 +51,11 @@ public class Searcher {
             address = inf.get(ADDRESS);
 			int lenDescr = inf.get(DESCRIPTION).length();
             description = inf.get(DESCRIPTION).substring(0, lenDescr/2);
-            img_url = inf.get(IMG_URL);
+			if (inf.get(IMG_URL).equals(""))  {
+	            img_url = "img/no_image.gif";
+			} else {
+				img_url = inf.get(IMG_URL);
+			}
 			
 
             if (inf.get(LAT).length() > 1) {
@@ -110,9 +114,7 @@ public class Searcher {
 
         SphinxResult qr = getClient().Query(q);
 
-		//q = String.format("SELECT src_url FROM poi_raw_descr WHERE poi_id=%d;", id);
-		//String src_url = (String)ops.queryForObject(q, String.class);
-        return new POI(qr.matches[0]);
+		return new POI(qr.matches[0]);
     }
 
     public static int[] queryByType(final String type) throws Exception {
