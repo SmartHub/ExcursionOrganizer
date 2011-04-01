@@ -63,3 +63,9 @@ function printPoiList(List)
 		$('#poi-print').append(List[i].Name + '<br/><hr/>');
 	};
 }
+
+function set_sid(sid_in)
+{
+	sid = sid_in;
+}
+
