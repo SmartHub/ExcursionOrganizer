@@ -116,13 +116,16 @@ searchd
 }
 """
 
-cwd = sys.argv[1]
+cwd = os.environ["EO_ROOT"]
+if (len(sys.argv) >= 2):
+    cwd = sys.argv[1]
+    
 sphinx_cfg_path = cwd + "/common/script/exorg.sphinx"
 
 sphx_cfg = open(sphinx_cfg_path, "w")
 sphx_cfg.write(
     sphinx_cfg_template % {
-        "EO_PATH" : sys.argv[1],  
+        "EO_PATH" : cwd,  
         "DB_USER" : db_user,
         "DB_PWD"  : db_pwd
         }
