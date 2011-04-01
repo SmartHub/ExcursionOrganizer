@@ -1,43 +1,22 @@
 var sid='';
 
-$(document).ready(function(){                         // по завершению загрузки страницы
-    $('#checkbox').click(function(){                  // вешаем на клик по элементу с id = example-3
-        $.get('test-poi.html?id=6&_ox', {}, function(xml){  // загрузку XML из файла example.xml
-            $('#checkbox').html('');
-            $(xml).find('poi').each(function(){       // заполняем DOM элемент данными из XML
+var PoiList = [];
 
-		initialize($(this).find('lat').text(), $(this).find('lng').text(), '123')
-                //$('#checkbox').append('ID: '   + $(this).find('id').text() + '<br/>')
-                //               .append('Name ' + $(this).find('name').text() + '<br/>');
-            });
-        }, 'xml');                                     // указываем явно тип данных
-    })
-});
-
-function ajax_debug(msg){
-	alert("debug " + msg);
-};
-
-function show_on_map(id)
+function init_inner_frame()
 {
-	$.get('test-poi.html?id=' + id + '&_ox', {}, function(xml)
-	{  // загрузку XML из файла example.xml
-		$('#checkbox').html('');
-		$(xml).find('poi').each(function(){       // заполняем DOM элемент данными из XML
+	updateCheckBoxes();
+}
 
-		initialize($(this).find('lat').text(), $(this).find('lng').text(), '123')
-                //$('#checkbox').append('ID: '   + $(this).find('id').text() + '<br/>')
-                //               .append('Name ' + $(this).find('name').text() + '<br/>');
-            });
-        }, 'xml');                                     // указываем явно тип данных
-};
-
-
-function add_poi(id)
+function add_poi(id, checked)
 {
 	PoiList = [];
 
-	$.get('constructor.html?poi_id=' + id + '&_ox&sid=' + sid, {}, function(xml)
+	var do_delete = '';
+	if(checked == false)
+	{
+		do_delete = '&action="delete"';
+	}
+	$.get('constructor.html?poi_id=' + id + '&_ox&sid=' + sid + do_delete, {}, function(xml)
 	{
         	$(xml).find('route').find('pois').find('poi').each(function()
 		{
@@ -53,11 +32,26 @@ function add_poi(id)
 
 		printPoiList(PoiList);
 		
-		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра*/
+		calculate_route(PoiList);
+		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
 		sid = $(xml).find('route').find('sid').text();
 	}, 'xml'); // указываем явно тип данных
 };
+
+
+function updateCheckBoxes()
+{
+	for(var i = 0; i < PoiList.length; ++i)
+	{
+		/* HACK */
+		var cb = top.frames["inner-frame"].document.getElementById(PoiList[i].Id);
+		if (cb != undefined)
+		{
+			cb.checked = true;
+		}
+	}
+}
 
 
 function printPoiList(List)
