@@ -28,21 +28,12 @@ public class POITypesHandler implements DynamicHandler {
             for (int i = 0; i < type_names.length; ++i) {
                 t[i] = new Type();
                 t[i].name = type_names[i];
-
-                System.out.println(type_names[i]);
             }
 
             r.result = t;
             r.aliases.put("poi-types", Type[].class);
             r.aliases.put("type", Type.class);
             r.aliases.put("value", String.class);
-            //r.aliases("type", String.class);
-
-            /*
-            if (r.result == null) {
-                System.out.println("Another epic fail");
-            }
-            */
 
             return r;
         } catch (Exception e) {
