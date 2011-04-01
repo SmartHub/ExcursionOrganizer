@@ -2,12 +2,15 @@ package eo.miner;
 
 import java.util.*;
 import java.lang.*;
+import java.io.*;
 import java.util.regex.*;
 
 import org.webharvest.definition.ScraperConfiguration;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.variables.Variable;
 import org.webharvest.runtime.variables.NodeVariable;
+
+import org.apache.log4j.*;
 
 import org.springframework.beans.factory.InitializingBean;
 
@@ -20,8 +23,11 @@ public class Main implements InitializingBean {
     private String[] config_files_;
     private String proxy_;
 
+    private Logger log;
+
 
     public Main() {
+        log = Logger.getLogger(Main.class);
         proxy_ = "";
     }
 
@@ -82,7 +88,7 @@ public class Main implements InitializingBean {
     public void afterPropertiesSet() {
         try {
             for (int j = 0; j < config_files_.length; ++j) {
-                System.out.println("Working on" + config_files_[j]);
+                log.info("Working on" + config_files_[j]);
 
                 ScraperConfiguration config = 
                     new ScraperConfiguration(config_files_[j]);
@@ -124,10 +130,10 @@ public class Main implements InitializingBean {
                     }
                 }
             }
-        } catch (java.lang.Exception e) {
-            System.out.println("Exception was caught");
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Exception was caught. See debug.log for details");
+            log.warn(e.getMessage());
+            log.warn(eo.common.Logger.getCallStack(e));
         }
     }
 }
