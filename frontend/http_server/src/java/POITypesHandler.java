@@ -44,18 +44,9 @@ public class POITypesHandler implements DynamicHandler {
             if ((request.getParameterValues("sid") != null) && (!request.getParameterValues("sid")[0].equals(""))) {
                 int sid = Integer.parseInt(request.getParameterValues("sid")[0]);
                 uc.sid = sid;
-                r.result = uc;
-                r.aliases.put("user-constructor", UserConstructor.class);
-                r.aliases.put("sid", int.class);
-                r.aliases.put("poi-types", Type[].class);
-                r.aliases.put("type", Type.class);
-                r.aliases.put("value", String.class);
+                
             } else {
-                Type[] t = uc.types;
-                r.result = t;
-                r.aliases.put("poi-types", Type[].class);
-                r.aliases.put("type", Type.class);
-                r.aliases.put("value", String.class);
+                uc.sid = 0;
             }
 
             /*
@@ -72,7 +63,12 @@ public class POITypesHandler implements DynamicHandler {
             r.aliases.put("type", Type.class);
             r.aliases.put("value", String.class);
             */
-
+            r.result = uc;
+            r.aliases.put("user-constructor", UserConstructor.class);
+            r.aliases.put("sid", int.class);
+            r.aliases.put("poi-types", Type[].class);
+            r.aliases.put("type", Type.class);
+            r.aliases.put("value", String.class);
             return r;
         } catch (Exception e) {
             e.printStackTrace();
