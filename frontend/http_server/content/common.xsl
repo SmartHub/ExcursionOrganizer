@@ -6,7 +6,7 @@
 		    	<title>
                     		<xsl:call-template name="template-title"/>
                 	</title>
-		        <link rel="stylesheet" type="text/css" href="style.css" />
+		        <link rel="stylesheet" type="text/css" href="css/style.css" />
 		        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <xsl:call-template name="template-header"/>
 	        </head>
@@ -33,7 +33,7 @@
                         <div id="leftcolumn">
                             <ul>
                                 <li>
-                                    <a href="#" title="">
+                                    <a href="index.html" title="">
                                         Готовые экскурсии
                                     </a>
                                 </li>

@@ -59,6 +59,7 @@ function rotate_back() {
 function init_rotator() {
 	$('div#rotator ul li:first').addClass('show');
 };
+
  
 $(document).ready(function() {		
 	// Запускаем слайдшоу

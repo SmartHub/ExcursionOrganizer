@@ -24,7 +24,8 @@ public class Searcher {
         public String description;
         public String type;
         public String img_url;
-        public double lat, lng;
+	public double lat, lng;
+	public String src_url;
 
         private final static int ID = 0;
         private final static int NAME = 1;
@@ -34,6 +35,7 @@ public class Searcher {
         private final static int IMG_URL = 5;
         private final static int LAT = 6;
         private final static int LNG = 7;
+		
 
 
         public POI() {
@@ -47,13 +49,18 @@ public class Searcher {
             name = inf.get(NAME);
             type = inf.get(TYPE);
             address = inf.get(ADDRESS);
-            description = inf.get(DESCRIPTION);
+			int lenDescr = inf.get(DESCRIPTION).length();
+            description = inf.get(DESCRIPTION).substring(0, lenDescr/2);
             img_url = inf.get(IMG_URL);
+			
 
             if (inf.get(LAT).length() > 1) {
                 lat = Double.parseDouble(inf.get(LAT));
                 lng = Double.parseDouble(inf.get(LNG));
             }
+
+			String q = String.format("SELECT src_url FROM poi_raw_descr WHERE poi_id=%d;", id);
+			src_url = (String)ops.queryForObject(q, String.class);
         }
     }
 
@@ -102,6 +109,9 @@ public class Searcher {
         String q = String.format("@id %d", id);
 
         SphinxResult qr = getClient().Query(q);
+
+		//q = String.format("SELECT src_url FROM poi_raw_descr WHERE poi_id=%d;", id);
+		//String src_url = (String)ops.queryForObject(q, String.class);
         return new POI(qr.matches[0]);
     }
 

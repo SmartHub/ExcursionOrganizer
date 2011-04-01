@@ -10,9 +10,9 @@
 	<xsl:template name="template-header">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
-		<link rel="stylesheet" href="map.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="css/map.css" type="text/css" media="all" />
     		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-    		<script type="text/javascript" src="poi_map.js"></script>
+    		<script type="text/javascript" src="js/poi_map.js"></script>
 	</xsl:template>
 
 
@@ -33,6 +33,11 @@
 			<tr>
 				<td>
 						<xsl:apply-templates select="poi/description"/>
+							<a href="{poi/src__url}" color = "blue">
+								<font color = "blue">
+									[дальше]
+								</font>
+							</a>
 						<br/><br/>
 						<B>Адрес:</B>
 						<xsl:apply-templates select="poi/address"/>

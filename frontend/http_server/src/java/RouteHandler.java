@@ -13,6 +13,12 @@ import org.eclipse.jetty.server.handler.*;
 // ================================================================================
 
 public class RouteHandler implements DynamicHandler {
+
+	private SessionManager sm_;
+
+	public void setSM(SessionManager sm) {
+		sm_ = sm;
+	}
     private static class Route {
         private static class POI {
             long id;
@@ -48,11 +54,27 @@ public class RouteHandler implements DynamicHandler {
                 }
             }
         }
+
+		public Route(SessionManager.UserRoute r) {
+			id = r.sid;
+            
+            pois = new POI[r.ps.length];
+
+            for (int i = 0; i < r.ps.length; ++i) {
+                try {
+                    pois[i] = new POI(Searcher.queryById(r.ps[i].poi_id));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    pois[i] = null;
+                }
+            }
+		}
     }
 
     public Response handle(final Request request) {
-        try {
-            Response r = new Response();
+        Response r = new Response();
+		try {
+            
             if (request.getParameterValues("id") != null) {
                 int route_id = Integer.parseInt(request.getParameterValues("id")[0]);
                 Searcher.Route raw_route = Searcher.queryRoute(route_id);
@@ -60,7 +82,18 @@ public class RouteHandler implements DynamicHandler {
                 
                 r.result = route;
                 r.aliases.put("route", Route.class);
-                r.aliases.put("poi", Route.POI.class);            }
+                r.aliases.put("poi", Route.POI.class);            
+			} else {
+				if (request.getParameterValues("sid") != null) {
+                	int route_id = Integer.parseInt(request.getParameterValues("sid")[0]);
+					SessionManager.UserRoute ur = sm_.getRoute(route_id);
+                	Route route = new Route(ur);
+                
+                	r.result = route;
+                	r.aliases.put("route", Route.class);
+                	r.aliases.put("poi", Route.POI.class);
+				}
+			}
 
             return r;
         } catch (Exception e) {
