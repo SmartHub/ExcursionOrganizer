@@ -21,15 +21,15 @@
 
 
 	<!-- писать только одной строкой! -->
-	<xsl:template name="template-init-function">initialize()</xsl:template>
+	<xsl:template name="template-init-function">initialize();change_frame('музей');</xsl:template>
 
 
 	<xsl:template name="template-content">
-		<div class="menu">
+		<div class="menu" id = "menu_obj">
 			<ul>
 				<xsl:for-each select="poi-types/type">
 					<li>
-						<a href="#" onClick="document.getElementById('inner-frame').src= 'type.html?name={name}';">
+						<a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'type.html?name={name}';">
                                             		<xsl:value-of select="name"/>
 						</a>
 					</li>
@@ -47,7 +47,7 @@
 		<div id="map">
 		</div>
 		<div id="poi-print">
-			Selected pois:
+			<br/>Выбранные для посещения POI:
 		</div>
 	</xsl:template>
 
