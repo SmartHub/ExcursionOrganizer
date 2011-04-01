@@ -11,28 +11,23 @@
 			}
 
 		</script>
-		<link rel="stylesheet" type="text/css" href="css/inner_frame.css" />
 	</head>
-	<body onLoad = "parent.init_inner_frame()">  
-	<div id="main">			
+	<body onLoad = "parent.init_inner_frame()">  			
   				<ul list-style="none">
 					<xsl:for-each select="pois/poi">
     					<li>
 						<H3><a href="#"><xsl:attribute name="onClick">parent.location.href='test-poi.html?id=<xsl:value-of select="id" />'</xsl:attribute><xsl:value-of select="name"/></a></H3>
-						<input type="checkbox" onclick="parent.add_poi(this.id, this.checked)"><xsl:attribute name="id"><xsl:value-of select="id" /></xsl:attribute></input>Хочу посетить!<br/>
 						<a>
 							<xsl:attribute name="onClick">parent.location.href='test-poi.html?id=<xsl:value-of select="id" />'</xsl:attribute>
-								
 								<img><xsl:attribute name="src"><xsl:value-of select="img__url" /></xsl:attribute></img>
 						</a>
-						
+						<input type="checkbox" onclick="parent.add_poi(this.id, this.checked)"><xsl:attribute name="id"><xsl:value-of select="id" /></xsl:attribute></input>Хочу посетить!<br/>
 						<HR/>
 
     					</li>
 					</xsl:for-each>
 				</ul>
 	<input type="checkbox" id = "cb"/>
-	</div>
 	</body>
 </html>
 
