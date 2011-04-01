@@ -16,7 +16,7 @@ function show_infowindow(marker, name_poi, address, url){
 
 
 function initialize() {
-  
+	directionsDisplay = new google.maps.DirectionsRenderer();
 	var posCity = new google.maps.LatLng(59.63380760, 29.42479870);
 	var options = {
 		zoom:8,
@@ -25,7 +25,7 @@ function initialize() {
 	}
 	
 	map = new google.maps.Map(document.getElementById("map"), options);
-	
+	directionsDisplay.setMap(map);
 }
 
 function calculate_route(data){
@@ -34,13 +34,13 @@ function calculate_route(data){
 	var count = data.length;
 	for (var i = 1; i < count - 1; i++) {
 		waypts.push({
-			location:new google.maps.LatLng(data[i].lat, data[i].lng);,
+			location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
 			stopover:true
 		});
 	}
 
-	var start = new google.maps.LatLng(data[0].lat, data[0].lng);
-	var end = new google.maps.LatLng(data[count-1].lat, data[count-1].lng);
+	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
+	var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
 	
 	var request = {
 		origin: start, 

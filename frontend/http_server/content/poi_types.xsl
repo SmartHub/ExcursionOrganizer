@@ -13,10 +13,10 @@
 
 		<link rel="stylesheet" href="css/map.css" type="text/css" media="all" />
     		<link rel="stylesheet" type="text/css" href="css/style_menu.css" />
-    		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-    		<script type="text/javascript" src="js/route_constructor.js"></script>
-		<script type="text/javascript" src="js/jquery-latest.min.js"></script>
-		<script type="text/javascript" src="js/ajax.js"></script>
+    		<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
+    		<script src="js/route_constructor.js"></script>
+		<script src="js/jquery-latest.min.js"></script>
+		<script src="js/ajax.js"></script>
 	</xsl:template>
 
 
