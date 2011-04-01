@@ -14,13 +14,12 @@
     		<link rel="stylesheet" type="text/css" href="css/style_menu.css" />
     		<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
     		<script src="js/route_constructor.js"></script>
+		<script src="js/route_show.js"></script>
 		<script src="js/jquery-latest.min.js"></script>
 		<script src="js/ajax.js"></script>
 	</xsl:template>
 
-	<xsl:template name="template-init-function">
-		<!--initialize(<xsl:value-of select="/poi/lat"/>{poi/lat}, {poi/lng}, '{poi/name}')-->
-	</xsl:template>
+	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>
 
 	<xsl:template name="template-content">
 		<table cellpadding = "10">
@@ -40,7 +39,6 @@
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
-		<input type="checkbox" name="option3" value="a3">Показать достопримечательности рядом!_</input>
 	</xsl:template>
 
 	<xsl:include href="common.xsl"/>
