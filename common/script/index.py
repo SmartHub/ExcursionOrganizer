@@ -4,12 +4,12 @@ import os
 import sys
 
 db_user = "exorg"
-db_name = "excursion_organizer"
+db_pwd = ""
 
-if (len(sys.argv) >= 2):
-    db_user = sys.argv[1];
 if (len(sys.argv) >= 3):
-    db_name = sys.argv[2];
+    db_user = sys.argv[2];
+if (len(sys.argv) >= 4):
+    db_pwd = sys.argv[3];
 
 sphinx_cfg_template = """
 ################################################################################
@@ -25,15 +25,15 @@ source poi
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
   sql_user = %(DB_USER)s
-  sql_pass =
-  sql_db   = %(DB_NAME)s
+  sql_pass = %(DB_PWD)s
+  sql_db   = excursion_organizer
   sql_port = 3306	# optional, default is 3306
 
   # main document fetch query
   # mandatory, integer document ID field MUST be the first selected column
 
   sql_query = \
-    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi_raw_geo.address, poi_raw_descr.descr, poi_raw_images.img_url, poi_raw_geo.lat, poi_raw_geo.lng \
+    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi_raw_geo.address, poi_raw_descr.descr, poi_raw_descr.src_url descr_ref,  poi_raw_images.img_url, poi_raw_geo.lat, poi_raw_geo.lng \
       FROM place_of_interest poi \
            LEFT JOIN poi_raw_descr ON poi.id = poi_raw_descr.poi_id \
            LEFT JOIN poi_raw_geo ON poi.id = poi_raw_geo.poi_id     \
@@ -48,6 +48,7 @@ source poi
   sql_field_string = type
   sql_field_string = address
   sql_field_string = descr
+  sql_field_string = descr_ref
   sql_field_string = img_url
   sql_field_string = lat
   sql_field_string = lng
@@ -115,15 +116,22 @@ searchd
 }
 """
 
-sphx_cfg = open("exorg.sphinx", "w")
+cwd = os.environ["EO_ROOT"]
+if (len(sys.argv) >= 2):
+    cwd = sys.argv[1]
+    
+sphinx_cfg_path = cwd + "/common/script/exorg.sphinx"
+
+sphx_cfg = open(sphinx_cfg_path, "w")
 sphx_cfg.write(
     sphinx_cfg_template % {
-        "EO_PATH" : os.environ["EO_ROOT"],  
+        "EO_PATH" : cwd,  
         "DB_USER" : db_user,
-        "DB_NAME" : db_name,
+        "DB_PWD"  : db_pwd
         }
     )
 sphx_cfg.close()
 
-os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : os.environ["EO_ROOT"] });
-os.system("indexer --all -c exorg.sphinx");
+os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : cwd });
+os.system("indexer --all -c " + sphinx_cfg_path);
+#os.system("indexer --all -c %(EO_ROOT)s/common/script/exorg.sphinx" % { "EO_ROOT" : sys.argv[1] });

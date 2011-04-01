@@ -79,7 +79,7 @@ public class DynamicHandlerCollection extends AbstractHandler {
                         xslt_file = hn.substring(slash_pos);
                     }
 
-                    System.out.println(base_ + "/" + xslt_file + ".xsl");
+                    //System.out.println(base_ + "/" + xslt_file + ".xsl");
 
                     Source xml_source = new StreamSource(new StringReader(xml));
                     Source xsl_source = new StreamSource(new File(base_ + "/" + xslt_file + ".xsl"));
