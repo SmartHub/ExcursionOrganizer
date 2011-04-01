@@ -40,9 +40,7 @@ public class ConstructorHandler implements DynamicHandler {
 				} catch (Exception e) {
                     e.printStackTrace();
                 }
-				
-            }
-
+	        }
         }
 
         public int sid;
@@ -100,7 +98,7 @@ public class ConstructorHandler implements DynamicHandler {
 			else {
 			
             	if ( (request.getParameterValues("sid") != null) && 
-						(request.getParameterValues("sid")[0] != "") && 
+						(!request.getParameterValues("sid")[0].equals("")) && 
 							(request.getParameterValues("poi_id") != null)  ) {
 				
 					//we have to add poi to existing user`s route
@@ -132,8 +130,7 @@ public class ConstructorHandler implements DynamicHandler {
                 
                 		r.result = route;
 						
-					}
-
+					} 
 				}
 			}	
 			
