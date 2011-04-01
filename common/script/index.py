@@ -4,12 +4,12 @@ import os
 import sys
 
 db_user = "exorg"
-db_name = "excursion_organizer"
+db_pwd = ""
 
-if (len(sys.argv) >= 2):
-    db_user = sys.argv[1];
 if (len(sys.argv) >= 3):
-    db_name = sys.argv[2];
+    db_user = sys.argv[2];
+if (len(sys.argv) >= 4):
+    db_pwd = sys.argv[3];
 
 sphinx_cfg_template = """
 ################################################################################
@@ -25,8 +25,8 @@ source poi
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
   sql_user = %(DB_USER)s
-  sql_pass =
-  sql_db   = %(DB_NAME)s
+  sql_pass = %(DB_PWD)s
+  sql_db   = excursion_organizer
   sql_port = 3306	# optional, default is 3306
 
   # main document fetch query
@@ -118,12 +118,13 @@ searchd
 sphx_cfg = open("exorg.sphinx", "w")
 sphx_cfg.write(
     sphinx_cfg_template % {
-        "EO_PATH" : os.environ["EO_ROOT"],  
+        "EO_PATH" : sys.argv[1],  
         "DB_USER" : db_user,
-        "DB_NAME" : db_name,
+		"DB_PWD"  : db_pwd,
         }
     )
 sphx_cfg.close()
 
-os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : os.environ["EO_ROOT"] });
+os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : sys.argv[1] });
 os.system("indexer --all -c exorg.sphinx");
+#os.system("indexer --all -c %(EO_ROOT)s/common/script/exorg.sphinx" % { "EO_ROOT" : sys.argv[1] });
