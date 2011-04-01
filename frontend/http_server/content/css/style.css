@@ -11,13 +11,12 @@ a{
 #wrapper{ 
 	margin:0 auto;
 	width:100%;
-	min-width:1020px;
-
+	min-width:1320px;
 	overflow: hidden;
-
 }
 
 #header{
+	/*min-width:1020px;*/
 	background:#bdda7e;
 	height:50px; 
 	border:1px solid #a4ce60;
@@ -39,7 +38,7 @@ a{
 	border-right:0;
 	/*height:550px;*/
 	line-height:30px;
-	background:#e6e6e6;
+	background:#f6f6f6;
 	text-align:left;
 	min-height: 88%;/* expression(document.body.clientHeight - 110 + "px");*/
 	width:auto;
@@ -53,7 +52,7 @@ a{
 	width:250px;
 	margin:0 -252px 0 0;
 	background:#e1edbf;
-	height:550px;
+	height:750px;
 	line-height:350px;
 	border-top:1px solid #bed63a;
 	border-bottom:1px solid #bed63a;

@@ -23,8 +23,8 @@
 	</xsl:template>
 
 	<xsl:template name="template-content">
-		<input type="button" id="prev" name="prev" value="Сюда --"/>
-		<input type="button" id="next" name="next" value="Туда --"/>
+		<input type="button" id="prev" name="prev" value="Листать назад"/>
+		<input type="button" id="next" name="next" value="Листать вперед"/>
 		<div id="rotator">
   			<ul>
 				<xsl:for-each select="routes/route">
@@ -39,7 +39,6 @@
 							</img>
 						</a>	
 						<p><xsl:value-of select="descr" /></p>					
-						<p><xsl:value-of select="id" /></p>
     					</li>
 				</xsl:for-each>
 			</ul>

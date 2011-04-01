@@ -47,13 +47,8 @@ public class RouteService extends AbstractHandler {
                         SessionManager.UserRoute r = new SessionManager.UserRoute(pois.length);
                         r.sid = Integer.parseInt(baseRequest.getParameterValues("sid")[0]);
 
-                        //System.out.println(r.ps.length);
-
                         for (int i = 0; i < pois.length; ++i) {
-                            //System.out.println(pois[i]);
                             r.ps[i] = new SessionManager.UserRoute.Point(Integer.parseInt(pois[i]), 0);
-
-                            //System.out.println(String.valueOf(r.ps[i].poi_id));
                         }
 
                         sm_.setRoute(r);
