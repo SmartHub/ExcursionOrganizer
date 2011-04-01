@@ -63,8 +63,15 @@ public class Searcher {
                 lng = Double.parseDouble(inf.get(LNG));
             }
 
-			String q = String.format("SELECT src_url FROM poi_raw_descr WHERE poi_id=%d;", id);
-			src_url = (String)ops.queryForObject(q, String.class);
+            /*
+            String q = String.format("SELECT src_url FROM poi_raw_descr WHERE poi_id=%d;", id);
+
+            System.out.println(String.valueOf(id));
+
+            src_url = (String)ops.queryForObject(q, String.class);
+            */
+
+            src_url = "";
         }
     }
 

@@ -24,6 +24,8 @@ public class POITypeHandler implements DynamicHandler {
                 int[] poi_ids = Searcher.queryByType(type_name);
                 Searcher.POI[] pois = new Searcher.POI[poi_ids.length];
 
+                System.out.println(pois.length);
+
                 for (int i = 0; i < poi_ids.length; ++i) {
                     pois[i] = Searcher.queryById(poi_ids[i]);
                 }
