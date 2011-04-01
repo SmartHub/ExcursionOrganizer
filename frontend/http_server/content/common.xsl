@@ -7,6 +7,7 @@
                     		<xsl:call-template name="template-title"/>
                 	</title>
 		        <link rel="stylesheet" type="text/css" href="css/style.css" />
+    			<script src="js/global_var.js"></script>
 		        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
                 <xsl:call-template name="template-header"/>
 	        </head>
@@ -43,7 +44,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#" title="">
+					<a href="#" onClick="top.location.href= 'route.html?sid=' + sid;" title="">
                                         Маршрут
                                     </a>
                                 </li>

@@ -1,4 +1,4 @@
-var sid='';
+//var sid='';
 
 var PoiList = [];
 
