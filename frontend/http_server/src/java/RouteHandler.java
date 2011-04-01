@@ -23,12 +23,14 @@ public class RouteHandler implements DynamicHandler {
         private static class POI {
             long id;
             String name;
+            String address;
             double lat;
             double lng;
 
             public POI(Searcher.POI poi) {
                 id = poi.id;
                 name = poi.name;
+                address = poi.address;
                 lat = poi.lat;
                 lng = poi.lng;
             }
