@@ -58,16 +58,11 @@ public class POITypesHandler implements DynamicHandler {
                 r.aliases.put("value", String.class);
             }
             
-            /*String[] type_names = Searcher.queryTypes();
+            String[] type_names = Searcher.queryTypes();
             Type[] t = new Type[type_names.length];
             for (int i = 0; i < type_names.length; ++i) {
                 t[i] = new Type();
                 t[i].name = type_names[i];
-<<<<<<< HEAD
-=======
-
-                //System.out.println(type_names[i]);
->>>>>>> a376adf45ea9db627500b21d043632f3223b8f33
             }
             
 
