@@ -1,6 +1,15 @@
 #!/usr/bin/python
 
 import os
+import sys
+
+db_user = "exorg"
+db_name = "excursion_organizer"
+
+if (len(sys.argv) >= 2):
+    db_user = sys.argv[1];
+if (len(sys.argv) >= 3):
+    db_name = sys.argv[2];
 
 sphinx_cfg_template = """
 ################################################################################
@@ -15,9 +24,9 @@ source poi
 
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
-  sql_user = root
+  sql_user = %(DB_USER)s
   sql_pass =
-  sql_db   = excursion_organizer
+  sql_db   = %(DB_NAME)s
   sql_port = 3306	# optional, default is 3306
 
   # main document fetch query
@@ -107,7 +116,13 @@ searchd
 """
 
 sphx_cfg = open("exorg.sphinx", "w")
-sphx_cfg.write(sphinx_cfg_template % {"EO_PATH" : os.environ["EO_ROOT"] } )
+sphx_cfg.write(
+    sphinx_cfg_template % {
+        "EO_PATH" : os.environ["EO_ROOT"],  
+        "DB_USER" : db_user,
+        "DB_NAME" : db_name,
+        }
+    )
 sphx_cfg.close()
 
 os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : os.environ["EO_ROOT"] });
