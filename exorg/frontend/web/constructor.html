@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<title>Layout 013 - Liquid Width of CSS Layouts</title>
+		<link rel="stylesheet" type="text/css" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="style_menu.css" />
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+ 
+		<script type="text/javascript" src="jquery-latest.min.js"></script>
+	</head>
+	<body>
+    	<!-- Begin Wrapper -->
+		<div id="wrapper">
+        	<!-- Begin Header -->
+			<div id="header"> Header </div>
+            <!-- End Header -->
+            <!-- Begin Left column -->
+
+            <!-- End Left column -->
+            <!-- Begin Main -->
+			<div id="main">
+
+
+			<div id="leftcolumn">
+      				<ul>
+        				<li><a href="index.html" title="">Готовые экскурсии</a></li>
+        				<li><a href="constructor.html" title="">Конструктор маршрута</a></li>
+        				<li><a href="/dev/null" title="">Редактирование</a></li>
+				</ul>
+			</div>
+
+
+
+            	<!-- Begin Content -->
+				<div id="content">
+					<!-- div class="innertube">Content</div -->
+					<div class="menu">
+						<ul>
+    							<li class="active"><a href="#">Дворцы</a></li>
+    							<li><a href="#">Музеи</a></li>
+    							<li><a href="#">Парки</a></li>
+							<li><a href="#">Пригороды</a></li>
+    							<li><a href="#">...</a></li>
+  						</ul>
+					</div>
+
+<!-- table width="100%" style="margin-top:0px; margin-bottom:0px; position:absolute;left:0px;top:expression(document.getElementById('div1').offsetHeight+'px');" id=t1 cellpadding="0" cellspacing="0" -->
+<tr><td>
+<!-- iframe src="1.html" style="height:expression((document.documentElement.clientHeight-document.getElementById('div1').offsetHeight)+'px');" width="100%"  frameborder="0" marginheight="0" marginwidth="0"></iframe -->
+<iframe src="frame.html" width="80%" height="80%">
+</td></tr></table>
+				</div>
+                <!-- End Content -->
+			</div>
+            <!-- End Main -->
+            <!-- Begin Footer -->
+			<div id="footer">Footer</div>
+            <!-- End Footer -->
+		</div>
+	</body>
+</html>

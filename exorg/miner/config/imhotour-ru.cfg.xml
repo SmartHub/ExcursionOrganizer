@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+  <include path="common.xml"/>
+
+  <var-def name="start_url">http://imhotour.ru/city/311486/todo</var-def>
+
+  <!-- Fetch a page and hairdress it -->
+  <var-def name="start_page">
+    <call name="fetch_http"> 
+      <call-param name="url">
+        <var name="start_url"/>
+      </call-param>
+    </call>
+  </var-def>
+
+  <!-- We used to be a bit lispy :(-->
+  <var-def name="num_of_pages">
+    <regexp max="1">
+      <regexp-pattern>page=(\d*)</regexp-pattern>
+      <regexp-source>
+        <xpath expression="//span[@class='pages']/a[last()]/@href">
+          <var name="start_page"/>
+        </xpath>
+      </regexp-source>
+      <regexp-result>
+        <template>${_1}</template>
+      </regexp-result>
+    </regexp>
+  </var-def> 
+
+  <!-- Make list of sightseeings on this page -->
+  <var-def name="sights">
+    <while condition="1" index="p_num" maxloops="${num_of_pages}">
+    <!--<while condition="1" index="p_num" maxloops="1">-->
+      <empty>
+        <var-def name="cur_page">
+          <call name="fetch_http"> 
+            <call-param name="url">
+              <template>${start_url}/?page=${p_num}</template>
+            </call-param>
+          </call>
+        </var-def>
+      </empty>
+      
+      
+      <loop item="i">
+        <list>
+          <!-- Select all four-level header with <A> child node with HREF attribute 
+               Sightseeings are presented in such a way -->
+          <xpath expression="//h4/a[@href]">
+            <var name="cur_page"/>
+          </xpath>
+        </list>
+        <body>
+          <empty>
+            <var-def name="descr_url">
+              <xpath expression="a/@href">
+                <var name="i"/>
+              </xpath>
+            </var-def>
+          </empty>
+
+          [Sight]
+          [Name]
+          <xpath expression="a/text()">
+            <var name="i"/>
+          </xpath>
+
+          <empty>
+            <var-def name="cont"> 
+              <call name="fetch_http">
+                <call-param name="url">
+                  <var name="descr_url"/>
+                </call-param>
+              </call>
+            </var-def>
+
+            <var-def name="raw_img_src">
+              <xpath expression="//div[@class='acc_label']/img/@src">
+                <var name="cont" />
+              </xpath>
+            </var-def>
+
+            <var-def name="info">
+              &lt;wrap&gt;
+              <xpath expression="//div[@class='incenter']/node()">
+                <var name="cont" />
+              </xpath>
+              &lt;/wrap&gt;
+            </var-def>            
+          </empty>
+          
+          [Description]
+          <xpath expression="/wrap/div[@class='resto_list']/text()">
+            <var name="info"/>
+          </xpath>
+
+          [Source]
+          <var name="descr_url" />
+
+          [Image]
+          <var name="raw_img_src" />
+          <!--
+          <script return="clean_img_src"><![CDATA[
+            p = java.util.regex.Pattern.compile("url\\((\\w*)\\)");
+            m = p.matcher(raw_img_src.toString());
+            if (m.matches()) {
+              clean_img_src = m.group(1);
+            } else {
+              clean_img_src = "";
+            }
+          ]]></script>
+          -->
+
+          [Address]
+          <xpath expression="/wrap/div[4]/div[1]/div[2]/text()">
+            <var name="info"/>
+          </xpath>
+
+          [City]
+          Санкт-Петербург
+          [Site]
+          <xpath expression="/wrap/div[4]/noindex/div/div[2]/a/@href">
+            <var name="info"/>
+          </xpath>
+        </body>
+      </loop>
+    </while>
+  </var-def>
+</config>
