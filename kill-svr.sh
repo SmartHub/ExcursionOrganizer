@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ssh exorg.ru "killall java; killall searchd"
+ssh eom@exorg.ru "killall java; killall searchd"

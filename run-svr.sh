@@ -1,3 +1,3 @@
 #!/bin/sh
 
-ssh exorg.ru "cd /home/eo-svr; source init_env.sh; frontend/http_server/script/run.sh"
+ssh eom@exorg.ru "cd /home/eom/eo-svr; source init_env.sh; frontend/http_server/script/run.sh"
