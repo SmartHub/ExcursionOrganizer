@@ -22,12 +22,29 @@ public class CafeProvider {
         private String address;
         private String descr;
         private String descrSource;
+        private DataProvider.Address[] addresses;
 
         public Cafe(SqlRowSet rs, DataProvider p) {
             this.dataProvider = p;
            
             this.id = rs.getLong("id");
-            this.address = rs.getString("address");
+            //this.address = rs.getString("address");
+
+            String q = String.format("SELECT COUNT(*) FROM cafe_address WHERE cafe_id=%d",
+                                     this.id);
+            int ac = p.getJdbcTemplate().queryForInt(q);
+            if (ac > 0) {
+                this.addresses = new DataProvider.Address[ac];
+
+                q = String.format("SELECT address, lat, lng FROM cafe_address WHERE cafe_id=%d",
+                                  this.id);
+                SqlRowSet address_rs = p.getJdbcTemplate().queryForRowSet(q);
+                boolean v = address_rs.first();
+                for (int i = 0; i < ac && v; ++i) {
+                    this.addresses[i] = new DataProvider.Address(address_rs);
+                    v = address_rs.next();
+                }
+            }
         }
 
         public Cafe(long cafeId, final String name, DataProvider p) {
@@ -38,25 +55,29 @@ public class CafeProvider {
 
         public void setAddress(final String addr) throws Exception {
             PreparedStatement s = 
-                dataProvider.getConnection().prepareStatement("UPDATE cafe SET address=? WHERE id=?;");
-            s.setString(1, addr);
-            s.setLong(2, this.id);
+                dataProvider.getConnection().prepareStatement("INSERT INTO cafe_address(cafe_id, address) VALUES (?, ?);");
+            s.setLong(1, this.id);
+            s.setString(2, addr);            
 
             s.execute();
         }
 
+        public DataProvider.Address[] getAddresses() {
+            return this.addresses;
+        }
+
         public String getAddress() {
-            String q = String.format("SELECT address FROM cafe WHERE id=%d;",
+            String q = String.format("SELECT address FROM cafe_address WHERE cafe_id=%d LIMIT 1;",
                                      this.id);
 
             return (String)dataProvider.getJdbcTemplate().queryForObject(q, String.class);
         }
 
         public boolean hasAddress() {
-            String q = String.format("SELECT address FROM cafe WHERE id=%d;",
+            String q = String.format("SELECT COUNT(*) FROM cafe_address WHERE id=%d;",
                                      this.id);
 
-            return dataProvider.getJdbcTemplate().queryForObject(q, String.class) != null;
+            return dataProvider.getJdbcTemplate().queryForLong(q) > 0;
         }
 
         public void setDescription(final String d, final String src) throws Exception {
@@ -65,6 +86,15 @@ public class CafeProvider {
             s.setLong(3, this.id);
             s.setString(1, d);
             s.setString(2, src);
+
+            s.execute();
+        }
+
+        public void setCuisine(final String cuisine) throws Exception {
+            PreparedStatement s = 
+                dataProvider.getConnection().prepareStatement("UPDATE cafe SET cuisine=? WHERE id=?;");
+            s.setLong(2, this.id);
+            s.setString(1, cuisine);
 
             s.execute();
         }
@@ -94,20 +124,20 @@ public class CafeProvider {
             return dataProvider.getJdbcTemplate().queryForLong(q);
         }
 
-        public boolean hasGeo() {
-            String q = String.format("SELECT lat FROM cafe WHERE id=%d;",
-                                     this.id);
-
-            return dataProvider.getJdbcTemplate().queryForObject(q, Double.class) != null;
+        public boolean hasGeo(final String address) {
+            String q = String.format("SELECT COUNT(*) FROM cafe_address WHERE cafe_id=%d AND address='%s' AND NOT (lat IS NULL);",
+                                     this.id, address);
+            return dataProvider.getJdbcTemplate().queryForInt(q) > 0;
         }
 
-        public void setGeoInfo(final String address, double lat, double lng) throws Exception {
+        public void setGeoInfo(final String old_address, final String new_address, double lat, double lng) throws Exception {
             PreparedStatement s = 
-                dataProvider.getConnection().prepareStatement("UPDATE cafe SET address=?, lat=?, lng=? WHERE id=?;");
-            s.setString(1, address);
+                dataProvider.getConnection().prepareStatement("UPDATE cafe_address SET address=?, lat=?, lng=? WHERE cafe_id=? AND address=?;");
+            s.setString(1, new_address);
             s.setDouble(2, lat);
             s.setDouble(3, lng);
             s.setLong(4, this.id);
+            s.setString(5, old_address);
 
             s.execute();           
         }
@@ -117,9 +147,13 @@ public class CafeProvider {
         this.dataProvider = p;
     }
 
+    private static String escape(final String s) {
+        return s.replaceAll("'", "\\\\'").replaceAll("\"", "\\\"");
+    }
+
     public Cafe add(final String name) throws Exception {
         String q = String.format("INSERT INTO cafe(name) VALUES ('%s');",
-                                 name);
+                                 escape(name));
         this.dataProvider.getJdbcTemplate().execute(q);
 
         int newCafeId = this.dataProvider.getJdbcTemplate().queryForInt("SELECT LAST_INSERT_ID();");
@@ -157,6 +191,6 @@ public class CafeProvider {
     }
 
     public Iterator<Cafe> cafeIterator() {
-        return new CafeIterator(dataProvider, "SELECT id, address FROM cafe;");
+        return new CafeIterator(dataProvider, "SELECT id FROM cafe;");
     }
 }

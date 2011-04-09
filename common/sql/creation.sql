@@ -58,22 +58,28 @@ CREATE TABLE cafe (
 	id         INT AUTO_INCREMENT PRIMARY KEY,
 	name       VARCHAR(100) NOT NULL,
 	type_id    INT NULL, /* тип места для питания (ресторан, кафе и т.п.) */
-	cuisine_id INT NULL, /* тип кухни */
-	city_id    INT NULL,
+        /*cuisine_id INT NULL,  тип кухни */
+        cuisine    VARCHAR(100), /* the temporary solution*/
+        url 	   VARCHAR(100) NULL,
+        city_id    INT NULL,
 	
-	address    VARCHAR(300) NULL,
-	url 	   VARCHAR(100) NULL,
 	descr	   TEXT NULL,
-        descr_src  TEXT NULL,
-
-        lat        DECIMAL(11, 8),
-        lng        DECIMAL(11, 8)
+        descr_src  VARCHAR(100) NULL       
 
         /*
 	FOREIGN KEY (type_id) 	 REFERENCES cafe_type(id) ON UPDATE CASCADE,
 	FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)	  ON UPDATE CASCADE,
 	FOREIGN KEY (city_id) 	 REFERENCES city(id) 	  ON UPDATE CASCADE
         */
+) DEFAULT CHARACTER SET=utf8;
+
+DROP TABLE IF EXISTS cafe_address;
+CREATE TABLE cafe_address (
+       cafe_id    INT,
+
+       address    VARCHAR(300),
+       lat        DECIMAL(11, 8),
+       lng        DECIMAL(11, 8)       
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Заливаем информацию, которую иы не сможем получить автоматически */

@@ -25,8 +25,6 @@ class CafeMiner extends Miner {
     }    
 
     protected void handle(final ScraperContext sc) throws Exception {
-        //System.out.println(sc.getVar("cafes").toString());
-
         String[] mined = sc.getVar("cafes").toString().split("\\[Cafe\\]\n");
 
         for (int i = 1; i < mined.length; ++i) {            
@@ -37,14 +35,27 @@ class CafeMiner extends Miner {
 
                 cafe.setCity(v.get("City"));
                 if (v.containsKey("Description")) {
-                    System.out.println("Setting description");
                     cafe.setDescription(v.get("Description"), v.get("Source"));
                 }
                 if (v.containsKey("Address")) {
-                    cafe.setAddress(v.get("Address").replaceAll("\n", " ").replaceAll("\\s+", " "));
+                    String[] addresses = v.get("Address").split("\\n");
+                    for (String address : addresses) {
+                        int cp = address.indexOf(':');
+                        if (cp == -1) {
+                            cafe.setAddress(address);
+                        } else {
+                            String a = address.substring(cp);
+                            if (a.length() > 1) {
+                                cafe.setAddress(a);
+                            }
+                        }                        
+                    }
                 }
                 if (v.containsKey("Site")) {
                     cafe.setURL(v.get("Site"));
+                }
+                if (v.containsKey("Cuisine")) {
+                    cafe.setCuisine(v.get("Cuisine").replaceAll("\\n", ""));
                 }
             }
         }

@@ -27,7 +27,7 @@ public class Main implements InitializingBean {
     private String proxyHost = "";
     private int proxyPort = 0;
     
-    private int    http_port = 80;
+    private int    httpPort = 80;
     private String GAPI_PROTO = "http://";
     private String GAPI_SERVER = "maps.googleapis.com";
     private String GAPI_PATH = "/maps/api/geocode/json?";
@@ -51,20 +51,26 @@ public class Main implements InitializingBean {
     }
 
     private String queryHttp(final String q) throws Exception {
-        String host_name = GAPI_SERVER;
+        String hostName = GAPI_SERVER;
         String path = GAPI_PATH + q + GAPI_Q_FOOTER;
 
         HttpState state = new HttpState();
 
         if (!doesUseProxy()) {
-            conn = new HttpConnection(host_name, http_port);
+            conn = new HttpConnection(hostName, httpPort);
+            conn.open();
         } else {
             if (conn == null) {
-                conn = new HttpConnection(proxyHost, proxyPort, host_name, http_port);
+                conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
+                conn.open();
+            } else {
+                /* Who knows why the connection to the proxy server suddenly closes? */
+                if (!conn.isOpen()) {
+                    conn.open();
+                }
             }
         }
         HttpMethod getMeth = new GetMethod();
-        conn.open();
         getMeth.setPath(path);
         getMeth.addRequestHeader("Host", "maps.googleapis.com");
         getMeth.addRequestHeader("Accept", "application/json");
@@ -113,8 +119,7 @@ public class Main implements InitializingBean {
 
         public GeoInfo(final String addr, double lat, double lng) {
             this.address = addr;
-            this.loc.lat = lat;
-            this.loc.lng = lng;
+            this.loc = new DataProvider.Loc(lat, lng);
         }
     }
 
@@ -161,21 +166,24 @@ public class Main implements InitializingBean {
     }
 
     private void addGeoInfo(CafeProvider.Cafe cafe) throws Exception {
-        if (!cafe.hasGeo()) {
-            if (cafe.hasAddress()) {
-                /* Google won't find a cafe by its name */
+        DataProvider.Address[] as = cafe.getAddresses();
+        if (as != null) {
+            for (DataProvider.Address a : as) {
+                if (!cafe.hasGeo(a.address)) {
+                    /* Google won't find a cafe by its name */
 
-                JSONObject r = queryGAPI(new String[]{"address", cafe.getAddress()});
-                List<GeoInfo> lgi = parseGeoInfo(r);
-                if (lgi != null) {
-                    for (GeoInfo gi : lgi) {
-                        if (dataProvider.isWithinCity(cafe.getCityId(), gi.loc)) {
-                            cafe.setGeoInfo(gi.address, gi.loc.lat, gi.loc.lng);
+                    JSONObject r = queryGAPI(new String[]{"address", a.address});
+                    List<GeoInfo> lgi = parseGeoInfo(r);
+                    if (lgi != null) {
+                        for (GeoInfo gi : lgi) {
+                            if (dataProvider.isWithinCity(cafe.getCityId(), gi.loc)) {
+                                cafe.setGeoInfo(a.address, gi.address, gi.loc.lat, gi.loc.lng);
+                            }
                         }
                     }
+                    
+                    Thread.sleep(500);
                 }
-
-                Thread.sleep(500);
             }
         }
     }
@@ -207,7 +215,7 @@ public class Main implements InitializingBean {
 
     public void afterPropertiesSet() {
         try {
-            processPOI();
+            //processPOI();
             processCafes();            
         } catch (Exception e) {
             System.out.println(e.toString());

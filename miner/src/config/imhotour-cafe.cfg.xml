@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<config charset="UTF-8">
+  <include path="common.xml"/>
+
+  <var-def name="start_url">http://imhotour.ru/city/311486/restaurant</var-def>
+
+  <!-- Fetch a page and hairdress it -->
+  <var-def name="start_page">
+    <call name="fetch_http"> 
+      <call-param name="url">
+        <template>${start_url}/</template>
+      </call-param>
+    </call>
+  </var-def>
+
+  <var-def name="num_of_pages">
+    <regexp max="1">
+      <regexp-pattern>page=(\d*)</regexp-pattern>
+      <regexp-source>
+        <xpath expression="//span[@class='pages']/a[last()]/@href">
+          <var name="start_page"/>
+        </xpath>
+      </regexp-source>
+      <regexp-result>
+        <template>${_1}</template>
+      </regexp-result>
+    </regexp>
+  </var-def> 
+
+  <!-- Make the list of cafes on the page -->
+  <var-def name="cafes">
+    <!--<while condition="1" index="p_num" maxloops="${num_of_pages}">-->
+    <while condition="1" index="p_num" maxloops="5">
+      <empty>
+        <var-def name="cur_page">
+          <call name="fetch_http"> 
+            <call-param name="url">
+              <template>${start_url}/?page=${p_num}</template>
+            </call-param>
+          </call>
+        </var-def>
+      </empty>
+      
+      
+      <loop item="i">
+        <list>
+          <xpath expression="//h4/a[@href]">
+            <var name="cur_page"/>
+          </xpath>
+        </list>
+        <body>
+          <empty>
+            <var-def name="info_url">
+              <xpath expression="a/@href">
+                <var name="i"/>
+              </xpath>
+            </var-def>
+          </empty>
+
+          [Cafe]
+          [Name]
+          <xpath expression="a/text()">
+            <var name="i"/>
+          </xpath>
+
+          <empty>
+            <var-def name="info_page"> 
+              <call name="fetch_http">
+                <call-param name="url">
+                  <var name="info_url"/>
+                </call-param>
+              </call>
+            </var-def>
+
+            <var-def name="info">
+              &lt;wrap&gt;
+              <xpath expression="//div[@class='incenter']/node()">
+                <var name="info_page" />
+              </xpath>
+              &lt;/wrap&gt;
+            </var-def>            
+          </empty>
+
+          [Cuisine]
+          <xpath expression="/wrap/text()">
+            <var name="info"/>
+          </xpath>
+          
+          [Description]
+          <xpath expression="/wrap/div[@class='resto_list']/text()">
+            <var name="info"/>
+          </xpath>
+
+          [Source]
+          <var name="info_url" />
+
+          [Address]
+          <empty>
+            <var-def name="raw_address">
+              <xpath expression="/wrap/div[3]/div[2]/text()">
+                <var name="info"/>
+              </xpath>
+            </var-def>
+
+            <case>
+              <if condition="${raw_address.toString().length()==0}">
+                <var-def name="raw_address">
+                  <xpath expression="/wrap/div[2]/div[2]/text()">
+                    <var name="info"/>
+                  </xpath>
+                </var-def>
+              </if>
+            </case>
+          </empty>
+
+          <!-- Google geocode fails to lookup an address if it contains brackets or metro station name -->
+          <script return="cafe_address"><![CDATA[
+             java.lang.String s = raw_address.toString().replaceAll("\\(.+\\)", "");
+             int cr = s.indexOf("м.");
+             if (cr == -1) {
+               cr = s.indexOf("М.");
+             }
+             if (cr != -1) {
+               cafe_address = s.substring(0, cr - 1);
+             } else {
+               cafe_address = s;
+             }
+          ]]></script>
+
+          [City]
+          Санкт-Петербург
+          [Site]
+          <xpath expression="/wrap/div[3]/noindex/p/a/@href">
+            <var name="info"/>
+          </xpath>
+        </body>
+      </loop>
+    </while>
+  </var-def>
+</config>
