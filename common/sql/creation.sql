@@ -50,6 +50,32 @@ CREATE TABLE place_of_interest (
 	FOREIGN KEY (city_id) REFERENCES city(id)     ON UPDATE CASCADE
 ) DEFAULT CHARACTER SET=utf8;
 
+
+
+/* пункты питания */
+DROP TABLE IF EXISTS cafe;
+CREATE TABLE cafe (
+	id         INT AUTO_INCREMENT PRIMARY KEY,
+	name       VARCHAR(100) NOT NULL,
+	type_id    INT NULL, /* тип места для питания (ресторан, кафе и т.п.) */
+	cuisine_id INT NULL, /* тип кухни */
+	city_id    INT NULL,
+	
+	address    VARCHAR(300) NULL,
+	url 	   VARCHAR(100) NULL,
+	descr	   TEXT NULL,
+        descr_src  TEXT NULL,
+
+        lat        DECIMAL(11, 8),
+        lng        DECIMAL(11, 8)
+
+        /*
+	FOREIGN KEY (type_id) 	 REFERENCES cafe_type(id) ON UPDATE CASCADE,
+	FOREIGN KEY (cuisine_id) REFERENCES cuisine(id)	  ON UPDATE CASCADE,
+	FOREIGN KEY (city_id) 	 REFERENCES city(id) 	  ON UPDATE CASCADE
+        */
+) DEFAULT CHARACTER SET=utf8;
+
 /* Заливаем информацию, которую иы не сможем получить автоматически */
 \. raw-tables.sql
 \. user-session.sql
