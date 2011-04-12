@@ -28,7 +28,7 @@
 					<B><xsl:apply-templates select="name"/></B>
 				</td>
 				<td>
-					<xsl:apply-templates select="address"/>
+					тут будет адрес
 				</td>
 			</tr>
 		</xsl:for-each>

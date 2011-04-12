@@ -26,5 +26,9 @@ echo "index database"
 #$EO_ROOT/common/script/index.py $EO_ROOT $username $password
 
 echo "run server"
-cd $EO_ROOT
-./svr_local.sh start $EO_ROOT $EO_CP
+cd $EO_ROOT/frontend/http_server/config
+
+searchd -c $EO_ROOT/common/script/exorg.sphinx
+
+java -cp $EO_CP \
+     eo.common.util.Starter config.xml $EO_ROOT
