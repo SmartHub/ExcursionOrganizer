@@ -3,7 +3,7 @@
 case $1 in 
     start) 
         echo "Starting..."
-        frontend/http_server/script/run.py -D $2 $3
+        frontend/http_server/script/run.py 0 $2 $3
         ;;
 
     stop) 
