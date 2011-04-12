@@ -15,16 +15,16 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" lazy-init="false">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="poi" class="eo.common.dbwrapper.POI">
+    <bean id="dataProvider" class="eo.common.dbwrapper.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
     <bean id="processingDaemon" class="eo.processing.Main">
-        <property name="POI" ref="poi"/>
+		<property name="dataProvider" ref="dataProvider"/>
         <property name="proxy" value="127.0.0.1:3128"/>
     </bean>
 </beans>

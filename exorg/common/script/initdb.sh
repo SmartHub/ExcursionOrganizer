@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#!/bin/sh
+
 PWD=$(pwd)
 cd $PWD/common/sql
 
@@ -11,3 +13,6 @@ if [ "$2" != "" ]
         cat creation.sql | mysql -u $1 excursion_organizer
         cat preload.sql  | mysql -u $1 excursion_organizer
 fi
+
+cd $PWD
+if [[ ! -a ../../frontend/index ]]; then mkdir ../../frontend/index; fi

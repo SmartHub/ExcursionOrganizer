@@ -36,3 +36,10 @@
 [Sat Apr  2 03:24:32.660 2011] [10811] accepting connections
 [Sat Apr  2 03:43:45.548 2011] [10811] caught SIGTERM, shutting down
 [Sat Apr  2 03:43:45.552 2011] [10811] shutdown complete
+[Sat Apr  2 09:33:47.689 2011] [ 4200] accepting connections
+[Sat Apr  2 09:38:30.652 2011] [ 4200] caught SIGTERM, shutting down
+[Sat Apr  2 09:38:30.655 2011] [ 4200] shutdown complete
+[Wed Apr 13 01:16:15.980 2011] [12751] accepting connections
+[Wed Apr 13 01:23:32.585 2011] [12751] caught SIGTERM, shutting down
+[Wed Apr 13 01:23:32.586 2011] [12751] shutdown complete
+[Wed Apr 13 01:23:44.630 2011] [13053] accepting connections
