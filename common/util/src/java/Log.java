@@ -9,7 +9,7 @@ import org.apache.log4j.xml.DOMConfigurator;
 
 // ================================================================================
 
-public class Logger {
+public class Log {
     public static void init() {
         String log_conf_path = System.getenv("EO_ROOT") + "/common/script/log4j.xml";
         DOMConfigurator.configure(log_conf_path);
@@ -20,7 +20,7 @@ public class Logger {
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
 
-        return pw.toString();
+        return sw.toString();
     }
 }
 

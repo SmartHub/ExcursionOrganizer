@@ -57,7 +57,7 @@ function updateCheckBoxes()
 function printPoiList(List)
 {
 	$('#poi-print').html('');
-	$('#poi-print').append('<br/>Выбранные для посещения POI:<br/><hr/>');
+	$('#poi-print').append('<br/>Выбранные для посещения места:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
 		$('#poi-print').append(List[i].Name + '<br/><hr/>');

@@ -4,7 +4,7 @@ import java.lang.*;
 import java.util.*;
 import java.sql.*;
 
-import org.springframework.jdbc.core.simple.SimpleJdbcTemplate;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -19,25 +19,8 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
  *                of type POI.Entry.
  *
  */
-public class POI {
-    private SimpleJdbcTemplate conn_;
-    private JdbcOperations ops_;
-
-    private static final String POI_TABLE_NAME = "place_of_interest";
-    private static final String POI_FIELD_ID = "id";
-    private static final String POI_FIELD_NAME = "name";
-    private static final String POI_FIELD_DESCR = "descr";
-    private static final String POI_FIELD_ADDRESS = "address";
-
-    public static class Loc {
-        public double lat;
-        public double lng;
-
-        public Loc(double lat_i, double lng_i) {
-            lat = lat_i;
-            lng = lng_i;
-        }
-    }
+public class POIProvider {
+    private DataProvider dataProvider;
 
     public static class Description {
         public String text;
@@ -48,17 +31,6 @@ public class POI {
             source_url = s;
         }
     }
-
-    /*
-    public static class City {
-        private int id_;
-        private Loc ne_, sw_;
-
-        City(final SqlRowSet city) {
-            id_.
-        }
-    }
-    */
 
     /** 
      *  A place of interest item.
@@ -71,47 +43,47 @@ public class POI {
      *  getLocation() - returns a locatoin of the POI.
      */
     public static class Entry {
-        private long id_;
-        private long city_id_;
+        private long id;
+        private long city_id;
         private String name_;
         private String address_;
 
-        private JdbcOperations ops_;
+        private JdbcTemplate jdbc;
 
         /**
          *  Constructs a POI item from a rowset. 
          *  Used internally within a POI iterator
          */
-        public Entry(final SqlRowSet poi, JdbcOperations ops) {
-            id_ = poi.getLong("id");
-            name_ = poi.getString("name");
-            city_id_ = poi.getLong("city_id");
+        public Entry(final SqlRowSet poi, DataProvider p) {
+            this.id = poi.getLong("id");
+            this.name_ = poi.getString("name");
+            this.city_id = poi.getLong("city_id");
 
-            address_ = poi.getString("address");
+            this.address_ = poi.getString("address");
             if (poi.wasNull()) {
                 address_ = "";
             }
 
-            ops_ = ops;
+            this.jdbc = p.getJdbcTemplate();
         }
 
         /**
          *  Constructs a POI item, given a name.
          *  Used iternally.
          */
-        public Entry(int id, final String name, JdbcOperations ops) {
-            id_ = id;
-            name_ = name_;
-            address_ = "";
+        public Entry(int id, final String name, DataProvider p) {
+            this.id = id;
+            this.name_ = name_;
+            this.address_ = "";
 
-            ops_ = ops;
+            this.jdbc = p.getJdbcTemplate();
         }
 
         /**
          *  Returns a name of POI
          */
         public String getName() {
-            return name_;
+            return this.name_;
         }
 
         /**
@@ -120,10 +92,10 @@ public class POI {
         public List<Description> getDescription() {
             String q = String.format(
                                      "SELECT descr, src_url FROM poi_raw_descr WHERE poi_id=%d;",
-                                     id_
+                                     this.id
                                      );
 
-            SqlRowSet rs = ops_.queryForRowSet(q);
+            SqlRowSet rs = this.jdbc.queryForRowSet(q);
             List<Description> d = new ArrayList<Description>();
 
             if (rs.first()) {
@@ -141,33 +113,33 @@ public class POI {
          *  Address management routines
          */
         public String getAddress() {
-            return address_;
+            return this.address_;
         }
 
         public void setAddress(final String address) {
             String q = String.format(
                                      "UPDATE place_of_interest SET address='%s' WHERE id=%d;",
-                                     address, id_
+                                     address, id
                                      );
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
         public boolean hasAddress() {
-            return address_.length() > 1;
+            return this.address_.length() > 1;
         }
 
         // --------------------------------------------------------------------------------
 
-        public Loc getLocation() {
+        public DataProvider.Loc getLocation() {
             String q = String.format(
                                      "SELECT lat, lng FROM poi_raw_geo WHERE poi_id=%d LIMIT 1;",
-                                     id_
+                                     id
                                      );
 
-            SqlRowSet rs = ops_.queryForRowSet(q);
+            SqlRowSet rs = jdbc.queryForRowSet(q);
             rs.first();
 
-            return new Loc(rs.getDouble("lat"), rs.getDouble("lng"));
+            return new DataProvider.Loc(rs.getDouble("lat"), rs.getDouble("lng"));
         }
 
         // --------------------------------------------------------------------------------
@@ -176,7 +148,7 @@ public class POI {
          *  City management routines
          */
         public long getCityId() {
-            return city_id_;
+            return this.city_id;
         }
 
         public void setCity(final String city) {
@@ -185,12 +157,12 @@ public class POI {
                                      city
                                      );
 
-            city_id_ = ops_.queryForInt(q);
+            this.city_id = jdbc.queryForInt(q);
             q = String.format(
                               "UPDATE place_of_interest SET city_id=%d WHERE id=%d;",
-                              city_id_, id_
+                              this.city_id, this.id
                               );
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
         // --------------------------------------------------------------------------------
@@ -198,9 +170,9 @@ public class POI {
         public void setURL(final String url) {
             String q = String.format(
                                      "UPDATE place_of_interest SET url='%s' WHERE id=%d;",
-                                     url, id_
+                                     url, this.id
                                      );
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
         // --------------------------------------------------------------------------------
@@ -211,20 +183,20 @@ public class POI {
         public boolean hasType() {
             String q = String.format(
                                      "SELECT type_id FROM place_of_interest WHERE id=%d;",
-                                     id_
+                                     id
                                      );
 
-            int t = ops_.queryForInt(q);
+            int t = this.jdbc.queryForInt(q);
             return t != 0 && t != 1;
         }
 
         public void setType(int t) {
             String q = String.format(
                                      "UPDATE place_of_interest SET type_id = %d WHERE id = %d;",
-                                     t, id_
+                                     t, this.id
                                      );
 
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
         public void guessType() {
@@ -233,7 +205,7 @@ public class POI {
                                      name_
                                      );
             try {
-                int t = ops_.queryForInt(q);
+                int t = this.jdbc.queryForInt(q);
                 if (t != 0) {
                     setType(t);
                 }
@@ -253,19 +225,19 @@ public class POI {
         public boolean hasRawGeo() {
             String q = String.format(
                                      "SELECT COUNT(*) FROM poi_raw_geo WHERE poi_id=%d;",
-                                     id_
+                                     id
                                      );
 
-            return ops_.queryForInt(q) > 0;
+            return this.jdbc.queryForInt(q) > 0;
         }
 
 
         public void clearRawGeoInfo() {
             String q = String.format(
                                      "DELETE FROM poi_raw WHERE id=%d;",
-                                     id_
+                                     id
                                      );
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
         /* Localization is implemented differently everywhere :( */
@@ -276,63 +248,30 @@ public class POI {
         public void addRawGeoInfo(final String address, double lat, double lng) {
             String q = String.format(
                                      "INSERT INTO poi_raw_geo(poi_id, address, lat, lng) VALUES (%d, '%s', '%s', '%s');",
-                                     id_, address, hack(lat), hack(lng)
+                                     id, address, hack(lat), hack(lng)
                                      );
-            ops_.execute(q);
+            this.jdbc.execute(q);
         }
 
-        public void addRawDescr(final String descr, final String source) {
-            /*
-            String q = String.format(
-                                     "INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (%d, '%s', '%s');",
-                                     id_, descr, source
-                                     );
-            ops_.execute(q);
-            */
+        public void addRawDescr(final String descr, final String source) throws Exception {
+            PreparedStatement s = 
+                jdbc.getDataSource().getConnection().prepareStatement("INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (?, ?, ?);");
 
-            /*
-
-            PreparedStatement s 
-                = conn_.prepareStatement("INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (?, ?, ?);");
-
-            s.setInt(1, id_);
+            s.setLong(1, this.id);
             s.setString(2, descr);
             s.setString(3, source);
-            */
 
-            class Updater implements PreparedStatementCreator {
-                private String s_, d_;
-                private long id_;
-
-                public Updater(long id, final String d, final String s) {
-                    s_ = s;
-                    d_ = d;
-                    id_ = id;
-                }
-
-                public PreparedStatement createPreparedStatement(Connection conn) throws SQLException {
-                    PreparedStatement s 
-                        = conn.prepareStatement("INSERT INTO poi_raw_descr(poi_id, descr, src_url) VALUES (?, ?, ?);");
-
-                    s.setLong(1, id_);
-                    s.setString(2, d_);
-                    s.setString(3, s_);
-
-                    return s;
-                }
-            }
-
-            ops_.update(new Updater(id_, descr, source));
+            s.execute();
         }
 
         public void addRawImages(final String[] imgs) {
             for (int i = 0; i < imgs.length; ++i) {
                 if (imgs[i].length() > 1) {
                     String q = String.format(
-                                     "INSERT INTO poi_raw_images(poi_id, img_url) VALUES (%d, '%s');",
-                                     id_, imgs[i]
-                                     );
-                    ops_.execute(q);
+                                             "INSERT INTO poi_raw_images(poi_id, img_url) VALUES (%d, '%s');",
+                                             this.id, imgs[i]
+                                             );
+                    this.jdbc.execute(q);
                 }
             }
         }
@@ -340,26 +279,29 @@ public class POI {
 
     // --------------------------------------------------------------------------------
 
-    private static class POIIterator implements Iterator {
-        private JdbcOperations ops_;
-        private SqlRowSet pois_;
-        private boolean valid_;
+    public POIProvider(DataProvider p) {
+        this.dataProvider = p;
+    }
 
-        public POIIterator(JdbcOperations ops) {
-            ops_ = ops;
-            pois_ = ops_.queryForRowSet("SELECT id, name, address, city_id FROM place_of_interest;");
+    private static class POIIterator implements Iterator<Entry> {
+        private DataProvider dataProvider;
+        private SqlRowSet rs;
+        private boolean valid;
 
-            valid_ = pois_.first();
+        public POIIterator(DataProvider p, final String q) {
+            this.dataProvider = p;
+            this.rs = this.dataProvider.getJdbcOperations().queryForRowSet(q);
+            this.valid = this.rs.first();
         }
 
         public boolean hasNext() {
-            return valid_;
+            return this.valid;
         }
 
         public Entry next() {
-            if (valid_) {
-                Entry e = new Entry(pois_, ops_);
-                valid_ = pois_.next();
+            if (valid) {
+                Entry e = new Entry(this.rs, this.dataProvider);
+                this.valid = rs.next();
                 return e;
             } else {
                 throw new NoSuchElementException();
@@ -370,75 +312,21 @@ public class POI {
         }
     }
 
-    // --------------------------------------------------------------------------------
-
-    public POI(SimpleJdbcTemplate conn) {
-        conn_ = conn;
-        ops_ = conn_.getJdbcOperations();
-    }
-
-
-    public Iterator poiIterator() {
-        return new POIIterator(ops_);
+    public Iterator<Entry> poiIterator() {
+        return new POIIterator(this.dataProvider, "SELECT id, name, address, city_id FROM place_of_interest;");
     }        
 
 
     public Entry add(final String name) throws Exception {
         String q = String.format(
-                                 "INSERT INTO %s(%s) VALUES ('%s');",
-                                 POI_TABLE_NAME, POI_FIELD_NAME, name
+                                 "INSERT INTO place_of_interest(name) VALUES ('%s');",
+                                 name
                                  );
-        ops_.execute(q);
+        this.dataProvider.getJdbcTemplate().execute(q);
 
-        int new_poi_id = ops_.queryForInt("SELECT LAST_INSERT_ID();");
-        return new Entry(new_poi_id, name, ops_);
+        int newPoiId = this.dataProvider.getJdbcTemplate().queryForInt("SELECT LAST_INSERT_ID();");
+        return new Entry(newPoiId, name, this.dataProvider);
     }
-
-    // --------------------------------------------------------------------------------
-
-    public boolean isWithinCity(long city_id, Loc loc) {
-        String q = String.format(
-                                 "SELECT sw_lat, sw_lng, ne_lat, ne_lng FROM city WHERE id=%d;",
-                                 city_id
-                                 );
-
-        SqlRowSet rs = ops_.queryForRowSet(q);
-        rs.first();
-        return (loc.lat >= rs.getDouble("sw_lat") && loc.lat <= rs.getDouble("ne_lat")) 
-            && 
-            (loc.lng >= rs.getDouble("sw_lng") && loc.lng <= rs.getDouble("ne_lng"));
-    }
-
-    public long getCityId(final String city_name) {
-        String q = String.format(
-                                 "SELECT id FROM city WHERE name='%s';",
-                                 city_name
-                                 );
-
-        return ops_.queryForLong(q);
-    }
-
-    /*
-    public Map<Integer, List<String>> getTypeKeywords() {
-        SqlRowSet rs = ops_.queryForRowSet("SELECT id, name FROM poi_type UNION SELECT type_id id, keyword FROM poi_type_heuristics;");
-        boolean valid = rs.first();
-        Map<Integer, List<String>> res = new TreeMap<Integer, List<String>>();
-        
-        while (valid) {
-            int type_id = rs.getInt("id");
-
-            if (res.get(type_id) == null) {
-                res.put(type_id, new ArrayList<String>());
-            }
-
-            res.get(type_id).add(rs.getString("name"));
-
-            valid = rs.next();
-        }
-
-        return res;
-    }
-    */
 }
 
 // ================================================================================

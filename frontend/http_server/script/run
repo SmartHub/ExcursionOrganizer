@@ -1,0 +1,31 @@
+#!/usr/bin/python
+
+import os
+import sys
+
+os.chdir(os.environ["EO_ROOT"] + "/frontend/http_server/src/config")
+
+daemonize = False
+if len(sys.argv) >= 2:
+    if sys.argv[1] == "-D":
+        daemonize = True
+
+if daemonize == True:
+    fd_null = os.open("/dev/null", os.O_RDWR)
+    os.dup2(fd_null, 0)
+    os.dup2(fd_null, 1)
+    os.dup2(fd_null, 2)
+
+os.system("killall searchd")
+
+if os.fork() == 0:
+    os.execlp("searchd", "searchd", "-c", os.environ["EO_ROOT"] + "/common/script/exorg.sphinx")
+
+if daemonize == True:
+    if os.fork() == 0:
+        os.execlp("java", "java", "-cp", os.environ["EO_CP"], "eo.common.Starter", "config.xml")
+    else:
+        sys.exit()
+
+os.system("java -cp " + os.environ["EO_CP"] + " eo.common.Starter config.xml")
+
