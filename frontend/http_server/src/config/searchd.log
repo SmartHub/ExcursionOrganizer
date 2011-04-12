@@ -1,7 +1,0 @@
-[Wed Mar 30 19:38:58.035 2011] [ 7269] accepting connections
-[Wed Mar 30 19:41:46.761 2011] [ 7304] WARNING: ill-formed client request (length=779645804 out of bounds)
-[Wed Mar 30 19:41:46.905 2011] [ 7305] WARNING: ill-formed client request (length=1768124270 out of bounds)
-[Wed Mar 30 19:41:46.944 2011] [ 7306] WARNING: ill-formed client request (length=1768124270 out of bounds)
-[Wed Mar 30 19:41:54.877 2011] [ 7307] WARNING: ill-formed client request (length=1949134959 out of bounds)
-[Wed Mar 30 19:43:02.962 2011] [ 7269] caught SIGTERM, shutting down
-[Wed Mar 30 19:43:02.962 2011] [ 7269] shutdown complete
