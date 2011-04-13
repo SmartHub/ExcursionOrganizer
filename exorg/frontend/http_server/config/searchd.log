@@ -43,3 +43,14 @@
 [Wed Apr 13 01:23:32.585 2011] [12751] caught SIGTERM, shutting down
 [Wed Apr 13 01:23:32.586 2011] [12751] shutdown complete
 [Wed Apr 13 01:23:44.630 2011] [13053] accepting connections
+[Wed Apr 13 01:42:35.383 2011] [13053] caught SIGTERM, shutting down
+[Wed Apr 13 01:42:35.384 2011] [13053] shutdown complete
+[Wed Apr 13 01:42:35.415 2011] [13707] accepting connections
+[Wed Apr 13 01:52:33.447 2011] [13707] caught SIGTERM, shutting down
+[Wed Apr 13 01:52:33.448 2011] [13707] shutdown complete
+[Wed Apr 13 01:56:10.658 2011] [14183] accepting connections
+[Wed Apr 13 01:57:43.338 2011] [14183] caught SIGTERM, shutting down
+[Wed Apr 13 01:57:43.341 2011] [14183] shutdown complete
+[Thu Apr 14 00:05:09.515 2011] [ 4162] accepting connections
+[Thu Apr 14 00:05:09.933 2011] [ 4162] caught SIGTERM, shutting down
+[Thu Apr 14 00:05:09.933 2011] [ 4162] shutdown complete

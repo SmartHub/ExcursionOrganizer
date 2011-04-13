@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0e605aff-8057-40c8-9969-3b23de0d942a" name="Default" comment="" />
-    <ignored path="exorg.iws" />
     <ignored path=".idea/workspace.xml" />
+    <ignored path="exorg.iws" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,40 +59,7 @@
   </component>
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="config.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/processing/config/config.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="65" selection-start="1028" selection-end="1028" vertical-scroll-proportion="-5.952381">
-              <folding />
-            </state>
-          </provider>
-          <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="47" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="start.sh" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/start.sh">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="29" column="36" selection-start="753" selection-end="753" vertical-scroll-proportion="0.8426966">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FindManager">
     <FindUsagesManager>
@@ -102,9 +69,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java" />
-        <option value="$PROJECT_DIR$/frontend/http_server/content/common.xsl" />
-        <option value="$PROJECT_DIR$/frontend/http_server/content/type.xsl" />
         <option value="$PROJECT_DIR$/frontend/http_server/config/config.xml" />
         <option value="$PROJECT_DIR$/common/sql/creation.sql" />
         <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POITypesHandler.java" />
@@ -113,11 +77,14 @@
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/POIProvider.java" />
         <option value="$PROJECT_DIR$/processing/src/java/eo/processing/Main.java" />
-        <option value="$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java" />
+        <option value="$PROJECT_DIR$/processing/config/config.xml" />
+        <option value="$PROJECT_DIR$/common/src/java/eo/common/util/Starter.java" />
         <option value="$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java" />
         <option value="$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java" />
-        <option value="$PROJECT_DIR$/processing/config/config.xml" />
+        <option value="$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java" />
         <option value="$PROJECT_DIR$/start.sh" />
+        <option value="$PROJECT_DIR$/custom.properties" />
+        <option value="$PROJECT_DIR$/miner/config/config.xml" />
       </list>
     </option>
   </component>
@@ -156,7 +123,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -171,7 +137,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="processing" />
+              <option name="myItemId" value="miner" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -181,7 +147,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="processing" />
+              <option name="myItemId" value="miner" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -193,7 +159,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="processing" />
+              <option name="myItemId" value="miner" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -203,7 +169,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="processing" />
+              <option name="myItemId" value="miner" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -271,10 +237,11 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane />
       </pane>
-      <pane id="Scope" />
+      <pane id="Favorites" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -290,8 +257,8 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
   </component>
   <component name="PublishConfig">
     <servers>
@@ -441,7 +408,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25455928" sideWeight="0.64646465" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26823708" sideWeight="0.64646465" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -495,100 +462,16 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/util/Starter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="11" selection-start="266" selection-end="266" vertical-scroll-proportion="0.33707866">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/frontend/http_server/config/config.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="84" column="53" selection-start="3113" selection-end="3113" vertical-scroll-proportion="0.3181818" />
-      </provider>
-      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/web/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/http_server/content/type.xsl">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="26" column="35" selection-start="1106" selection-end="1106" vertical-scroll-proportion="0.12052117" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/sql/user-session.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/POIProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="28" vertical-scroll-proportion="-0.8745583">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testing/src/java/eo/testing/SearcherTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="0" selection-start="171" selection-end="171" vertical-scroll-proportion="0.2385159">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="126" column="26" selection-start="4119" selection-end="4119" vertical-scroll-proportion="0.6875">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/CafeProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="27" selection-start="27" selection-end="27" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="82" column="25" selection-start="2520" selection-end="2520" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="44" selection-start="369" selection-end="369" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="44" selection-start="144" selection-end="144" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/processing/config/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="65" selection-start="1028" selection-end="1028" vertical-scroll-proportion="-5.952381">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-3.546875">
           <folding />
         </state>
       </provider>
@@ -598,7 +481,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="47" selection-start="1242" selection-end="1242" vertical-scroll-proportion="0.0">
+        <state line="37" column="47" selection-start="1242" selection-end="1242" vertical-scroll-proportion="1.0557184">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/svr_local.sh">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/processing/config/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="49" selection-start="1116" selection-end="1116" vertical-scroll-proportion="0.16611296">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="44" selection-start="369" selection-end="369" vertical-scroll-proportion="0.35014838">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -607,7 +514,83 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/start.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="29" column="36" selection-start="753" selection-end="753" vertical-scroll-proportion="0.8426966">
+        <state line="21" column="82" selection-start="545" selection-end="545" vertical-scroll-proportion="0.51038575">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/custom.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="96" selection-start="96" selection-end="96" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="35" column="57" selection-start="1870" selection-end="1870" vertical-scroll-proportion="0.9501661">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="218" selection-end="218" vertical-scroll-proportion="0.19881305">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="13" selection-start="245" selection-end="245" vertical-scroll-proportion="0.31460676">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="29" selection-start="796" selection-end="796" vertical-scroll-proportion="1.1151686">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/CafeProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="370" selection-end="370" vertical-scroll-proportion="0.52492666">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="12" column="13" selection-start="382" selection-end="382" vertical-scroll-proportion="0.505618">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/POIProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="79" selection-start="4900" selection-end="4900" vertical-scroll-proportion="0.6598241">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/config/debug.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5242" column="13" selection-start="1193452" selection-end="1193452" vertical-scroll-proportion="-0.7155425">
           <folding />
         </state>
       </provider>
