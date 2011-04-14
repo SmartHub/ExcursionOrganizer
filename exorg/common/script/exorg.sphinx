@@ -43,7 +43,7 @@ index poi_index
 {
   source  = poi
 
-  path    = /home/kate/APTU/ExcursionOrganizer/exorg/frontend/index/poi
+  path    = /home/kate/APTU/ExcursionOrganizer/ExcursionOrganizer/exorg/frontend/index/poi
   docinfo = extern
 
   mlock   = 0
