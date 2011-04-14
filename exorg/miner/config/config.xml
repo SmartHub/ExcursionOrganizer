@@ -26,13 +26,11 @@
     <bean id="miner" class="eo.miner.Main">
       <property name="miners">
         <list>
-          <!--
           <bean class="eo.miner.CafeMiner">
             <property name="dataProvider" ref="dataProvider"/>
             <property name="config" value="imhotour-cafe.cfg.xml"/>
             <property name="proxy" value="127.0.0.1:3128"/>
           </bean>
-          -->
 
           <!--
           <bean class="eo.miner.POIMiner">
@@ -42,11 +40,13 @@
           </bean>
           -->
 
+          <!--
           <bean class="eo.miner.POIMiner">
             <property name="dataProvider" ref="dataProvider"/>
             <property name="config" value="ilovepetersburg-ru-culture.cfg.xml"/>
             <property name="proxy" value="127.0.0.1:3128"/>
           </bean>
+          -->
         </list>
       </property>
   </bean>

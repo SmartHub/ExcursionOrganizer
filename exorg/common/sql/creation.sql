@@ -104,5 +104,4 @@ CREATE TABLE cafe_address (
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Заливаем информацию, которую иы не сможем получить автоматически */
---\. raw-tables.sql
 \. user-session.sql

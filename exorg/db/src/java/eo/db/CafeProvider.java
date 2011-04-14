@@ -58,8 +58,9 @@ public class CafeProvider {
         public void remove() { }
     }
 
-    public CafeProvider(DataProvider p) throws Exception {
+    public CafeProvider(DataProvider p) {
         this.dataProvider = p;
+        this.jdbc = p.getJdbcTemplate();
     }
 
     private static String escape(final String s) {
@@ -67,10 +68,13 @@ public class CafeProvider {
     }
 
     public Cafe add(final String name) throws Exception {
+        jdbc.update("INSERT INTO cafe(name) VALUES (?);",
+                    new Object[]{name});
+        /*
         String q = String.format("INSERT INTO cafe(name) VALUES ('%s');",
                                  escape(name));
         this.dataProvider.getJdbcTemplate().execute(q);
-
+        */
         int newCafeId = this.dataProvider.getJdbcTemplate().queryForInt("SELECT LAST_INSERT_ID();");
         return new Cafe(newCafeId, name);
     }
@@ -81,20 +85,22 @@ public class CafeProvider {
 
     public void sync(final Cafe cafe) {
         this.jdbc.update(
-                         "UPDATE cafe SET descr=?, descr_src=?, url=? WHERE id=?);",
+                         "UPDATE cafe SET descr=?, descr_src=?, url=?, cuisine=? WHERE id=?;",
                          new Object[] {
                              cafe.getDescription().getText(),
                              cafe.getDescription().getSourceURL(),
                              cafe.getURL(),
+                             cafe.getCuisine(),
                              cafe.getId()
                          });
 
         for (Location loc : cafe.getLocations()) {
             this.jdbc.update(
-                             "INSERT INTO cafe_address(cafe_id, city_id, address, lat, lng) VALUES (?, ?, ?, ?);",
+                             "INSERT INTO cafe_address(cafe_id, city_id, address, lat, lng) VALUES (?, ?, ?, ?, ?);",
                              new Object[] {
                                  cafe.getId(),
                                  loc.getCityId(),
+                                 loc.getAddress(),
                                  loc.getLat(),
                                  loc.getLng()
                              });

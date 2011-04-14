@@ -1,13 +1,14 @@
 package eo.miner;
 
-import org.apache.commons.httpclient.cookie.CookiePolicy;
+import java.util.TreeMap;
 
+import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.log4j.Logger;
+
 import org.webharvest.definition.ScraperConfiguration;
+import org.webharvest.exception.HttpException;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.ScraperContext;
-
-import java.util.TreeMap;
 
 import eo.db.*;
 
@@ -85,27 +86,29 @@ public abstract class Miner {
         try {
             for (String configFile : this.configFiles) {
                 this.log.warn("Working on " + configFile);
-                
-                ScraperConfiguration config = 
-                    new ScraperConfiguration(configFile);
-                Scraper scraper = new Scraper(config, ".");                        
-
-                if (this.proxyHost != null) {
-                    scraper.getHttpClientManager().setHttpProxy(proxyHost, proxyPort);
-                }
-                
-                scraper.getHttpClientManager().getHttpClient().getParams().setSoTimeout(this.httpTimeout);
-                scraper.getHttpClientManager().getHttpClient().getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
-                scraper.getHttpClientManager().getHttpClient().getHttpConnectionManager().getParams().setConnectionTimeout(this.httpTimeout);
-                scraper.setDebug(false);
 
                 int cTry = this.maxRetries;
                 boolean success = false;
-                while (!success && cTry > 0) {
+                
+                Scraper scraper = null;
+                while (!success && cTry > 0) {                
+                    ScraperConfiguration config = 
+                        new ScraperConfiguration(configFile);
+                    scraper = new Scraper(config, ".");
+
+                    if (this.proxyHost != null) {
+                        scraper.getHttpClientManager().setHttpProxy(proxyHost, proxyPort);
+                    }
+                
+                    scraper.getHttpClientManager().getHttpClient().getParams().setSoTimeout(this.httpTimeout);
+                    scraper.getHttpClientManager().getHttpClient().getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
+                    scraper.getHttpClientManager().getHttpClient().getHttpConnectionManager().getParams().setConnectionTimeout(this.httpTimeout);
+                    scraper.setDebug(false);
+
                     try {
                         scraper.execute();
                         success = true;
-                    } catch (org.webharvest.exception.HttpException e) {
+                    } catch (HttpException e) {
                         this.log.warn("HTTP error occured. Retries left " + String.valueOf(cTry));
                         System.out.println("HTTP error occured. Retries left " + String.valueOf(cTry));
                         cTry = cTry - 1;
