@@ -11,11 +11,9 @@ class CafeMiner extends Miner {
 
     public CafeMiner() { }
 
-    final public void setDataProvider(final DataProvider p) {
-        cafeProvider = p.getCafeProvider();
-    }    
-
     protected void handle(final ScraperContext sc) throws Exception {
+        cafeProvider = dataProvider.getCafeProvider();
+
         String[] mined = sc.getVar("cafes").toString().split("\\[Cafe\\]\n");
 
         for (int i = 1; i < mined.length; ++i) {            

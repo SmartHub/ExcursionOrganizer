@@ -15,18 +15,25 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
-    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" lazy-init="false">
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="poi" class="eo.common.dbwrapper.POI">
+    <bean id="dataProvider" class="eo.common.dbwrapper.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
     <bean id="miner" class="eo.miner.Main">
-        <property name="POI" ref="poi"/>
-        <property name="config"
-                  value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
-        <property name="proxy" value="127.0.0.1:3128"/>
+      <property name="dataProvider" ref="dataProvider"/>
+
+      <property name="miners">
+        <list>
+          <bean class="eo.miner.POIMiner">
+            <property name="config"
+                      value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
+            <property name="proxy" value="127.0.0.1:3128"/>
+          </bean>
+        </list>
+      </property>
     </bean>
 </beans>

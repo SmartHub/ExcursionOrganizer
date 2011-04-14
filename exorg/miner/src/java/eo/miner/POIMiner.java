@@ -11,11 +11,9 @@ public class POIMiner extends Miner {
     
     public POIMiner() { }
 
-    final public void setDataProvider(final DataProvider p) {
-        poiProvider = p.getPOIProvider();
-    }
-
     protected void handle(final ScraperContext sc) throws Exception {
+        this.poiProvider = dataProvider.getPOIProvider();
+
         String[] mined = sc.getVar("sights").toString().split("\\[Sight\\]\n");
 
         for (int i = 1; i < mined.length; ++i) {

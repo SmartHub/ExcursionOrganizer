@@ -7,13 +7,20 @@ import org.webharvest.runtime.ScraperContext;
 
 import java.util.TreeMap;
 
+import eo.common.dbwrapper.*;
+
 // ================================================================================
 
 public abstract class Miner {
-    private String[] configFiles;
-    private String proxy;
-
     private Logger log;
+    private String[] configFiles;
+    private int httpTimeout;
+    private int maxRetries;
+
+    private String proxyHost;
+    private int proxyPort;
+
+    protected DataProvider dataProvider;
 
     protected static class Vars extends TreeMap<String, String> { }
 
@@ -43,8 +50,14 @@ public abstract class Miner {
 
     public Miner() {
         this.log = Logger.getLogger(Main.class);
-        this.proxy = "";
         this.configFiles = new String[0];
+
+        this.httpTimeout = 5000;
+        this.maxRetries = 5;        
+    }
+
+    final public void setDataProvider(final DataProvider p) {
+        this.dataProvider = p;
     }
 
     final public void setConfig(final String config) {
@@ -52,29 +65,57 @@ public abstract class Miner {
     }
 
     final public void setProxy(final String proxy) {
-        this.proxy = proxy;
+        String[] proxyCfg = proxy.split(":");
+
+        this.proxyHost = proxyCfg[0];
+        this.proxyPort = Integer.parseInt(proxyCfg[1]);
+    }
+
+    final public void setHttpTimeout(int timeout) {
+        this.httpTimeout = timeout;
+    }
+
+    final public void setMaxRetries(int retries) {
+        this.maxRetries = retries;
     }
 
     final public void run() {
         try {
-            for (int j = 0; j < this.configFiles.length; ++j) {
-                this.log.info("Working on " + this.configFiles[j]);
-
+            for (String configFile : this.configFiles) {
+                this.log.warn("Working on " + configFile);
+                
                 ScraperConfiguration config = 
-                    new ScraperConfiguration(configFiles[j]);
-                Scraper scraper = new Scraper(config, ".");
+                    new ScraperConfiguration(configFile);
+                Scraper scraper = new Scraper(config, ".");                        
 
-                if (this.proxy.length() > 0) {
-                    String[] proxyCfg = this.proxy.split(":");
-                    String proxyHost = proxyCfg[0];
-                    int proxyPort = Integer.parseInt(proxyCfg[1]);
+                if (this.proxyHost != null) {
                     scraper.getHttpClientManager().setHttpProxy(proxyHost, proxyPort);
                 }
-        
+                
+                scraper.getHttpClientManager().getHttpClient().getParams().setSoTimeout(this.httpTimeout);
+                scraper.getHttpClientManager().getHttpClient().getHttpConnectionManager().getParams().setConnectionTimeout(this.httpTimeout);
                 scraper.setDebug(false);
-                scraper.execute();
 
-                handle(scraper.getContext());
+                int cTry = this.maxRetries;
+                boolean success = false;
+                while (!success && cTry > 0) {
+                    try {
+                        scraper.execute();
+                        success = true;
+                    } catch (org.webharvest.exception.HttpException e) {
+                        this.log.warn("HTTP error occured. Retries left " + String.valueOf(cTry));
+                        System.out.println("HTTP error occured. Retries left " + String.valueOf(cTry));
+                        cTry = cTry - 1;
+                    } finally {
+                    }
+                }
+
+                if (success) {
+                    handle(scraper.getContext());
+                } else {
+                    this.log.warn("Not handling " + configFile + ". Retry count exceeded.");
+                    System.out.println("Not handling " + configFile + ". Retry count exceeded.");
+                }
             }
         } catch (Exception e) {
             System.out.println("Exception was caught. See debug.log for details");
