@@ -19,41 +19,35 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataProvider" class="eo.common.dbwrapper.DataProvider">
+    <bean id="dataProvider" class="eo.db.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
     <bean id="miner" class="eo.miner.Main">
-<<<<<<< HEAD
-      <property name="dataProvider" ref="dataProvider"/>
-
       <property name="miners">
         <list>
+          <!--
+          <bean class="eo.miner.CafeMiner">
+            <property name="dataProvider" ref="dataProvider"/>
+            <property name="config" value="imhotour-cafe.cfg.xml"/>
+            <property name="proxy" value="127.0.0.1:3128"/>
+          </bean>
+          -->
+
+          <!--
           <bean class="eo.miner.POIMiner">
-            <property name="config"
-                      value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
+            <property name="dataProvider" ref="dataProvider"/>
+            <property name="config" value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
+            <property name="proxy" value="127.0.0.1:3128"/>
+          </bean>
+          -->
+
+          <bean class="eo.miner.POIMiner">
+            <property name="dataProvider" ref="dataProvider"/>
+            <property name="config" value="ilovepetersburg-ru-culture.cfg.xml"/>
             <property name="proxy" value="127.0.0.1:3128"/>
           </bean>
         </list>
       </property>
-    </bean>
-=======
-    <property name="miners">
-      <list>
-        <bean class="eo.miner.CafeMiner">
-          <property name="dataProvider" ref="dataProvider"/>
-          <property name="config" value="imhotour-cafe.cfg.xml"/>
-          <property name="proxy" value="127.0.0.1:3128"/>
-        </bean>
-
-        <bean class="eo.miner.POIMiner">
-          <property name="dataProvider" ref="dataProvider"/>
-          <property name="config" value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
-          <property name="proxy" value="127.0.0.1:3128"/>
-        </bean>
-
-      </list>
-    </property>
   </bean>
->>>>>>> d53779d931e3bd9aed008d1f5a15aa69ef71e6c1
 </beans>

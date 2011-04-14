@@ -1,8 +1,11 @@
 package eo.miner;
 
-import eo.common.dbwrapper.CafeProvider;
-import eo.common.dbwrapper.DataProvider;
 import org.webharvest.runtime.ScraperContext;
+
+import eo.model.*;
+
+import eo.db.CafeProvider;
+import eo.db.DataProvider;
 
 // ================================================================================
 
@@ -12,17 +15,17 @@ class CafeMiner extends Miner {
     public CafeMiner() { }
 
     protected void handle(final ScraperContext sc) throws Exception {
-        cafeProvider = dataProvider.getCafeProvider();
+        this.cafeProvider = dataProvider.getCafeProvider();
 
         String[] mined = sc.getVar("cafes").toString().split("\\[Cafe\\]\n");
 
         for (int i = 1; i < mined.length; ++i) {            
             Vars v = parseMinedItem(mined[i]);
 
-            if (v.containsKey("City")) {
-                CafeProvider.Cafe cafe = cafeProvider.add(v.get("Name"));
+            if (v.containsKey("City") && v.containsKey("Name")) {
+                long cityId = dataProvider.getCityId(v.get("City"));
+                Cafe cafe = cafeProvider.add(v.get("Name"));
 
-                cafe.setCity(v.get("City"));
                 if (v.containsKey("Description")) {
                     cafe.setDescription(v.get("Description"), v.get("Source"));
                 }
@@ -31,11 +34,11 @@ class CafeMiner extends Miner {
                     for (String address : addresses) {
                         int cp = address.indexOf(':');
                         if (cp == -1) {
-                            cafe.setAddress(address);
+                            cafe.addLocation(cityId, address);
                         } else {
                             String a = address.substring(cp);
                             if (a.length() > 1) {
-                                cafe.setAddress(a);
+                                cafe.addLocation(cityId, a);
                             }
                         }                        
                     }
@@ -46,6 +49,8 @@ class CafeMiner extends Miner {
                 if (v.containsKey("Cuisine")) {
                     cafe.setCuisine(v.get("Cuisine").replaceAll("\\n", ""));
                 }
+
+                this.cafeProvider.sync(cafe);
             }
         }
     }

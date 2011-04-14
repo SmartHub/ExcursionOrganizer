@@ -43,14 +43,34 @@ CREATE TABLE place_of_interest (
 	city_id INT NULL,
 
 	address VARCHAR(300) NULL,
-	url 	VARCHAR(300) NULL,
+        lat     DECIMAL(11, 8),
+        lng     DECIMAL(11, 8),
+
+	url 	VARCHAR(300) NULL
 	
-	photo	BLOB NULL,
+        /*
+        photo	BLOB NULL,
 	FOREIGN KEY (type_id) REFERENCES poi_type(id) ON UPDATE CASCADE,
 	FOREIGN KEY (city_id) REFERENCES city(id)     ON UPDATE CASCADE
+        */
 ) DEFAULT CHARACTER SET=utf8;
 
+DROP TABLE IF EXISTS poi_descr;
+CREATE TABLE poi_descr (
+     poi_id  INT,
+     descr   TEXT NULL,
+     src_url VARCHAR(300) NULL,
 
+     FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+) DEFAULT CHARACTER SET=utf8;
+
+DROP TABLE IF EXISTS poi_image;
+CREATE TABLE poi_image (
+     poi_id  INT,
+     img_url VARCHAR(300),
+
+     FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+) DEFAULT CHARACTER SET=utf8;
 
 /* пункты питания */
 DROP TABLE IF EXISTS cafe;
@@ -77,11 +97,12 @@ DROP TABLE IF EXISTS cafe_address;
 CREATE TABLE cafe_address (
        cafe_id    INT,
 
+       city_id    INT,
        address    VARCHAR(300),
        lat        DECIMAL(11, 8),
        lng        DECIMAL(11, 8)       
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Заливаем информацию, которую иы не сможем получить автоматически */
-\. raw-tables.sql
+--\. raw-tables.sql
 \. user-session.sql

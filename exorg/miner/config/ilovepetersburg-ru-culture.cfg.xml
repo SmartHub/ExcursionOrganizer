@@ -22,7 +22,7 @@
 
   <var-def name="sights">
     <!--<loop item="i" maxloops="20">-->
-    <loop item="i">
+    <loop item="i" maxloops="5">
       <list>
         <var name="sight-refs"/>
       </list>

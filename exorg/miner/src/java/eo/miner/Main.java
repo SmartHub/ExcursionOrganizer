@@ -5,7 +5,7 @@ import java.lang.*;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import eo.common.dbwrapper.*;
+import eo.db.*;
 
 // ================================================================================
 

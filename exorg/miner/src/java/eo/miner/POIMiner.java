@@ -1,8 +1,11 @@
 package eo.miner;
 
-import eo.common.dbwrapper.DataProvider;
-import eo.common.dbwrapper.POIProvider;
 import org.webharvest.runtime.ScraperContext;
+
+import eo.db.DataProvider;
+import eo.db.POIProvider;
+
+import eo.model.*;
 
 // ================================================================================
 
@@ -15,29 +18,34 @@ public class POIMiner extends Miner {
         this.poiProvider = dataProvider.getPOIProvider();
 
         String[] mined = sc.getVar("sights").toString().split("\\[Sight\\]\n");
-
-        for (int i = 1; i < mined.length; ++i) {
-            Vars v = parseMinedItem(mined[i]);
+        for (String item : mined) {
+            Vars v = parseMinedItem(item);
             
             if (v.containsKey("City") && v.containsKey("Name")) {
-                POIProvider.Entry e = poiProvider.add(v.get("Name"));
-                e.setCity(v.get("City"));
+                POI poi = poiProvider.add(v.get("Name"));
+                poi.setCityId(this.dataProvider.getCityId(v.get("City")));
                 
                 if (v.containsKey("Image")) {
-                    e.addRawImages(v.get("Image").split("\n"));
+                    for (String image : v.get("Image").split("\n")) {
+                        poi.addImage(image);
+                    }
                 }
 
                 if (v.containsKey("Description")) {
-                    e.addRawDescr(v.get("Description"), v.get("Source"));
+                    poi.addDescription(v.get("Description"), v.get("Source"));
                 }
                 if (v.containsKey("Address")) {
-                    e.setAddress(v.get("Address").trim());
+                    poi.setAddress(v.get("Address").trim());
                 }
                 if (v.containsKey("Site")) {
-                    e.setURL(v.get("Site"));
+                    poi.setURL(v.get("Site"));
                 }
+                
+                this.poiProvider.sync(poi);
             }
         }
+
+        
     }
 }
 

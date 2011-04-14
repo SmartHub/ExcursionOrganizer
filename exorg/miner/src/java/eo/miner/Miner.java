@@ -7,7 +7,7 @@ import org.webharvest.runtime.ScraperContext;
 
 import java.util.TreeMap;
 
-import eo.common.dbwrapper.*;
+import eo.db.*;
 
 // ================================================================================
 
@@ -120,7 +120,7 @@ public abstract class Miner {
         } catch (Exception e) {
             System.out.println("Exception was caught. See debug.log for details");
             this.log.warn(e.getMessage());
-            this.log.warn(eo.common.util.Log.getCallStack(e));
+            this.log.warn(eo.util.Log.getCallStack(e));
         }
     }
 
