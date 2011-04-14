@@ -21,8 +21,7 @@
   </var-def>
 
   <var-def name="sights">
-    <!--<loop item="i" maxloops="20">-->
-    <loop item="i" maxloops="5">
+    <loop item="i">
       <list>
         <var name="sight-refs"/>
       </list>
@@ -80,12 +79,6 @@
           <var name="sight_info" />
         </xpath>
       
-        <!--
-        <script return="escaped_desc"><![CDATA[
-          escaped_desc = desc.toString().replaceAll("\'", "\\\'");
-        ]]></script>
-        -->
-
         [Source]
         <var name="sight_page_url"/>
 
@@ -96,22 +89,8 @@
           </xpath>
         </var-def>
 
-        <!--
-        <script return="fixed_addr"><![CDATA[
-          p = java.util.regex.Pattern.compile(".*Адрес:\\s*(.*)");
-          m = p.matcher(address.toString());
-          if (m.matches()) {
-            fixed_addr = m.group(1);
-          } else {
-            fixed_addr = address.toString();
-          }
-        ]]></script>
-        -->
-
         [City]
         Санкт-Петербург
-
-        <!--<template>${address.toString()}</template>-->
       </body>
     </loop>    
   </var-def>

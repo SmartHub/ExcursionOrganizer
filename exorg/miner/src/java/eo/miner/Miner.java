@@ -1,5 +1,7 @@
 package eo.miner;
 
+import org.apache.commons.httpclient.cookie.CookiePolicy;
+
 import org.apache.log4j.Logger;
 import org.webharvest.definition.ScraperConfiguration;
 import org.webharvest.runtime.Scraper;
@@ -52,7 +54,7 @@ public abstract class Miner {
         this.log = Logger.getLogger(Main.class);
         this.configFiles = new String[0];
 
-        this.httpTimeout = 5000;
+        this.httpTimeout = 10000;
         this.maxRetries = 5;        
     }
 
@@ -93,6 +95,7 @@ public abstract class Miner {
                 }
                 
                 scraper.getHttpClientManager().getHttpClient().getParams().setSoTimeout(this.httpTimeout);
+                scraper.getHttpClientManager().getHttpClient().getParams().setCookiePolicy(CookiePolicy.IGNORE_COOKIES);
                 scraper.getHttpClientManager().getHttpClient().getHttpConnectionManager().getParams().setConnectionTimeout(this.httpTimeout);
                 scraper.setDebug(false);
 
