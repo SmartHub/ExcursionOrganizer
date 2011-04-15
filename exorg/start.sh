@@ -20,7 +20,7 @@ java -cp $EO_CP \
 #echo "run processing"
 #cd $EO_ROOT/processing/config
 #java -cp $EO_CP \
-#     eo.common.util.Starter config.xml $EO_ROOT
+#     eo.util.Starter config.xml $EO_ROOT
 
 #echo "index database"
 #$EO_ROOT/common/script/index.py $EO_ROOT $username $password

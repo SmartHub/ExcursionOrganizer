@@ -1,15 +1,12 @@
 package eo.db;
 
-import java.lang.*;
-import java.util.*;
-import java.sql.*;
-
+import eo.model.Description;
+import eo.model.POI;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 
-import eo.model.*;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 // ================================================================================
 
@@ -96,26 +93,22 @@ final public class POIProvider {
     final public void sync(final POI poi) throws Exception {
         jdbc.update(
                     "UPDATE place_of_interest SET address=?, lat=?, lng=?, city_id=?, url=?, type_id=? WHERE id=?;",
-                    new Object[] {
-                        poi.getLocation().getAddress(),
-                        poi.getLocation().getLat(),
-                        poi.getLocation().getLng(),
-                        poi.getCityId(),
-                        poi.getURL(),
-                        poi.getType(),
-                        poi.getId()
-                    });
+                poi.getLocation().getAddress(),
+                poi.getLocation().getLat(),
+                poi.getLocation().getLng(),
+                poi.getCityId(),
+                poi.getURL(),
+                poi.getType(),
+                poi.getId());
 
         jdbc.update("DELETE FROM poi_descr WHERE poi_id=?;",
                     new Object[]{poi.getId()});
         for (Description d : poi.getDescriptions()) {
             jdbc.update(
                         "INSERT INTO poi_descr(poi_id, descr, src_url) VALUES (?, ?, ?);",
-                        new Object[] {
-                            poi.getId(),
-                            d.getText(),
-                            d.getSourceURL()
-                        });
+                    poi.getId(),
+                    d.getText(),
+                    d.getSourceURL());
         }
 
         jdbc.update("DELETE FROM poi_image WHERE poi_id=?;",
@@ -124,10 +117,8 @@ final public class POIProvider {
             if (img.length() > 1) {
                 jdbc.update(
                             "INSERT INTO poi_image(poi_id, img_url) VALUES (?, ?);",
-                            new Object[] {
-                                poi.getId(),
-                                img
-                            });
+                        poi.getId(),
+                        img);
             }
         }
     }

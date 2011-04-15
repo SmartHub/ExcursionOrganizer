@@ -1,4 +1,9 @@
+//TODO: move to module bl
+//TODO: make non-static searcher
+//TODO: extract classes
+
 package eo.frontend.httpserver;
+
 
 import org.sphx.api.SphinxClient;
 import org.sphx.api.SphinxMatch;

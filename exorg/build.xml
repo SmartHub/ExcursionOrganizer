@@ -16,7 +16,6 @@
   </path>
 
   <property name="build.dir" location="${project.dir}/build"/>
-
   <property name="src.util.dir" location="${project.dir}/util/src/java/eo/util"/>
   <property name="src.model.dir" location="${project.dir}/model/src/java/eo/model"/>
   <property name="src.db.dir" location="${project.dir}/db/src/java/eo/db"/>
