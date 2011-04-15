@@ -57,21 +57,22 @@
   <component name="FavoritesManager">
     <favorites_list name="exorg" />
   </component>
+  <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Miner.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="64" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+            <state line="39" column="42" selection-start="1652" selection-end="1652" vertical-scroll-proportion="7.826087">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="POIMiner.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java">
+      <file leaf-file-name="Main.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="26" selection-start="138" selection-end="138" vertical-scroll-proportion="0.1611842">
+            <state line="121" column="39" selection-start="3941" selection-end="3953" vertical-scroll-proportion="3.3548985">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -96,15 +97,15 @@
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/CafeProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/POIProvider.java" />
-        <option value="$PROJECT_DIR$/processing/src/java/eo/processing/Main.java" />
-        <option value="$PROJECT_DIR$/processing/config/config.xml" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/util/Starter.java" />
         <option value="$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java" />
         <option value="$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java" />
-        <option value="$PROJECT_DIR$/start.sh" />
         <option value="$PROJECT_DIR$/custom.properties" />
-        <option value="$PROJECT_DIR$/miner/config/config.xml" />
+        <option value="$PROJECT_DIR$/start.sh" />
         <option value="$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java" />
+        <option value="$PROJECT_DIR$/miner/config/config.xml" />
+        <option value="$PROJECT_DIR$/processing/src/java/eo/processing/Main.java" />
+        <option value="$PROJECT_DIR$/processing/config/config.xml" />
       </list>
     </option>
   </component>
@@ -117,7 +118,7 @@
       <profile-state />
     </entry>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -150,70 +151,14 @@
               <option name="myItemId" value="exorg" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exorg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="External Libraries" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exorg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exorg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="miner" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exorg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="miner" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="miner" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
-      <pane id="Scope" />
       <pane id="PackagesPane">
         <subPane />
       </pane>
+      <pane id="Favorites" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -250,6 +195,21 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="PhpRunConfigurationType" factoryName="PHP">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="FtpUpload" enabled="false" />
+        <option name="ValidateXdebugSetup" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="ValidateXdebugSetup" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
       <option name="USE_SOCKET_TRANSPORT" value="true" />
       <option name="SERVER_MODE" value="false" />
@@ -259,7 +219,13 @@
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" adl_options="" air_descriptor_path="" air_program_params="" air_publisher_id="" air_root_dir_path="" air_run_mode="AppDescriptor" class_name="" debugger_sdk="Module SDK" html_or_swf_file_path="" main_class_name="" method_name="" module_name="" output_log_level="" package_name="" port="0" run_mode="HtmlOrSwfFile" scope="Class" socket_policy_port="0" url_to_launch="http://">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
@@ -277,11 +243,11 @@
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
         <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
       <extension name="coverage" enabled="false" merge="false" />
+      <extension name="snapshooter" />
       <option name="MAIN_CLASS_NAME" />
       <option name="VM_PARAMETERS" />
       <option name="PROGRAM_PARAMETERS" />
@@ -297,11 +263,19 @@
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
         <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="PhpUnitRemoteRunConfigurationType" factoryName="PHPUnit on Server">
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="FtpUpload" enabled="false" />
+        <option name="ValidateXdebugSetup" enabled="true" />
       </method>
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" />
+      <extension name="snapshooter" />
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -318,12 +292,10 @@
         <value defaultName="moduleWithDependencies" />
       </option>
       <envs />
-      <patterns />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
         <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
     <list size="0" />
@@ -333,22 +305,6 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
-  <component name="SvnConfiguration" maxAnnotateRevisions="500">
-    <option name="USER" value="" />
-    <option name="PASSWORD" value="" />
-    <option name="LAST_MERGED_REVISION" />
-    <option name="MERGE_DRY_RUN" value="false" />
-    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
-    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
-    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
-    <option name="DETECT_NESTED_COPIES" value="true" />
-    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
-    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
-    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
-    <option name="FORCE_UPDATE" value="false" />
-    <configuration useDefault="false">$USER_HOME$/.subversion_IDEA</configuration>
-    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
-  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0e605aff-8057-40c8-9969-3b23de0d942a" name="Default" comment="" />
@@ -358,18 +314,17 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="15" width="1364" height="751" extended-state="0" />
-    <editor active="false" />
+    <frame x="0" y="32" width="1366" height="733" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.13905776" sideWeight="0.64646465" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14012252" sideWeight="0.64646465" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19224924" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2840735" sideWeight="0.64646465" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -377,6 +332,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296501" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34175083" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978722" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
@@ -393,8 +349,6 @@
     <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
     <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
     <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
-    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
-    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="LAST_COMMIT_MESSAGE" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
@@ -426,76 +380,129 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/frontend/http_server/config/config.xml">
+    <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-3.546875" />
+        <state line="44" column="22" selection-start="2204" selection-end="2204" vertical-scroll-proportion="1.0961539">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
+    <entry file="file://$PROJECT_DIR$/util/src/java/eo/util/Starter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="47" selection-start="1242" selection-end="1242" vertical-scroll-proportion="1.0557184" />
+        <state line="6" column="13" selection-start="193" selection-end="193" vertical-scroll-proportion="0.16187051">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/svr_local.sh">
+    <entry file="file://$PROJECT_DIR$/util/src/java/eo/util/Log.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+        <state line="7" column="20" selection-start="125" selection-end="125" vertical-scroll-proportion="0.18884893">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/processing/config/config.xml">
+    <entry file="file://$PROJECT_DIR$/testing/src/java/eo/testing/SearcherTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="19" column="49" selection-start="1116" selection-end="1116" vertical-scroll-proportion="0.16611296" />
+        <state line="13" column="13" selection-start="260" selection-end="260" vertical-scroll-proportion="0.30499077">
+          <folding />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/POI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="44" selection-start="369" selection-end="369" vertical-scroll-proportion="0.35014838" />
+        <state line="7" column="19" selection-start="164" selection-end="164" vertical-scroll-proportion="0.19553073">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/start.sh">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="82" selection-start="545" selection-end="545" vertical-scroll-proportion="0.51038575" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/custom.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="96" selection-start="96" selection-end="96" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="57" selection-start="1870" selection-end="1870" vertical-scroll-proportion="0.9501661" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="9" column="13" selection-start="218" selection-end="218" vertical-scroll-proportion="0.19881305" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/config/debug.log">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5242" column="13" selection-start="1193452" selection-end="1193452" vertical-scroll-proportion="-0.7155425" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/sql/creation.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="9" selection-start="1820" selection-end="1820" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/common/sql/future.sql">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="116" column="19" selection-start="3827" selection-end="3827" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="64" selection-start="191" selection-end="191" vertical-scroll-proportion="0.0">
+        <state line="25" column="62" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="26" selection-start="138" selection-end="138" vertical-scroll-proportion="0.1611842">
+        <state line="11" column="13" selection-start="238" selection-end="238" vertical-scroll-proportion="0.30726257">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="16" column="22" selection-start="449" selection-end="449" vertical-scroll-proportion="0.4597701">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="11" column="13" selection-start="235" selection-end="235" vertical-scroll-proportion="0.16759777">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="19" selection-end="19" vertical-scroll-proportion="0.05586592">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/src/java/eo/db/DataProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="13" selection-start="429" selection-end="429" vertical-scroll-proportion="0.47486034">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="19" selection-start="123" selection-end="123" vertical-scroll-proportion="0.107913665">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Description.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="19" selection-start="144" selection-end="144" vertical-scroll-proportion="0.16187051">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Cafe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="13" selection-start="158" selection-end="158" vertical-scroll-proportion="0.19408503">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="39" column="42" selection-start="1652" selection-end="1652" vertical-scroll-proportion="7.826087">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="121" column="39" selection-start="3941" selection-end="3953" vertical-scroll-proportion="3.3548985">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

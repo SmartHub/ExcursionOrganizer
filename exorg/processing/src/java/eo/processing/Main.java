@@ -1,8 +1,8 @@
 package eo.processing;
 
-import eo.common.dbwrapper.CafeProvider;
-import eo.common.dbwrapper.DataProvider;
-import eo.common.dbwrapper.POIProvider;
+import eo.db.CafeProvider;
+import eo.db.DataProvider;
+import eo.db.POIProvider;
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
