@@ -1,18 +1,18 @@
 package eo.frontend.httpserver;
 
-import java.lang.*;
-import java.util.*;
-import java.io.*;
-
-import javax.servlet.http.*;
-import javax.servlet.*;
-
-import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.server.handler.*;
-
 import com.thoughtworks.xstream.XStream;
+import org.eclipse.jetty.server.Request;
+import org.eclipse.jetty.server.handler.AbstractHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 // ================================================================================
+
+//TODO: move to handlers
 
 public class POIService extends AbstractHandler {
     private static void writeResponse(final String content, HttpServletResponse response) throws Exception {
