@@ -1,14 +1,5 @@
 package eo.processing;
 
-<<<<<<< HEAD
-import java.net.URLEncoder;
-import java.util.*;
-
-=======
-import eo.db.CafeProvider;
-import eo.db.DataProvider;
-import eo.db.POIProvider;
->>>>>>> 1ac6ecb21f34ddf23c335499c772a0d750c1ca1e
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
