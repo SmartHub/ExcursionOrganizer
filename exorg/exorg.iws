@@ -103,13 +103,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="POIService.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="POIService.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.79498863">
+            <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="exorg.ipr" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/exorg.ipr">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="78" column="14" selection-start="3127" selection-end="3127" vertical-scroll-proportion="0.65822786">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -124,8 +133,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POITypesHandler.java" />
-        <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/CafeProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/POIProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/util/Starter.java" />
@@ -140,6 +147,8 @@
         <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java" />
         <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java" />
         <option value="$PROJECT_DIR$/build.xml" />
+        <option value="$PROJECT_DIR$/exorg.ipr" />
+        <option value="$PROJECT_DIR$/exorg.iws" />
       </list>
     </option>
   </component>
@@ -498,24 +507,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="0" selection-start="19" selection-end="19" vertical-scroll-proportion="0.05586592">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/src/java/eo/db/DataProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="13" selection-start="429" selection-end="429" vertical-scroll-proportion="0.47486034">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
       <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
         <state />
@@ -630,10 +621,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.79498863">
+        <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exorg.ipr">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="78" column="14" selection-start="3127" selection-end="3127" vertical-scroll-proportion="0.65822786">
+          <folding />
         </state>
       </provider>
     </entry>
