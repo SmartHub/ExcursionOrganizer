@@ -24,13 +24,6 @@
   <property name="src.frontend.http_server.dir" location="${project.dir}/frontend/http_server/src/java/eo/frontend/httpserver"/>
 
   <target name="init">
-    <!--
-    <mkdir dir="${build.common.dbwrapper.dir}"/>
-    <mkdir dir="${build.common.util.dir}"/>
-    <mkdir dir="${build.miner.dir}"/>
-    <mkdir dir="${build.processing.dir}"/>
-    <mkdir dir="${build.frontend.http_server.dir}"/>
-    -->
     <mkdir dir="${build.dir}"/>
 
     <delete>
@@ -47,13 +40,6 @@
            includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
-
-    <!--
-    <jar destfile="${lib.dir}/common.jar">
-      <fileset dir="${build.common.dbwrapper.dir}" includes="**/*.class"/>
-      <fileset dir="${build.common.util.dir}" includes="**/*.class"/>
-    </jar>
-    -->
   </target>
 
   <target name="model" depends="init,util">
@@ -79,12 +65,6 @@
   </target>
 
   <target name="miner" depends="init,db">
-    <!--
-    <delete>
-      <fileset dir="${lib.dir}" includes="miner.jar"/>
-    </delete>
-    -->
-
     <javac srcdir="${src.miner.dir}"
            destdir="${build.dir}"
            debug="true"
@@ -93,34 +73,20 @@
            includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
-
-    <!--
-    <jar destfile="${lib.dir}/miner.jar">
-      <fileset dir="${build.miner.dir}" includes="**/*.class"/>
-    </jar>
-    -->
   </target>
 
-  <!--
-  <target name="processing" depends="init">
-    <delete>
-      <fileset dir="${lib.dir}" includes="processing.jar"/>
-    </delete>
+  <target name="processing" depends="init,db">
     <javac srcdir="${src.processing.dir}"
-           destdir="${build.processing.dir}"
+           destdir="${build.dir}"
            debug="true"
            deprecation="true"
            optimize="false"
            includeAntRuntime="false">
       <classpath refid="libs"/>
     </javac>
-
-    <jar destfile="${lib.dir}/processing.jar">
-      <fileset dir="${build.processing.dir}" includes="**/*.class"/>
-    </jar>
   </target>
   
-
+  <!--
   <target name="frontend" depends="init">
     <delete>
       <fileset dir="${lib.dir}" includes="frontend.jar"/>
@@ -141,7 +107,7 @@
   </target>
   -->
 
-  <target name="all" depends="util,model,db,miner">
+  <target name="all" depends="util,model,db,miner,processing">
     <chmod file="${project.dir}/start.sh" perm="+x"/>
 
     <jar destfile="${lib.dir}/eo.jar">

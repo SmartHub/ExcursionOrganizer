@@ -26,6 +26,8 @@ class CafeMiner extends Miner {
                 long cityId = dataProvider.getCityId(v.get("City"));
                 Cafe cafe = cafeProvider.add(v.get("Name"));
 
+                cafe.setCityId(Integer.parseInt(v.get("City")));
+
                 if (v.containsKey("Description")) {
                     cafe.setDescription(v.get("Description"), v.get("Source"));
                 }
@@ -34,11 +36,11 @@ class CafeMiner extends Miner {
                     for (String address : addresses) {
                         int cp = address.indexOf(':');
                         if (cp == -1) {
-                            cafe.addLocation(cityId, address);
+                            cafe.addLocation(address);
                         } else {
                             String a = address.substring(cp);
                             if (a.length() > 1) {
-                                cafe.addLocation(cityId, a);
+                                cafe.addLocation(a);
                             }
                         }                        
                     }

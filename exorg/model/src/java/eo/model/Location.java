@@ -42,6 +42,10 @@ final public class Location {
         this.address = address;
     }
 
+    final public boolean hasAddress() {
+        return address != null;
+    }
+
     final public double getLat() {
         return lat;
     }
@@ -66,11 +70,7 @@ final public class Location {
         this.cityId = cityId;
     }
 
-    public boolean isValid() {
+    final public boolean isValid() {
         return this.lat != -1 && this.lng != -1;
-    }
-
-    public boolean hasAddress() {
-        return address != null;
     }
 }

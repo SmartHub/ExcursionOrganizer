@@ -24,7 +24,7 @@
     </bean>
 
     <bean id="processingDaemon" class="eo.processing.Main">
-		<property name="dataProvider" ref="dataProvider"/>
-        <property name="proxy" value="127.0.0.1:3128"/>
+      <property name="dataProvider" ref="dataProvider"/>
+      <property name="proxy" value="127.0.0.1:3128"/>
     </bean>
 </beans>

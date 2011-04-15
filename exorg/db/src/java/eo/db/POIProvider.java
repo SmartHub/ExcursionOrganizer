@@ -32,8 +32,10 @@ final public class POIProvider {
             POI poi = new POI(rs.getLong("id"), rs.getString("name"));
             poi.setCityId(rs.getLong("city_id"));
             poi.setURL(rs.getString("url"));
+            poi.setAddress(rs.getString("address"));
+            poi.setLocation(rs.getDouble("lat"), rs.getDouble("lng"));
 
-            SqlRowSet d_rs = this.jdbc.queryForRowSet("SELECT descr, src_url FROM poi_raw_descr WHERE poi_id=?;", new Object[]{poi.getId()});
+            SqlRowSet d_rs = this.jdbc.queryForRowSet("SELECT descr, src_url FROM poi_descr WHERE poi_id=?;", new Object[]{poi.getId()});
             boolean v = d_rs.first();
             while (v) {
                 poi.addDescription(d_rs.getString("descr"), d_rs.getString("src_url"));
@@ -73,7 +75,7 @@ final public class POIProvider {
     }
 
     final public Iterator<POI> poiIterator() {
-        return new POIIterator(this.dataProvider, "SELECT id, name, address, city_id FROM place_of_interest;");
+        return new POIIterator(this.dataProvider, "SELECT * FROM place_of_interest;");
     }        
 
 
@@ -99,6 +101,8 @@ final public class POIProvider {
                 poi.getType(),
                 poi.getId());
 
+        jdbc.update("DELETE FROM poi_descr WHERE poi_id=?;",
+                    new Object[]{poi.getId()});
         for (Description d : poi.getDescriptions()) {
             jdbc.update(
                         "INSERT INTO poi_descr(poi_id, descr, src_url) VALUES (?, ?, ?);",
@@ -107,6 +111,8 @@ final public class POIProvider {
                     d.getSourceURL());
         }
 
+        jdbc.update("DELETE FROM poi_image WHERE poi_id=?;",
+                    poi.getId());
         for (String img : poi.getImages()) {
             if (img.length() > 1) {
                 jdbc.update(

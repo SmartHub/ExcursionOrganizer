@@ -1,31 +1,30 @@
 package eo.processing;
 
-import eo.db.CafeProvider;
-import eo.db.DataProvider;
-import eo.db.POIProvider;
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.GetMethod;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+
 import org.springframework.beans.factory.InitializingBean;
 
-import java.net.URLEncoder;
-import java.util.*;
+import eo.db.*;
+import eo.model.*;
 
 // ================================================================================
 
-public class Main implements InitializingBean {
+final public class Main implements InitializingBean {
     private DataProvider dataProvider;
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
 
     private HttpConnection conn;
 
-    private String proxyHost = "";
-    private int proxyPort = 0;
+    private String proxyHost;
+    private int proxyPort;
     
     private int    httpPort = 80;
     private String GAPI_PROTO = "http://";
@@ -47,7 +46,7 @@ public class Main implements InitializingBean {
     }
 
     private boolean doesUseProxy() {
-        return proxyHost.length() != 0;
+        return proxyHost != null;
     }
 
     private String queryHttp(final String q) throws Exception {
@@ -63,10 +62,12 @@ public class Main implements InitializingBean {
             if (conn == null) {
                 conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
                 conn.open();
+                conn.getParams().setSoTimeout(5000);
             } else {
                 /* Who knows why the connection to the proxy server suddenly closes? */
                 if (!conn.isOpen()) {
                     conn.open();
+                    conn.getParams().setSoTimeout(5000);
                 }
             }
         }
@@ -113,19 +114,9 @@ public class Main implements InitializingBean {
     }
 
 
-    private static class GeoInfo {
-        public String address;
-        public DataProvider.Loc loc;
-
-        public GeoInfo(final String addr, double lat, double lng) {
-            this.address = addr;
-            this.loc = new DataProvider.Loc(lat, lng);
-        }
-    }
-
-    List<GeoInfo> parseGeoInfo(final JSONObject gi) {
+    private List<Location> parseGeoInfo(final JSONObject gi) {
         if (((String)gi.get("status")).equals("OK")) {
-            List<GeoInfo> r = new ArrayList<GeoInfo>();
+            List<Location> r = new ArrayList<Location>();
             JSONArray results = (JSONArray)gi.get("results");
             
             for (int i = 0; i < results.size(); ++i) {
@@ -135,7 +126,7 @@ public class Main implements InitializingBean {
                 double lat = ((Double)loc.get("lat")).doubleValue();
                 double lng = ((Double)loc.get("lng")).doubleValue();
 
-                r.add(new GeoInfo(address, lat, lng));
+                r.add(new Location(0, address, lat, lng));
             }
             return r;                    
         } else {
@@ -143,80 +134,94 @@ public class Main implements InitializingBean {
         }
     }
 
-    private void addRawGeo(POIProvider.Entry e) throws Exception {
-        if (!e.hasRawGeo()) {
-            JSONObject r;
+    private boolean lookupLocation(Location loc, final String guess) throws Exception {
+        JSONObject r;
 
-            if (e.hasAddress()) {            
-                r = queryGAPI(new String[]{"address", e.getAddress()});
-            } else {
-                r = queryGAPI(new String[]{"address", e.getName()});
-            }
+        if (loc.getAddress() != null) {
+            r = queryGAPI(new String[]{"address", loc.getAddress()});
+        } else if (guess != null) {
+            r = queryGAPI(new String[]{"address", guess});
+        } else {
+            return false;
+        }
 
-            List<GeoInfo> lgi = parseGeoInfo(r);
-            if (lgi != null) {
-                for (GeoInfo gi : lgi) {
-                    if (dataProvider.isWithinCity(e.getCityId(), gi.loc)) {
-                        e.addRawGeoInfo(gi.address, gi.loc.lat, gi.loc.lng);
-                    }
+        List<Location> locs = parseGeoInfo(r);
+        if (locs == null && guess != null && loc.getAddress() != null) {
+            r = queryGAPI(new String[]{"address", guess});
+            locs = parseGeoInfo(r);
+        }
+
+        if (locs != null) {
+            for (Location l : locs) {
+                if (dataProvider.isWithinCity(loc.getCityId(), l)) {
+                    loc.setAddress(l.getAddress());
+                    loc.setLat(l.getLat());
+                    loc.setLng(l.getLng());
+                    return true;
                 }
             }
+        }
+
+        return false;
+    }
+
+    private void addGeoInfo(POI poi) throws Exception {
+        if (!poi.getLocation().isValid()) {
+            if (poi.hasAddress()) {
+                poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", ""));
+            }
+
+            if (lookupLocation(poi.getLocation(), poi.getName())) {
+                //System.out.println("Updating address " + poi.getLocation().getAddress());
+            }
+
             Thread.sleep(500);
         }
     }
 
-    private void addGeoInfo(CafeProvider.Cafe cafe) throws Exception {
-        DataProvider.Address[] as = cafe.getAddresses();
-        if (as != null) {
-            for (DataProvider.Address a : as) {
-                if (!cafe.hasGeo(a.address)) {
-                    /* Google won't find a cafe by its name */
-
-                    JSONObject r = queryGAPI(new String[]{"address", a.address});
-                    List<GeoInfo> lgi = parseGeoInfo(r);
-                    if (lgi != null) {
-                        for (GeoInfo gi : lgi) {
-                            if (dataProvider.isWithinCity(cafe.getCityId(), gi.loc)) {
-                                cafe.setGeoInfo(a.address, gi.address, gi.loc.lat, gi.loc.lng);
-                            }
-                        }
-                    }
-                    
-                    Thread.sleep(500);
-                }
+    private void addGeoInfo(Cafe cafe) throws Exception {
+        for (Location loc : cafe.getLocations()) {
+            if (!loc.isValid() && loc.getAddress() != null) {
+                /* Google won't find a cafe by its name */
+                lookupLocation(loc, null);
+                Thread.sleep(500);
             }
         }
     }
 
-    private void guessType(POIProvider.Entry e) {
-        if (!e.hasType()) {
-            e.guessType();
+
+    private void guessType(POI poi) throws Exception {
+        if (!poi.hasType()) {
+            dataProvider.guessPOIType(poi);
         }
     }
 
     private void processPOI() throws Exception {
-        Iterator<POIProvider.Entry> it = poiProvider.poiIterator();
+        Iterator<POI> it = poiProvider.poiIterator();
         while (it.hasNext()) {
-            POIProvider.Entry e = it.next();
+            POI poi = it.next();
 
-            addRawGeo(e);
-            guessType(e);
+            addGeoInfo(poi);
+            guessType(poi);
+
+            poiProvider.sync(poi);
         }
     }
 
     private void processCafes() throws Exception {
-        Iterator<CafeProvider.Cafe> it = cafeProvider.cafeIterator();
+        Iterator<Cafe> it = cafeProvider.cafeIterator();
         while (it.hasNext()) {
-            CafeProvider.Cafe cafe = it.next();
-            
+            Cafe cafe = it.next();            
             addGeoInfo(cafe);
+
+            cafeProvider.sync(cafe);
         }
     }
 
     public void afterPropertiesSet() {
         try {
-            //processPOI();
-            processCafes();            
+            processPOI();
+            //processCafes();            
         } catch (Exception e) {
             System.out.println(e.toString());
             e.printStackTrace();
