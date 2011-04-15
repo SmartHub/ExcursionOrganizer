@@ -47,7 +47,6 @@
         <jarDirectory url="file://$MODULE_DIR$/../lib/xstream/jdk1.3" recursive="false" />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="common" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
