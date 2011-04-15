@@ -17,3 +17,7 @@ AS used_poi_type_counting,
 
 (SELECT COUNT(id) AS poi_type_number FROM poi_type) 
 AS poi_type_counting;
+
+/* проверяем, что в базе у всех достопримечательностей заданы координаты */
+SELECT IF(COUNT(*) > 0, 'failed', 'passed') AS test_3 
+FROM place_of_interest WHERE lat IS NULL OR lng IS NULL OR lat = -1.0 OR lng = -1.0;
