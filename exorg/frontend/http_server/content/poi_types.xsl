@@ -50,7 +50,7 @@
     <div id="map">
     </div>
     <div id="poi-print">
-      <br/>Выбранные для посещения места:
+      <br/>Выбранные для посещения POI:
     </div>
   </xsl:template>
     
