@@ -16,17 +16,11 @@
   </path>
 
   <property name="build.dir" location="${project.dir}/build"/>
-
   <property name="src.util.dir" location="${project.dir}/util/src/java/eo/util"/>
-
   <property name="src.model.dir" location="${project.dir}/model/src/java/eo/model"/>
-
   <property name="src.db.dir" location="${project.dir}/db/src/java/eo/db"/>
-
   <property name="src.miner.dir" location="${project.dir}/miner/src/java/eo/miner"/>
-
   <property name="src.processing.dir" location="${project.dir}/processing/src/java/eo/processing"/>
-
   <property name="src.frontend.http_server.dir" location="${project.dir}/frontend/http_server/src/java/eo/frontend/httpserver"/>
 
   <target name="init">

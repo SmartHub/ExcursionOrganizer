@@ -60,26 +60,6 @@
   <component name="FileColors" enabled="true" enabledForTabs="true" />
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="32" column="87" selection-start="1137" selection-end="1137" vertical-scroll-proportion="63.565216">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="121" column="39" selection-start="3941" selection-end="3953" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ConstructorHandler.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/ConstructorHandler.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -91,10 +71,19 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Searcher.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="build.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/build.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="22" column="99" selection-start="969" selection-end="969" vertical-scroll-proportion="66.521736">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Searcher.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="108" column="45" selection-start="3212" selection-end="3212" vertical-scroll-proportion="0.51258993">
+            <state line="108" column="31" selection-start="3212" selection-end="3212" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="class#POI#0;class#Searcher#0" expanded="false" />
                 <element signature="class#Route#0;class#Searcher#0" expanded="false" />
@@ -103,22 +92,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
-          <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
-            <state />
-          </provider>
+      <file leaf-file-name="Main.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="77" selection-start="1517" selection-end="1517" vertical-scroll-proportion="-19.285715">
-              <folding />
+            <state line="19" column="13" selection-start="505" selection-end="505" vertical-scroll-proportion="0.0">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cafe.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Cafe.java">
+      <file leaf-file-name="POIService.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="13" column="70" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
+            <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.79498863">
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -136,7 +124,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/common/sql/creation.sql" />
         <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POITypesHandler.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/CafeProvider.java" />
         <option value="$PROJECT_DIR$/common/src/java/eo/common/dbwrapper/DataProvider.java" />
@@ -150,8 +137,9 @@
         <option value="$PROJECT_DIR$/miner/config/config.xml" />
         <option value="$PROJECT_DIR$/processing/src/java/eo/processing/Main.java" />
         <option value="$PROJECT_DIR$/processing/config/config.xml" />
-        <option value="$PROJECT_DIR$/build.xml" />
         <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java" />
+        <option value="$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java" />
+        <option value="$PROJECT_DIR$/build.xml" />
       </list>
     </option>
   </component>
@@ -236,7 +224,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="frontend" />
+              <option name="myItemId" value="db" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -246,11 +234,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="frontend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="http_server" />
+              <option name="myItemId" value="db" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
@@ -262,21 +246,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="httpserver" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="exorg" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="frontend" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="http_server" />
+              <option name="myItemId" value="db" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -441,24 +411,44 @@
     </task>
     <servers />
   </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
     <frame x="0" y="32" width="1366" height="733" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.14012252" sideWeight="0.64646465" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16267124" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32876712" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14012252" sideWeight="0.8253425" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24425727" sideWeight="0.64646465" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30091885" sideWeight="0.8253425" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296501" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34175083" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32978722" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
@@ -508,54 +498,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/testing/src/java/eo/testing/SearcherTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="13" selection-start="260" selection-end="260" vertical-scroll-proportion="0.30499077">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/POI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="19" selection-start="164" selection-end="164" vertical-scroll-proportion="0.19553073">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/start.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="62" selection-start="676" selection-end="676" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/POIMiner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="238" selection-end="238" vertical-scroll-proportion="0.30726257">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Miner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="16" column="22" selection-start="449" selection-end="449" vertical-scroll-proportion="0.4597701">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="13" selection-start="235" selection-end="235" vertical-scroll-proportion="0.16759777">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/src/java/eo/miner/CafeMiner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="2" column="0" selection-start="19" selection-end="19" vertical-scroll-proportion="0.05586592">
@@ -574,20 +516,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Location.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="19" selection-start="123" selection-end="123" vertical-scroll-proportion="0.107913665">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Description.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="6" column="19" selection-start="144" selection-end="144" vertical-scroll-proportion="0.16187051">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/miner/config/config.xml">
       <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
         <state />
@@ -598,25 +526,35 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Cafe.java">
+    <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="70" selection-start="300" selection-end="300" vertical-scroll-proportion="0.0">
+        <state line="108" column="31" selection-start="3212" selection-end="3212" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="class#POI#0;class#Searcher#0" expanded="false" />
+            <element signature="class#Route#0;class#Searcher#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="13" selection-start="505" selection-end="505" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.xml">
+    <entry file="jar://$PROJECT_DIR$/lib/jetty/jetty-server-7.3.1.v20110307.jar!/org/eclipse/jetty/server/Handler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="87" selection-start="1137" selection-end="1137" vertical-scroll-proportion="63.565216">
+        <state line="7" column="9" selection-start="294" selection-end="294" vertical-scroll-proportion="0.18072289">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/processing/src/java/eo/processing/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="121" column="39" selection-start="3941" selection-end="3953" vertical-scroll-proportion="0.0">
+        <state line="121" column="39" selection-start="3941" selection-end="3953" vertical-scroll-proportion="4.172414">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -632,12 +570,69 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/Searcher.java">
+    <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="108" column="45" selection-start="3212" selection-end="3212" vertical-scroll-proportion="0.51258993">
+        <state line="22" column="99" selection-start="969" selection-end="969" vertical-scroll-proportion="66.521736">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/POI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="19" selection-start="164" selection-end="164" vertical-scroll-proportion="0.2413793">
           <folding>
-            <element signature="class#POI#0;class#Searcher#0" expanded="false" />
-            <element signature="class#Route#0;class#Searcher#0" expanded="false" />
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Location.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="19" selection-start="123" selection-end="123" vertical-scroll-proportion="0.13793103">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Description.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="19" selection-start="144" selection-end="144" vertical-scroll-proportion="0.20689656">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/src/java/eo/model/Cafe.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="70" selection-start="300" selection-end="300" vertical-scroll-proportion="0.4642857">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/http_server/config/config.xml">
+      <provider editor-type-id="com.intellij.spring.perspectives.SpringBeansStructureEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="56" selection-start="1900" selection-end="1900" vertical-scroll-proportion="0.25062656">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/src/java/eo/db/CafeProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="2" column="0" selection-start="16" selection-end="16" vertical-scroll-proportion="0.071428575">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/frontend/http_server/src/java/eo/frontend/httpserver/POIService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="71" column="24" selection-start="2576" selection-end="2576" vertical-scroll-proportion="0.79498863">
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
