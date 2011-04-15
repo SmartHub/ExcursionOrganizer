@@ -1,23 +1,13 @@
 package eo.frontend.httpserver;
 
-import java.lang.*;
-import java.util.*;
-import java.io.*;
-
-import javax.servlet.http.*;
-import javax.servlet.*;
-
-import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.server.handler.*;
-
-import com.thoughtworks.xstream.*;
-import com.thoughtworks.xstream.converters.*;
-import com.thoughtworks.xstream.converters.extended.*;
+import com.thoughtworks.xstream.converters.extended.ToStringConverter;
+import org.eclipse.jetty.server.Request;
 
 // ================================================================================
 
 public class IndexHandler implements DynamicHandler {
     private static class Route {
+        
         private static class POI_ID {
             private int v_;
 
