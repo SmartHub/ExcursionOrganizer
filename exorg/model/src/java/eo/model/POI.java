@@ -61,15 +61,23 @@ final public class POI {
         this.location.setLng(lng);
     }
 
+    final public void setLocation(final Location loc) {
+        this.setLocation(loc.getLat(), loc.getLng());
+    }
+
     final public void setAddress(final String address) {
         this.location.setAddress(address);
+    }
+
+    final public String getAddress() {
+        return this.location.getAddress();
     }
     
     final boolean hasLocation() {
         return this.location.isValid();
     }
 
-    final boolean hasAddress() {
+    final public boolean hasAddress() {
         return this.location.hasAddress();
     }
 

@@ -19,12 +19,12 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataProvider" class="eo.common.dbwrapper.DataProvider">
+    <bean id="dataProvider" class="eo.db.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
     <bean id="processingDaemon" class="eo.processing.Main">
-		<property name="dataProvider" ref="dataProvider"/>
-        <property name="proxy" value="127.0.0.1:3128"/>
+      <property name="dataProvider" ref="dataProvider"/>
+      <property name="proxy" value="127.0.0.1:3128"/>
     </bean>
 </beans>

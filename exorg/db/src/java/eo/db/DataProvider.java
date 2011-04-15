@@ -22,39 +22,6 @@ public class DataProvider {
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
 
-    /*
-    protected static class RSIterator<T> implements Iterator<T> {
-        private DataProvider dataProvider;
-        private SqlRowSet rs;
-        private Class<T> cls;
-        private boolean valid;
-
-        public RSIterator(DataProvider p, final String q) {
-            this.dataProvider = p;
-            this.rs = this.dataProvider.getJdbcOperations().queryForRowSet(q);
-            this.valid = this.rs.first();
-        }
-
-        public boolean hasNext() {
-            return this.valid;
-        }
-
-        public T next() {
-            if (valid) {
-                Constructor<T> c = new Constructor<T>();
-                T e = c.newInstance(this.rs, this.dataProvider);
-                this.valid = rs.next();
-                return e;
-            } else {
-                throw new NoSuchElementException();
-            }
-        }
-
-        public void remove() {
-        }
-    }
-    */
-
     public DataProvider(JdbcTemplate jdbcTemplate) throws Exception {
         this.jdbc = jdbcTemplate;
         this.conn = this.jdbc.getDataSource().getConnection();
@@ -105,5 +72,18 @@ public class DataProvider {
         return jdbc.queryForLong(
                                  "SELECT id FROM city WHERE name=?;",
                                  new Object[]{cityName});
+    }
+
+    public void guessPOIType(POI poi) {
+        try {
+            int t = this.jdbc.queryForInt("SELECT id FROM poi_type WHERE lcase(?) rlike poi_type.guess_rx;", 
+                                          poi.getName());
+            if (t != 0) {
+                poi.setType(t);
+            }
+        } catch (Exception e) {
+            /* Query result is empty */
+            poi.setType(1);
+        }
     }
 }

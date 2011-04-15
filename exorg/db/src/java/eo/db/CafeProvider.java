@@ -24,11 +24,13 @@ public class CafeProvider {
 
         private Cafe extractCafe() {
             Cafe cafe = new Cafe(rs.getLong("id"), rs.getString("name"));
+            cafe.setCityId(rs.getLong("city_id"));
             JdbcTemplate jdbc = dataProvider.getJdbcTemplate();
-            SqlRowSet address_rs = jdbc.queryForRowSet("SELECT address, lat, lng FROM cafe_address WHERE cafe_id=?;", new Object[]{cafe.getId()});
+            SqlRowSet address_rs = jdbc.queryForRowSet("SELECT address, lat, lng FROM cafe_address WHERE cafe_id=?;", 
+                                                       new Object[]{cafe.getId()});
             boolean v = address_rs.first();
             while (v) {
-                cafe.addLocation(rs.getLong("city_id"), rs.getString("address"), rs.getDouble("lat"), rs.getDouble("lng"));
+                cafe.addLocation(address_rs.getString("address"), address_rs.getDouble("lat"), address_rs.getDouble("lng"));
                 v = address_rs.next();
             }
 
@@ -70,23 +72,19 @@ public class CafeProvider {
     public Cafe add(final String name) throws Exception {
         jdbc.update("INSERT INTO cafe(name) VALUES (?);",
                     new Object[]{name});
-        /*
-        String q = String.format("INSERT INTO cafe(name) VALUES ('%s');",
-                                 escape(name));
-        this.dataProvider.getJdbcTemplate().execute(q);
-        */
         int newCafeId = this.dataProvider.getJdbcTemplate().queryForInt("SELECT LAST_INSERT_ID();");
         return new Cafe(newCafeId, name);
     }
 
     public Iterator<Cafe> cafeIterator() {
-        return new CafeIterator(dataProvider, "SELECT id FROM cafe;");
+        return new CafeIterator(dataProvider, "SELECT * FROM cafe;");
     }
 
     public void sync(final Cafe cafe) {
         this.jdbc.update(
-                         "UPDATE cafe SET descr=?, descr_src=?, url=?, cuisine=? WHERE id=?;",
+                         "UPDATE cafe SET city_id=?, descr=?, descr_src=?, url=?, cuisine=? WHERE id=?;",
                          new Object[] {
+                             cafe.getCityId(),
                              cafe.getDescription().getText(),
                              cafe.getDescription().getSourceURL(),
                              cafe.getURL(),
@@ -94,6 +92,7 @@ public class CafeProvider {
                              cafe.getId()
                          });
 
+        this.jdbc.update("DELETE FROM cafe_address WHERE cafe_id=?;", cafe.getId());
         for (Location loc : cafe.getLocations()) {
             this.jdbc.update(
                              "INSERT INTO cafe_address(cafe_id, city_id, address, lat, lng) VALUES (?, ?, ?, ?, ?);",
