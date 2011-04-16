@@ -22,6 +22,7 @@ public class POIType {
 
     // like Searcher.queryByType
     public int[] GetAllPoiTypes () {
+        return null;
         
     }
 
