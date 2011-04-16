@@ -26,7 +26,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="db" />
     <orderEntry type="module" module-name="core" />
   </component>
 </module>
