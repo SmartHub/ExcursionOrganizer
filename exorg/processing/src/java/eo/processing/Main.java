@@ -1,5 +1,9 @@
 package eo.processing;
 
+import java.lang.*;
+import java.util.*;
+import java.net.*;
+
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
@@ -171,9 +175,7 @@ final public class Main implements InitializingBean {
                 poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", ""));
             }
 
-            if (lookupLocation(poi.getLocation(), poi.getName())) {
-                //System.out.println("Updating address " + poi.getLocation().getAddress());
-            }
+            lookupLocation(poi.getLocation(), poi.getName());
 
             Thread.sleep(500);
         }
@@ -221,7 +223,7 @@ final public class Main implements InitializingBean {
     public void afterPropertiesSet() {
         try {
             processPOI();
-            //processCafes();            
+            processCafes();            
         } catch (Exception e) {
             System.out.println(e.toString());
             e.printStackTrace();
