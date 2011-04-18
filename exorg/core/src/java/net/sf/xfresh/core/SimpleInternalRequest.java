@@ -191,4 +191,8 @@ public class SimpleInternalRequest implements InternalRequest {
         final String userId = getParameter(USER_ID_PARAM_NAME);
         return userId == null ? null : Long.valueOf(userId);
     }
+
+    public HttpServletRequest getHttpServletRequest() {
+        return httpRequest;
+    }
 }

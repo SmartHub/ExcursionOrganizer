@@ -6,31 +6,43 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
        default-autowire="byName">
 
-  <context:property-placeholder location="../../custom.properties"/>
+    <context:property-placeholder location="../../custom.properties"/>
 
-  <bean id="indexYalet" class="eo.frontend.server.TestYalet"/>
+    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
 
-  <bean id="serverDaemon" class="eo.frontend.server.Starter">
-    <property name="interface" value="${httpserver.address}"/>      
-    <property name="handlers">
-      <list>
-        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler" />
-        <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
-      </list>
-    </property>
-  </bean>
+    <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
+        <property name="encoding" value="utf-8"/>
+    </bean>
 
-  <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
+    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
 
-  <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
-    <property name="encoding" value="utf-8"/>
-  </bean>
+    <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
 
-  <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
+    <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
 
-  <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
+    <bean id="indexYalet" class="eo.frontend.yalets.IndexYalet"/>
 
-  <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
+    <bean id="serverDaemon" class="eo.frontend.server.Starter">
+        <property name="interface" value="${httpserver.address}"/>
+        <property name="handlers">
+            <list>
+                <bean class="org.eclipse.jetty.server.session.SessionHandler">
+                    <property name="sessionManager">
+                        <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
+                    </property>
+                    <property name="handler">
+                        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler" />
+                    </property>
+                </bean>
+
+                <bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+			    	<property name="resourceBase" value="../content"/>
+			    </bean>
+
+                <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
+            </list>
+        </property>
+    </bean>
 </beans>
 
   <!--

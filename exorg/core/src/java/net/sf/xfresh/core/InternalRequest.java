@@ -28,6 +28,7 @@ package net.sf.xfresh.core;
 
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Date: 20.04.2007
@@ -73,4 +74,6 @@ public interface InternalRequest {
     String getCookie(String name);
 
     Long getUserId();
+
+    HttpServletRequest getHttpServletRequest();
 }

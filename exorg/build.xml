@@ -22,7 +22,7 @@
   <property name="src.db.dir" location="${project.dir}/db/src/java/eo/db"/>
   <property name="src.miner.dir" location="${project.dir}/miner/src/java/eo/miner"/>
   <property name="src.processing.dir" location="${project.dir}/processing/src/java/eo/processing"/>
-  <property name="src.frontend.server.dir" location="${project.dir}/frontend/src/java/eo/frontend/server"/>
+  <property name="src.frontend.dir" location="${project.dir}/frontend/src/java/"/>
 
   <target name="init">
     <mkdir dir="${build.dir}"/>
@@ -99,7 +99,7 @@
   </target>
   
   <target name="frontend" depends="init,xfresh">
-    <javac srcdir="${src.frontend.server.dir}"
+    <javac srcdir="${src.frontend.dir}"
            destdir="${build.dir}"
            debug="true"
            deprecation="true"
