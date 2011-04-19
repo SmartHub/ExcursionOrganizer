@@ -19,11 +19,11 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataProvider" class="eo.service.DataProvider">
+    <bean id="dataProvider" class="ru.exorg.service.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="processingDaemon" class="eo.processing.Main">
+    <bean id="processingDaemon" class="ru.exorg.processing.Main">
       <property name="dataProvider" ref="dataProvider"/>
       <property name="proxy" value="127.0.0.1:3128"/>
     </bean>

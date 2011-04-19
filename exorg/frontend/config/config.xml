@@ -20,9 +20,9 @@
 
     <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
 
-    <bean id="indexYalet" class="eo.frontend.yalets.IndexYalet"/>
+    <bean id="indexYalet" class="ru.exorg.frontend.yalets.IndexYalet"/>
 
-    <bean id="serverDaemon" class="eo.frontend.server.Starter">
+    <bean id="serverDaemon" class="ru.exorg.frontend.server.Starter">
         <property name="interface" value="${httpserver.address}"/>
         <property name="handlers">
             <list>

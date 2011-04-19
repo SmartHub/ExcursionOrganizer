@@ -251,7 +251,7 @@ final public class Main implements InitializingBean {
 
             this.addGeoInfo(poi);
             this.guessType(poi);
-            this.clusterize(poi);
+            //this.clusterize(poi);
 
             this.poiProvider.sync(poi);
         }

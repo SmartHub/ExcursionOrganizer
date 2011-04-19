@@ -19,11 +19,11 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataProvider" class="eo.db.DataProvider">
+    <bean id="dataProvider" class="ru.exorg.db.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="miner" class="eo.miner.Main">
+    <bean id="miner" class="ru.exorg.miner.Main">
       <property name="miners">
         <list>
           <bean class="eo.miner.POIMiner">
