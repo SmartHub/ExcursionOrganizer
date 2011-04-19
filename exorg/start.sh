@@ -15,12 +15,12 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #echo "run miner"
 #cd $EO_ROOT/miner/config
 #java -cp $EO_CP \
-#    eo.util.Starter config.xml $EO_ROOT
+#    ru.exorg.util.Starter config.xml $EO_ROOT
 
 #echo "run processing"
 #cd $EO_ROOT/processing/config
 #java -cp $EO_CP \
-#     eo.util.Starter config.xml $EO_ROOT
+#     ru.exorg.util.Starter config.xml $EO_ROOT
 
 #echo "index database"
 #$EO_ROOT/common/script/index.py $EO_ROOT $username $password
@@ -29,7 +29,7 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 echo "run server"
 cd $EO_ROOT/frontend/config
 java -cp $EO_CP \
-     eo.util.Starter config.xml $EO_ROOT
+    ru.exorg.util.Starter config.xml $EO_ROOT
 
 #echo "run server"
 #cd $EO_ROOT
