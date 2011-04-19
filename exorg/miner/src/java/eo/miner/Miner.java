@@ -10,7 +10,7 @@ import org.webharvest.exception.HttpException;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.ScraperContext;
 
-import eo.db.*;
+import eo.service.*;
 
 // ================================================================================
 

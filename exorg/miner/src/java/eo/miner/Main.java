@@ -1,11 +1,10 @@
 package eo.miner;
 
 import java.util.*;
-import java.lang.*;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import eo.db.*;
+import eo.service.*;
 
 // ================================================================================
 

@@ -15,7 +15,7 @@ import org.json.simple.JSONValue;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import eo.db.*;
+import eo.service.*;
 import eo.model.*;
 
 // ================================================================================

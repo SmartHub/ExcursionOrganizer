@@ -73,7 +73,7 @@
     </javac>
   </target>
 
-  <target name="all" depends="util,xfresh,model,db,miner,processing,frontend">
+  <target name="all" depends="core,miner,processing,frontend">
     <chmod file="${project.dir}/start.sh" perm="+x"/>
 
     <jar destfile="${lib.dir}/eo.jar">

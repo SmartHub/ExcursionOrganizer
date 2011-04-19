@@ -4,8 +4,8 @@ import org.webharvest.runtime.ScraperContext;
 
 import eo.model.*;
 
-import eo.db.CafeProvider;
-import eo.db.DataProvider;
+import eo.service.CafeProvider;
+import eo.service.DataProvider;
 
 // ================================================================================
 

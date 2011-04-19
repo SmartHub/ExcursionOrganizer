@@ -2,8 +2,8 @@ package eo.miner;
 
 import org.webharvest.runtime.ScraperContext;
 
-import eo.db.DataProvider;
-import eo.db.POIProvider;
+import eo.service.DataProvider;
+import eo.service.POIProvider;
 
 import eo.model.*;
 

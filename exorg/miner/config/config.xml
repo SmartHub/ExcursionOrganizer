@@ -32,11 +32,13 @@
             <property name="proxy" value="127.0.0.1:3128"/>
           </bean>
 
+          <!--
           <bean class="eo.miner.CafeMiner">
             <property name="dataProvider" ref="dataProvider"/>
             <property name="config" value="imhotour-cafe.cfg.xml"/>
             <property name="proxy" value="127.0.0.1:3128"/>
-          </bean>          
+          </bean>
+          -->
 
           <!--
           <bean class="eo.miner.POIMiner">
