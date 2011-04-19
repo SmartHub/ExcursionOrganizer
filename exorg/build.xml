@@ -17,8 +17,8 @@
 
   <property name="build.dir" location="${project.dir}/build"/>
   <property name="src.core.dir" location="${project.dir}/core/src/java/"/>
-  <property name="src.miner.dir" location="${project.dir}/miner/src/java/eo/miner"/>
-  <property name="src.processing.dir" location="${project.dir}/processing/src/java/eo/processing"/>
+  <property name="src.miner.dir" location="${project.dir}/miner/src/java/"/>
+  <property name="src.processing.dir" location="${project.dir}/processing/src/java/"/>
   <property name="src.frontend.dir" location="${project.dir}/frontend/src/java/"/>
 
   <target name="init">

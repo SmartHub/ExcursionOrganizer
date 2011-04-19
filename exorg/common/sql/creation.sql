@@ -74,7 +74,7 @@ CREATE TABLE poi_image (
 
 DROP TABLE IF EXISTS poi_cluster;
 CREATE TABLE poi_cluster (
-    id      INT AUTO_INCREMENT,
+    id      INT,
     poi_id  INT
 ) DEFAULT CHARACTER SET=utf8;
 

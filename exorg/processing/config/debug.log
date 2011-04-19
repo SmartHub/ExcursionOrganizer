@@ -1,0 +1,7 @@
+main 2011-04-20 00:38:35,203 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:38:37,451 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:39:00,967 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:39:03,108 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:39:05,259 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:39:05,262 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
+main 2011-04-20 00:39:07,205 WARN HttpConnectionManager is null.  Connection cannot be released. IN org.apache.commons.httpclient.HttpConnection
