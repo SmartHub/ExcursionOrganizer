@@ -16,10 +16,7 @@
   </path>
 
   <property name="build.dir" location="${project.dir}/build"/>
-  <property name="src.xfresh.dir" location="${project.dir}/core/src/java/net/sf/xfresh"/>
-  <property name="src.util.dir" location="${project.dir}/util/src/java/eo/util"/>
-  <property name="src.model.dir" location="${project.dir}/core/src/java/eo/model"/>
-  <property name="src.db.dir" location="${project.dir}/db/src/java/eo/db"/>
+  <property name="src.core.dir" location="${project.dir}/core/src/java/"/>
   <property name="src.miner.dir" location="${project.dir}/miner/src/java/eo/miner"/>
   <property name="src.processing.dir" location="${project.dir}/processing/src/java/eo/processing"/>
   <property name="src.frontend.dir" location="${project.dir}/frontend/src/java/"/>
@@ -32,8 +29,8 @@
     </delete>
   </target>
 
-  <target name="xfresh" depends="init">
-    <javac srcdir="${src.xfresh.dir}"
+  <target name="core" depends="init">
+    <javac srcdir="${src.core.dir}"
            destdir="${build.dir}"
            debug="true"
            deprecation="true"
@@ -43,40 +40,7 @@
     </javac>
   </target>
 
-  <target name="util" depends="init">
-    <javac srcdir="${src.util.dir}"
-           destdir="${build.dir}"
-           debug="true"
-           deprecation="true"
-           optimize="false"
-           includeAntRuntime="false">
-      <classpath refid="libs"/>
-    </javac>
-  </target>
-
-  <target name="model" depends="init,util">
-    <javac srcdir="${src.model.dir}"
-           destdir="${build.dir}"
-           debug="true"
-           deprecation="true"
-           optimize="false"
-           includeAntRuntime="false">
-      <classpath refid="libs"/>
-    </javac>
-  </target>
-
-  <target name="db" depends="init,util,model">
-    <javac srcdir="${src.db.dir}"
-           destdir="${build.dir}"
-           debug="true"
-           deprecation="true"
-           optimize="false"
-           includeAntRuntime="false">
-      <classpath refid="libs"/>
-    </javac>
-  </target>
-
-  <target name="miner" depends="init,db">
+  <target name="miner" depends="init,core">
     <javac srcdir="${src.miner.dir}"
            destdir="${build.dir}"
            debug="true"
@@ -87,7 +51,7 @@
     </javac>
   </target>
 
-  <target name="processing" depends="init,db">
+  <target name="processing" depends="init,core">
     <javac srcdir="${src.processing.dir}"
            destdir="${build.dir}"
            debug="true"
@@ -98,7 +62,7 @@
     </javac>
   </target>
   
-  <target name="frontend" depends="init,xfresh">
+  <target name="frontend" depends="init,core">
     <javac srcdir="${src.frontend.dir}"
            destdir="${build.dir}"
            debug="true"

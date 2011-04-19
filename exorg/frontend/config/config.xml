@@ -30,8 +30,15 @@
                     <property name="sessionManager">
                         <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
                     </property>
+
                     <property name="handler">
-                        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler" />
+                        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler">
+                            <property name="yaletList">
+                                <list>
+                                    <value>index</value>
+                                </list>
+                            </property>
+                        </bean>
                     </property>
                 </bean>
 

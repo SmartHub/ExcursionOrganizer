@@ -7,19 +7,15 @@ import java.util.*;
 import java.net.*;
 
 import org.eclipse.jetty.server.*;
-import org.eclipse.jetty.server.session.*;
 import org.eclipse.jetty.server.handler.*;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.beans.factory.annotation.Required;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import net.sf.xfresh.core.*;
 
@@ -36,11 +32,6 @@ public class Starter implements InitializingBean, ApplicationContextAware {
         private SessionManager sm;
         private Map<String, String> yalets;
 
-        public YaletHtmlPageHandler() {
-            this.yalets = new HashMap<String,String>();
-            this.yalets.put("index", "index");
-        }
-
         final public void setYaletProcessor(final YaletProcessor p) {
             this.yaletProcessor = p;
         }
@@ -49,16 +40,16 @@ public class Starter implements InitializingBean, ApplicationContextAware {
             this.sm = sm;
         }
 
-        private static Map<String, String> createCookiesMap(final Cookie[] cookies) {
-            Map<String, String> r = new HashMap<String, String>();
-
-            if (cookies != null) {
-                for (Cookie c : cookies) {
-                    r.put(c.getName(), c.getValue());
-                }
+        final public void setYaletList(final String[] yl) {
+            Map<String, String> m = new TreeMap<String, String>();
+            for (String h : yl) {
+                m.put(h, h);
             }
+            this.setYaletMap(m);
+        }
 
-            return r;
+        final public void setYaletMap(final Map<String, String> ym) {
+            this.yalets = ym;
         }
 
         public void handle(String target,
@@ -67,24 +58,11 @@ public class Starter implements InitializingBean, ApplicationContextAware {
                            HttpServletResponse response) throws IOException, ServletException {
             String resName = target.substring(target.lastIndexOf("/") + 1, target.lastIndexOf("."));
 
-            System.out.println("Yalet Html page handler was called on " + target);
+            //System.out.println("Yalet Html page handler was called on " + target);
 
             if (yalets.containsKey(resName)) {
                 if (target.endsWith(".html")) {
                     try {
-                        //sm.doStart();
-                        /*
-                        Map<String, String> m = createCookiesMap(request.getCookies());
-                        if (!m.containsKey(this.sm.getSessionCookie())) {
-                            baseRequest.setSessionManager(sm);
-                            HttpSession hs = request.getSession();
-                            this.sm.getIdManager().addSession(hs);
-
-                            this.yaletProcessor.process(request, response, "http://127.0.0.1:8080/" + resName + ".xml");
-
-                            response.addCookie(new Cookie(this.sm.getSessionCookie(), hs.getId()));
-                        } else {
-                        */
                         this.yaletProcessor.process(request, response, "http://127.0.0.1:8080/" + resName + ".xml");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -110,16 +88,6 @@ public class Starter implements InitializingBean, ApplicationContextAware {
         }
     }
 
-    /*
-    private static ContextHandler wrap(final String path, final AbstractHandler handler) {
-        ContextHandler ch = new ContextHandler();
-
-        ch.setContextPath(path);
-        ch.setHandler(handler);
-        return ch;
-    }
-    */
-
     public void setInterface(final String iface) {
         String[] ifaceCfg = iface.split(":");
 
@@ -143,8 +111,6 @@ public class Starter implements InitializingBean, ApplicationContextAware {
         s.setHandler(handlers);
 
         try {
-            //((HashSessionManager)ac.getBean("sessionManager")).start();
-
             s.start();
             s.join();
         } catch (Exception e) {
