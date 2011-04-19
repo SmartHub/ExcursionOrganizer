@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd"
+       default-autowire="byName">
+
+    <context:property-placeholder location="../../custom.properties"/>
+
+    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
+
+    <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
+        <property name="encoding" value="utf-8"/>
+    </bean>
+
+    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
+
+    <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
+
+    <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
+
+    <bean id="indexYalet" class="eo.frontend.yalets.IndexYalet"/>
+
+    <bean id="serverDaemon" class="eo.frontend.server.Starter">
+        <property name="interface" value="${httpserver.address}"/>
+        <property name="handlers">
+            <list>
+                <bean class="org.eclipse.jetty.server.session.SessionHandler">
+                    <property name="sessionManager">
+                        <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
+                    </property>
+
+                    <property name="handler">
+                        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler">
+                            <property name="yaletList">
+                                <list>
+                                    <value>index</value>
+                                </list>
+                            </property>
+                        </bean>
+                    </property>
+                </bean>
+
+                <bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+			    	<property name="resourceBase" value="../content"/>
+			    </bean>
+
+                <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
+            </list>
+        </property>
+    </bean>
+</beans>
+
+  <!--
+  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+  </bean>
+
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
+    <constructor-arg ref="dataSource"/>
+  </bean>
+  -->
+
+  <!-- Is it OK to initialize static members in such a way??? -->
+    <!--
+	<bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
+		<constructor-arg ref="jdbcTemplate" />
+	</bean>
+
+	<bean id="session_manager" class="eo.frontend.httpserver.SessionManager">
+		<property name="conn" ref="jdbcTemplate" />
+	</bean>
+	-->
+
+    
+
+              <!--
+	      <bean class="eo.frontend.httpserver.POIService" />
+
+	      <bean class="eo.frontend.httpserver.RouteService">
+		<property name="SM" ref="session_manager" />
+	      </bean>
+              
+	      <bean class="eo.frontend.httpserver.DynamicHandlerCollection">
+		<property name="base" value="../content"/>
+		<property name="handlers">
+		  <map>
+
+					<entry key="/test-poi.html">
+						<bean class="eo.frontend.httpserver.TestPOI"/>
+					</entry>
+
+					<entry key="/poi_types.html">
+						<bean class="eo.frontend.httpserver.POITypesHandler"/>
+					</entry>
+
+					<entry key="/type.html">
+						<bean class="eo.frontend.httpserver.POITypeHandler"/>
+					</entry>
+
+					<entry key="/index.html">
+						<bean class="eo.frontend.httpserver.IndexHandler"/>
+					</entry>
+
+					<entry key="/route.html">
+						<bean class="eo.frontend.httpserver.RouteHandler">
+							<property name="SM" ref="session_manager"/>
+						</bean>
+					</entry>
+					<entry key="/constructor.html">
+						<bean class="eo.frontend.httpserver.ConstructorHandler" >
+
+							<property name="SM" ref="session_manager"/>
+						</bean>
+					</entry>
+
+				</map>
+				</property>
+			</bean>
+
+			<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+				<property name="resourceBase" value="../content"/>
+			</bean>
+                        -->
+
