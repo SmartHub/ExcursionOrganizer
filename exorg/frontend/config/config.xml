@@ -32,7 +32,7 @@
                     </property>
 
                     <property name="handler">
-                        <bean class="eo.frontend.server.Starter.YaletHtmlPageHandler">
+                        <bean class="ru.exorg.frontend.server.Starter.YaletHtmlPageHandler">
                             <property name="yaletList">
                                 <list>
                                     <value>index</value>
