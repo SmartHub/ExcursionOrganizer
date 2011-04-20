@@ -196,7 +196,6 @@
       <module fileurl="file://$PROJECT_DIR$/frontend/frontend.iml" filepath="$PROJECT_DIR$/frontend/frontend.iml" />
       <module fileurl="file://$PROJECT_DIR$/miner/miner.iml" filepath="$PROJECT_DIR$/miner/miner.iml" />
       <module fileurl="file://$PROJECT_DIR$/processing/processing.iml" filepath="$PROJECT_DIR$/processing/processing.iml" />
-      <module fileurl="file://$PROJECT_DIR$/testing/testing.iml" filepath="$PROJECT_DIR$/testing/testing.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
