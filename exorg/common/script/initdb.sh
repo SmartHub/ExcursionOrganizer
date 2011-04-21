@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #!/bin/sh
 
@@ -15,4 +15,5 @@ if [ "$2" != "" ]
 fi
 
 cd $PWD
+#if [[ -n file ]]; then echo "Not found"; fi;
 if [[ ! -a ../../frontend/index ]]; then mkdir ../../frontend/index; fi

@@ -62,7 +62,7 @@ index poi_index
 {
   source  = poi
 
-  path    = %(EO_PATH)s/backend/index/poi
+  path    = %(EO_PATH)s/frontend/index/poi
   docinfo = extern
 
   mlock   = 0
@@ -116,7 +116,7 @@ searchd
 }
 """
 
-sphinx_cfg_path = sys.argv[1] + "/backend/exorg.sphinx"
+sphinx_cfg_path = sys.argv[1] + "/common/script/exorg.sphinx"
 
 sphx_cfg = open(sphinx_cfg_path, "w")
 sphx_cfg.write(
@@ -128,5 +128,5 @@ sphx_cfg.write(
     )
 sphx_cfg.close()
 
-os.system("rm %(EO_ROOT)s/backend/index/*" % { "EO_ROOT" : sys.argv[1] });
+os.system("rm %(EO_ROOT)s/frontend/index/*" % { "EO_ROOT" : sys.argv[1] });
 os.system("indexer --all -c " + sphinx_cfg_path);
