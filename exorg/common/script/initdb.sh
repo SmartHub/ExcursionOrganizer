@@ -16,4 +16,4 @@ fi
 
 cd $PWD
 #if [[ -n file ]]; then echo "Not found"; fi;
-if [[ ! -a ../../frontend/index ]]; then mkdir ../../frontend/index; fi
+#if [[ ! -a ../../frontend/index ]]; then mkdir ../../frontend/index; fi
