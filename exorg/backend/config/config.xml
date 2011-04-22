@@ -22,7 +22,7 @@
 
     <bean id="indexYalet" class="ru.exorg.backend.yalets.IndexYalet"/>
 
-    <bean id="serverDaemon" class="ru.exorg.backend.server.Starter">
+    <bean id="serverDaemon" class="ru.exorg.core.server.Starter">
         <property name="interface" value="${backend.httpserver.address}"/>
         <property name="handlers">
             <list>
