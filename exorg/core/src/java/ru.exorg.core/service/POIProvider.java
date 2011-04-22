@@ -7,7 +7,6 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.sql.SQLException;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 import java.util.List;
 
 import java.sql.ResultSet;
@@ -157,7 +156,7 @@ final public class POIProvider {
         }
     }
 
-    final boolean isInCluster(final POI poi) {
+    final public boolean isInCluster(final POI poi) {
         return this.jdbc.queryForInt("SELECT COUNT(*) FROM poi_cluster WHERE poi_id = ?;", poi.getId()) != 0;
     }
 
@@ -169,7 +168,7 @@ final public class POIProvider {
         }
     }
 
-    final public long getNextClusterId() {
+    final public long getMaxClusterId() {
         return this.jdbc.queryForInt("SELECT MAX(id) FROM poi_cluster;");
     }
 
@@ -179,7 +178,7 @@ final public class POIProvider {
         if (clusterId > 0) {
             this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", clusterId, poi.getId());
         } else {
-            long maxClusterId = getNextClusterId();
+            long maxClusterId = getMaxClusterId();
             this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", maxClusterId + 1, poi.getId());
         }
     }

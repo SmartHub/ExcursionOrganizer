@@ -237,16 +237,18 @@ final public class Main implements InitializingBean {
         }
 
         if (nearest != null) {
-
-
             long cid = this.poiProvider.getPOICluster(nearest);
             if (cid != 0) {
-                System.out.println("Addind POI #" + String.valueOf(poi.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
                 this.poiProvider.setPOICluster(poi, cid);
             } else {
+                cid = this.poiProvider.getMaxClusterId() + 1;
                 this.poiProvider.setPOICluster(poi, cid);
-                this.poiProvider.setPOICluster(poi, cid);
+                this.poiProvider.setPOICluster(nearest, cid);
             }
+
+            System.out.println("Addind POI #" + String.valueOf(poi.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
+        } else {
+            System.out.println("Not clustering POI #" + String.valueOf(poi.getId()));
         }
     }
 
@@ -261,7 +263,7 @@ final public class Main implements InitializingBean {
 
             this.addGeoInfo(poi);
             this.guessType(poi);
-            this.clusterize(poi);
+            //this.clusterize(poi);
 
             this.poiProvider.sync(poi);
         }
