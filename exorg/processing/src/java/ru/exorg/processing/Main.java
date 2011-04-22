@@ -15,8 +15,8 @@ import org.json.simple.JSONValue;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import ru.exorg.service.*;
-import ru.exorg.model.*;
+import ru.exorg.core.service.*;
+import ru.exorg.core.model.*;
 
 // ================================================================================
 
@@ -25,6 +25,7 @@ final public class Main implements InitializingBean {
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
     private List<String> poiNames;
+    private int timeout = 1000;
 
     private HttpConnection conn;
 
@@ -67,12 +68,14 @@ final public class Main implements InitializingBean {
             if (conn == null) {
                 conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
                 conn.open();
-                conn.getParams().setSoTimeout(5000);
+                conn.getParams().setSoTimeout(this.timeout);
+                conn.getParams().setConnectionTimeout(this.timeout);
             } else {
                 /* Who knows why the connection to the proxy server suddenly closes? */
                 if (!conn.isOpen()) {
                     conn.open();
-                    conn.getParams().setSoTimeout(5000);
+                    conn.getParams().setSoTimeout(this.timeout);
+                    conn.getParams().setConnectionTimeout(this.timeout);
                 }
             }
         }
@@ -237,9 +240,9 @@ final public class Main implements InitializingBean {
     }
 
     private void processPOI() throws Exception {
-        //this.poiProvider.clearClusters();
         this.poiNames = this.poiProvider.getPOINames();
 
+        this.poiProvider.clearClusters();
         for (int i = 1; i < this.poiNames.size() + 1; ++i) {
             POI p = new POI(i, "1");
             this.poiProvider.setPOICluster(p, i);
@@ -251,7 +254,7 @@ final public class Main implements InitializingBean {
 
             this.addGeoInfo(poi);
             this.guessType(poi);
-            //this.clusterize(poi);
+            this.clusterize(poi);
 
             this.poiProvider.sync(poi);
         }

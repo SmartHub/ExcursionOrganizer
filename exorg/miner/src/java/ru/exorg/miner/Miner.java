@@ -10,7 +10,7 @@ import org.webharvest.exception.HttpException;
 import org.webharvest.runtime.Scraper;
 import org.webharvest.runtime.ScraperContext;
 
-import ru.exorg.service.*;
+import ru.exorg.core.service.*;
 
 // ================================================================================
 
@@ -126,7 +126,7 @@ public abstract class Miner {
         } catch (Exception e) {
             System.out.println("Exception was caught. See debug.log for details");
             this.log.warn(e.getMessage());
-            this.log.warn(ru.exorg.util.Log.getCallStack(e));
+            this.log.warn(ru.exorg.core.util.Log.getCallStack(e));
         }
     }
 

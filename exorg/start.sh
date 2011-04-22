@@ -25,12 +25,10 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #echo "index database"
 #$EO_ROOT/common/script/index.py $EO_ROOT $username $password
 
-# Temporary solution until indexing will work again
-echo "run server"
+echo "Running frontend HTTP server"
 cd $EO_ROOT/frontend/config
-java -cp $EO_CP \
-    ru.exorg.util.Starter config.xml $EO_ROOT
+$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-#echo "run server"
-#cd $EO_ROOT
-#./svr_local.sh start $EO_ROOT $EO_CP
+echo "Running backend HTTP server"
+cd $EO_ROOT/backend/config
+$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT

@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.springframework.beans.factory.InitializingBean;
 
-import ru.exorg.service.*;
+import ru.exorg.core.service.*;
 
 // ================================================================================
 

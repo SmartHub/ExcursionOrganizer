@@ -2,8 +2,8 @@ package ru.exorg.miner;
 
 import org.webharvest.runtime.ScraperContext;
 
-import ru.exorg.service.*;
-import ru.exorg.model.*;
+import ru.exorg.core.service.*;
+import ru.exorg.core.model.*;
 
 // ================================================================================
 
