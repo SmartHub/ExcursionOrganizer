@@ -8,36 +8,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="spring">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../lib/spring" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../lib/spring" recursive="false" />
-      </library>
-    </orderEntry>
     <orderEntry type="module" module-name="core" />
-    <orderEntry type="module-library">
-      <library name="web-harvest">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/../lib/web-harverst" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../lib/web-harverst" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/commons-dbcp-1.4.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
   </component>
 </module>
 
