@@ -11,7 +11,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/httpclient-4.0-beta2.jar!/" />
+          <root url="jar://$USER_HOME$/lib/httpclient-4.0-beta2.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -20,7 +20,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/httpcore-4.0.jar!/" />
+          <root url="jar://$USER_HOME$/lib/httpcore-4.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -29,7 +29,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/web-harverst/log4j-1.2.13.jar!/" />
+          <root url="jar://$USER_HOME$/lib/web-harverst/log4j-1.2.13.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -38,7 +38,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/xstream/jdk1.3/xalan-2.7.0.jar!/" />
+          <root url="jar://$USER_HOME$/lib/xstream/jdk1.3/xalan-2.7.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -47,7 +47,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/xstream/jdk1.3/xercesImpl-2.8.1.jar!/" />
+          <root url="jar://$USER_HOME$/lib/xstream/jdk1.3/xercesImpl-2.8.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -56,7 +56,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/jetty/servlet-api-2.5.jar!/" />
+          <root url="jar://$USER_HOME$/lib/jetty/servlet-api-2.5.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -65,11 +65,11 @@
     <orderEntry type="module-library">
       <library name="spring">
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../lib/spring" />
+          <root url="file://$USER_HOME$/lib/spring" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../lib/spring" recursive="false" />
+        <jarDirectory url="file://$USER_HOME$/lib/spring" recursive="false" />
       </library>
     </orderEntry>
   </component>
