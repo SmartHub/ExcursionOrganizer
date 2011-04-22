@@ -153,6 +153,8 @@ final public class Main implements InitializingBean {
             return false;
         }
 
+        System.out.println("Quering for " + r);
+
         List<Location> locs = parseGeoInfo(r);
         if (locs == null && guess != null && loc.getAddress() != null) {
             r = queryGAPI(new String[]{"address", guess});
@@ -211,8 +213,9 @@ final public class Main implements InitializingBean {
     }
 
     private void clusterize(final POI poi) {
-        long cid = 0;
+        long npid = 0;
         float m = 1;
+        POI nearest = null;
 
         for (String s : this.poiNames) {
             POI other = this.poiProvider.queryByName(s);
@@ -223,7 +226,8 @@ final public class Main implements InitializingBean {
                 float cm = (float)Util.getLevenshteinDistance(n, s)/max(s.length(), n.length());
                 if (cm < 0.1 && cm < m) {
                     m = cm;
-                    cid = this.poiProvider.getPOICluster(other);
+                    nearest = other;
+                    //cid = this.poiProvider.getPOICluster(other);
                 }
 
                 if (cm > 1) {
@@ -232,10 +236,17 @@ final public class Main implements InitializingBean {
            }
         }
 
-        if (cid != this.poiProvider.getPOICluster(poi) || cid == 0) {
-            System.out.println("Addind POI #" + String.valueOf(poi.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
+        if (nearest != null) {
 
-            this.poiProvider.setPOICluster(poi, cid);
+
+            long cid = this.poiProvider.getPOICluster(nearest);
+            if (cid != 0) {
+                System.out.println("Addind POI #" + String.valueOf(poi.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
+                this.poiProvider.setPOICluster(poi, cid);
+            } else {
+                this.poiProvider.setPOICluster(poi, cid);
+                this.poiProvider.setPOICluster(poi, cid);
+            }
         }
     }
 
@@ -243,10 +254,6 @@ final public class Main implements InitializingBean {
         this.poiNames = this.poiProvider.getPOINames();
 
         this.poiProvider.clearClusters();
-        for (int i = 1; i < this.poiNames.size() + 1; ++i) {
-            POI p = new POI(i, "1");
-            this.poiProvider.setPOICluster(p, i);
-        }
 
         Iterator<POI> it = poiProvider.poiIterator();
         while (it.hasNext()) {

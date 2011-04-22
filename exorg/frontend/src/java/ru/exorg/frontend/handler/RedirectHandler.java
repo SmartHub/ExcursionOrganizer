@@ -4,7 +4,6 @@ import java.lang.*;
 import java.util.*;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.SessionManager;
 import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.ServletException;

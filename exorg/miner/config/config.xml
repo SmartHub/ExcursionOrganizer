@@ -26,7 +26,7 @@
     <bean id="miner" class="ru.exorg.miner.Main">
       <property name="miners">
         <list>
-          <bean class="eo.miner.POIMiner">
+          <bean class="ru.exorg.miner.POIMiner">
             <property name="dataProvider" ref="dataProvider"/>
             <property name="config" value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
             <property name="proxy" value="127.0.0.1:3128"/>

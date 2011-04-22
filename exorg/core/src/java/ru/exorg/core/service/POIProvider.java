@@ -169,13 +169,17 @@ final public class POIProvider {
         }
     }
 
+    final public long getNextClusterId() {
+        return this.jdbc.queryForInt("SELECT MAX(id) FROM poi_cluster;");
+    }
+
     final public void setPOICluster(final POI poi, long clusterId) {
         this.jdbc.update("DELETE FROM poi_cluster WHERE poi_id = ?;", poi.getId());
 
         if (clusterId > 0) {
             this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", clusterId, poi.getId());
         } else {
-            long maxClusterId = this.jdbc.queryForInt("SELECT MAX(id) FROM poi_cluster;");
+            long maxClusterId = getNextClusterId();
             this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", maxClusterId + 1, poi.getId());
         }
     }

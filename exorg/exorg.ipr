@@ -220,13 +220,6 @@
       </value>
     </option>
   </component>
-  <component name="RmicSettings">
-    <option name="IS_EANABLED" value="false" />
-    <option name="DEBUGGING_INFO" value="true" />
-    <option name="GENERATE_NO_WARNINGS" value="false" />
-    <option name="GENERATE_IIOP_STUBS" value="false" />
-    <option name="ADDITIONAL_OPTIONS_STRING" value="" />
-  </component>
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="" />
   </component>
@@ -234,17 +227,10 @@
   <component name="libraryTable">
     <library name="lib">
       <CLASSES>
-        <root url="file://$PROJECT_DIR$/lib/spring" />
-        <root url="file://$PROJECT_DIR$/lib/web-harverst" />
-        <root url="file://$PROJECT_DIR$/lib/spring" />
-        <root url="file://$PROJECT_DIR$/lib/jetty" />
+        <root url="file://$PROJECT_DIR$/lib" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
-      <jarDirectory url="file://$PROJECT_DIR$/lib/" recursive="false" />
-      <jarDirectory url="file://$PROJECT_DIR$/lib/jetty" recursive="false" />
-      <jarDirectory url="file://$PROJECT_DIR$/lib/spring" recursive="false" />
-      <jarDirectory url="file://$PROJECT_DIR$/lib/web-harverst" recursive="false" />
     </library>
   </component>
 </project>

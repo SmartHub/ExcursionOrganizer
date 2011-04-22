@@ -9,8 +9,8 @@ import java.io.StringWriter;
 
 public class Log {
     public static void init(String path) {
-        String log_conf_path = path + "/common/script/log4j.xml";
-        DOMConfigurator.configure(log_conf_path);
+        String logConfPath = path + "/common/script/log4j.xml";
+        DOMConfigurator.configure(logConfPath);
     }
 
     public static String getCallStack(final Exception e) {

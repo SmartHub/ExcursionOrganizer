@@ -19,7 +19,7 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-    <bean id="dataProvider" class="ru.exorg.service.DataProvider">
+    <bean id="dataProvider" class="ru.exorg.core.service.DataProvider">
         <constructor-arg ref="jdbcTemplate"/>
     </bean>
 
