@@ -19,7 +19,7 @@
   <property name="src.core.dir" location="${project.dir}/core/src/java/"/>
   <property name="src.miner.dir" location="${project.dir}/miner/src/java/"/>
   <property name="src.processing.dir" location="${project.dir}/processing/src/java/"/>
-  <property name="src.frontend.dir" location="${project.dir}/frontend/src/java/"/>
+  <property name="src.backend.dir" location="${project.dir}/backend/src/java/"/>
 
   <target name="init">
     <mkdir dir="${build.dir}"/>
@@ -62,8 +62,8 @@
     </javac>
   </target>
   
-  <target name="frontend" depends="init,core">
-    <javac srcdir="${src.frontend.dir}"
+  <target name="backend" depends="init,core">
+    <javac srcdir="${src.backend.dir}"
            destdir="${build.dir}"
            debug="true"
            deprecation="true"
@@ -73,7 +73,7 @@
     </javac>
   </target>
 
-  <target name="all" depends="core,miner,processing,frontend">
+  <target name="all" depends="core,miner,processing,backend">
     <chmod file="${project.dir}/start.sh" perm="+x"/>
 
     <jar destfile="${lib.dir}/eo.jar">
