@@ -207,6 +207,9 @@
       <module fileurl="file://$PROJECT_DIR$/processing/processing.iml" filepath="$PROJECT_DIR$/processing/processing.iml" />
     </modules>
   </component>
+  <component name="ProjectResources">
+    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_5" assert-keyword="true" jdk-15="true" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
@@ -222,6 +225,32 @@
   </component>
   <component name="WebServicesPlugin" addRequiredLibraries="true" />
   <component name="libraryTable">
+    <library name="3.0.0">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.aop-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.asm-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.aspects-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.beans-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.context-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.context.support-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.core-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.expression-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.instrument-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.instrument.tomcat-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.jdbc-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.jms-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.orm-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.oxm-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.test-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.transaction-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.web-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.web.portlet-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.web.servlet-3.1.0.M1.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/spring/org.springframework.web.struts-3.1.0.M1.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
     <library name="lib">
       <CLASSES>
         <root url="file://$PROJECT_DIR$/lib" />
