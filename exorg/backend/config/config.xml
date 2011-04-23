@@ -19,20 +19,31 @@
         <constructor-arg ref="dataSource"/>
     </bean>
 
-
-    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
+    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" >
+        <property name="yaletResolver" ref="yaletResolver"/>
+        <property name="saxGenerator" ref="saxGenerator"/>
+    </bean>
 
     <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
         <property name="encoding" value="utf-8"/>
+        <property name="yaletSupport" ref="yaletSupport"/>
     </bean>
 
-    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
+    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport">
+        <property name="singleYaletProcessor" ref="singleYaletProcessor"/>
+    </bean>
 
     <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
 
     <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
 
-    <bean id="indexYalet" class="ru.exorg.backend.yalets.IndexYalet"/>
+    <bean id = "recommendedRouteService" class="ru.exorg.backend.services.RecommendedRouteService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="indexYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
+        <property name="recommendedRouteService" ref="recommendedRouteService"/>
+    </bean>
 
     <bean id="serverDaemon" class="ru.exorg.core.server.Starter">
         <property name="interface" value="${backend.httpserver.address}"/>
@@ -63,13 +74,8 @@
             </list>
         </property>
     </bean>
-    <bean id = "routeService" class="ru.exorg.backend.services.RouteService">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
 
-    <bean id = "recommededRouteService" class="ru.exorg.backend.services.RecommendedRouteService">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
+    </beans>
   <!-- Is it OK to initialize static members in such a way??? -->
     <!--
 	<bean id="searcher" class="eo.frontend.httpserver.InitJDBC">

@@ -34,8 +34,9 @@ public class RouteService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public RouteService() {
-        poiService = new POIService();
+    @Required
+    public void setPoiService (final POIService poiService) {
+        this.poiService = poiService;
     }
 
     public Route getUserRoute(final long sid)

@@ -22,15 +22,17 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #java -cp $EO_CP \
 #     ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-#echo "index database"
-#python $EO_ROOT/processing/config/index.py $EO_ROOT $username $password
+echo "index database"
+python $EO_ROOT/processing/config/index.py $EO_ROOT $username $password
 
-echo "Running frontend HTTP server"
-cd $EO_ROOT/frontend/config
-$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+#echo "Running frontend HTTP server"
+#cd $EO_ROOT/frontend/config
+#$EO_ROOT/core/script/daemonize 
+#java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-echo "Running backend HTTP server"
-cd $EO_ROOT/backend/config
-$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+#echo "Running backend HTTP server"
+#cd $EO_ROOT/backend/config
+#$EO_ROOT/core/script/daemonize 
+#java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "FINISH"

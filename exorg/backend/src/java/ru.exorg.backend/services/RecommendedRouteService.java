@@ -42,13 +42,18 @@ public class RecommendedRouteService {
                                  );
         RowMapper<Route> mapper = new RowMapper<Route>() {
             public Route mapRow(ResultSet rs, int i) throws SQLException {
+                //TODO: map points list as in RouteService. I think, this method must be similar to RouteService.getUserRoute(long). Kate.
                 Route route = new Route(id, rs.getString("descr"), rs.getInt("count_point"), rs.getDouble("duration"));
                 return route;
             }
         };
+
+
         List<Route> list = jdbcTemplate.query(q, mapper);
         if (!list.isEmpty())
         {
+             System.out.println ("getting route " + list.get(0).getId());
+
              String query = String.format(
                      "SELECT poi_id, order_num FROM route_poi WHERE route_id = %d;",
                      list.get(0).getId()
@@ -70,6 +75,8 @@ public class RecommendedRouteService {
              };
              list.get(0).setPoints(jdbcTemplate.query(query, pointMapper));
         }
+        else
+            System.out.println ("FUCK");
         return list.get(0);
 
     }

@@ -65,12 +65,23 @@ public class POIService {
     }
 
     public List<POI> getPoiListByKey(String key) throws SphinxException {
-        SphinxResult sphinxResult = this.sphinxClient.Query(key);
+        System.out.println ("getPoiListByKey: key = "+key);
+        
+        SphinxResult sphinxResult = sphinxClient.Query("@id "+key);
+        if (sphinxResult == null) {
+            System.out.println ("sphinxResult == null");
+            return null;
+        }
+
+        System.out.println (sphinxResult.total);
+
         List<POI> result = new ArrayList<POI>();
         for(SphinxMatch match: sphinxResult.matches)
         {
             result.add(getPOIFromMatch(match));
         }
+
+        System.out.println (result.size());
         return result;
     }
 

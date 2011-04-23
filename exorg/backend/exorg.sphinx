@@ -11,7 +11,7 @@ source poi
 
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
-  sql_user = exorg
+  sql_user = kate
   sql_pass = 
   sql_db   = excursion_organizer
   sql_port = 3306	# optional, default is 3306
@@ -44,7 +44,7 @@ index poi_index
 {
   source  = poi
 
-  path    = /home/lana/Study/test/ExcursionOrganizer/exorg/backend/index/poi
+  path    = /home/kate/APTU/ExcursionOrganizer/ExcursionOrganizer/exorg/backend/index/poi
   docinfo = extern
 
   mlock   = 0
