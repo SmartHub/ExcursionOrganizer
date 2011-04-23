@@ -29,6 +29,13 @@ public class Route {
         this.points = points;
     }
 
+    public Route(long id, String description, int countPoints, double duration) {
+        this.id = id;
+        this.description = description;
+        this.countPoints = countPoints;
+        this.duration = duration;
+    }
+
     public long getId() {
         return id;
     }

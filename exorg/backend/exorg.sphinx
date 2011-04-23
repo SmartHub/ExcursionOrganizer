@@ -11,7 +11,7 @@ source poi
 
   # SQL settings (for 'mysql' and 'pgsql' types)
   sql_host = localhost
-  sql_user = kate
+  sql_user = exorg
   sql_pass = 
   sql_db   = excursion_organizer
   sql_port = 3306	# optional, default is 3306
@@ -19,7 +19,8 @@ source poi
   # main document fetch query
   # mandatory, integer document ID field MUST be the first selected column
 
-  sql_query =     SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi_raw_geo.address, poi_raw_descr.descr, poi_raw_descr.src_url descr_ref,  poi_raw_images.img_url, poi_raw_geo.lat, poi_raw_geo.lng       FROM place_of_interest poi            LEFT JOIN poi_raw_descr ON poi.id = poi_raw_descr.poi_id            LEFT JOIN poi_raw_geo ON poi.id = poi_raw_geo.poi_id                LEFT JOIN poi_type ON poi.type_id = poi_type.id                     LEFT JOIN poi_raw_images ON poi_raw_images.poi_id = poi.id
+
+  sql_query =     SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref,  poi_image.img_url, poi.lat, poi.lng       FROM place_of_interest poi            LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id            LEFT JOIN poi_type ON poi.type_id = poi_type.id             LEFT JOIN poi_image ON poi_image.poi_id = poi.id
 
   # It took me about an hour to learn that this is nessesary :(
   sql_query_pre = SET CHARSET utf8
@@ -43,7 +44,7 @@ index poi_index
 {
   source  = poi
 
-  path    = /home/kate/APTU/ExcursionOrganizer/ExcursionOrganizer/exorg/frontend/index/poi
+  path    = /home/lana/Study/test/ExcursionOrganizer/exorg/backend/index/poi
   docinfo = extern
 
   mlock   = 0
@@ -60,7 +61,7 @@ index poi_index
 
 indexer
 {
-  # memory limit, in bytes, kiloytes (16384K) or megabytes (256M)
+  # memory limit, in bytes, kilobytes (16384K) or megabytes (256M)
   # optional, default is 32M, max is 2047M, recommended is 256M to 1024M
   mem_limit = 32M
 }

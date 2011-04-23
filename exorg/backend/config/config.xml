@@ -8,6 +8,18 @@
 
     <context:property-placeholder location="../../custom.properties"/>
 
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" lazy-init="false">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+
     <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
 
     <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
@@ -47,24 +59,17 @@
 			    </bean>
 
                 <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
+
             </list>
         </property>
     </bean>
-</beans>
+    <bean id = "routeService" class="ru.exorg.backend.services.RouteService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
 
-  <!--
-  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-  </bean>
-
-  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
-    <constructor-arg ref="dataSource"/>
-  </bean>
-  -->
-
+    <bean id = "recommededRouteService" class="ru.exorg.backend.services.RecommendedRouteService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
   <!-- Is it OK to initialize static members in such a way??? -->
     <!--
 	<bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
