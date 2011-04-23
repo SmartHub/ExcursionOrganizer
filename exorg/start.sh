@@ -25,6 +25,9 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 echo "index database"
 python $EO_ROOT/processing/config/index.py $EO_ROOT $username $password
 
+echo "start search daemon"
+searchd -c $EO_ROOT/backend/exorg.sphinx
+
 #echo "Running frontend HTTP server"
 #cd $EO_ROOT/frontend/config
 #$EO_ROOT/core/script/daemonize 

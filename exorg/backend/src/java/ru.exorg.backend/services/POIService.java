@@ -68,12 +68,8 @@ public class POIService {
         System.out.println ("getPoiListByKey: key = "+key);
         
         SphinxResult sphinxResult = sphinxClient.Query("@id "+key);
-        if (sphinxResult == null) {
-            System.out.println ("sphinxResult == null");
-            return null;
-        }
 
-        System.out.println (sphinxResult.total);
+        System.out.println (sphinxResult.matches.length);
 
         List<POI> result = new ArrayList<POI>();
         for(SphinxMatch match: sphinxResult.matches)
