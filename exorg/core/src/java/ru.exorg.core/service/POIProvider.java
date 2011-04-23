@@ -40,6 +40,13 @@ final public class POIProvider {
                 poi.addDescription(d_rs.getString("descr"), d_rs.getString("src_url"));
                 v = d_rs.next();
             }
+
+            d_rs = jdbc.queryForRowSet("SELECT img_url FROM poi_image WHERE poi_id=?;", new Object[]{poi.getId()});
+            v = d_rs.first();
+            while (v) {
+                poi.addImage(d_rs.getString("img_url"));
+                v = d_rs.next();
+            }
             return poi;
         }
     }

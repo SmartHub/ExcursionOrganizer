@@ -25,7 +25,7 @@ final public class Main implements InitializingBean {
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
     private List<String> poiNames;
-    private int timeout = 1000;
+    private int timeout = 10000;
 
     private HttpConnection conn;
 
@@ -61,30 +61,35 @@ final public class Main implements InitializingBean {
 
         HttpState state = new HttpState();
 
+        boolean needOpen = false;
         if (!doesUseProxy()) {
             conn = new HttpConnection(hostName, httpPort);
-            conn.open();
+            needOpen = true;
         } else {
             if (conn == null) {
                 conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
-                conn.open();
-                conn.getParams().setSoTimeout(this.timeout);
-                conn.getParams().setConnectionTimeout(this.timeout);
+                needOpen = true;
             } else {
                 /* Who knows why the connection to the proxy server suddenly closes? */
                 if (!conn.isOpen()) {
-                    conn.open();
-                    conn.getParams().setSoTimeout(this.timeout);
-                    conn.getParams().setConnectionTimeout(this.timeout);
+                    needOpen = true;
                 }
             }
         }
+
+        if (needOpen) {
+            conn.open();
+            conn.getParams().setSoTimeout(this.timeout);
+            conn.getParams().setConnectionTimeout(this.timeout);
+        }
+
         HttpMethod getMeth = new GetMethod();
         getMeth.setPath(path);
         getMeth.addRequestHeader("Host", "maps.googleapis.com");
         getMeth.addRequestHeader("Accept", "application/json");
         getMeth.addRequestHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US)");
-        getMeth.addRequestHeader("Accept-Language", "ru"); 
+        //getMeth.addRequestHeader("Accept-Language", "ru");
+        getMeth.addRequestHeader("Accept-Language", "ru;en");
         getMeth.addRequestHeader("Accept-Charset", "utf-8");
 
         if (!doesUseProxy()) {
@@ -97,6 +102,8 @@ final public class Main implements InitializingBean {
         if (!doesUseProxy()) {
             conn = null;
         }
+
+        System.out.println(path);
 
         return new String(getMeth.getResponseBody());
     }
@@ -147,19 +154,22 @@ final public class Main implements InitializingBean {
 
         if (loc.getAddress() != null) {
             r = queryGAPI(new String[]{"address", loc.getAddress()});
+            System.out.println("Quering for " + loc.getAddress());
         } else if (guess != null) {
             r = queryGAPI(new String[]{"address", guess});
+            System.out.println("Quering for " + guess);
         } else {
             return false;
         }
 
-        System.out.println("Quering for " + r);
-
         List<Location> locs = parseGeoInfo(r);
         if (locs == null && guess != null && loc.getAddress() != null) {
             r = queryGAPI(new String[]{"address", guess});
+            System.out.println("Quering for " + guess);
             locs = parseGeoInfo(r);
         }
+
+        System.out.println(r.toString());
 
         if (locs != null) {
             for (Location l : locs) {
@@ -170,6 +180,8 @@ final public class Main implements InitializingBean {
                     return true;
                 }
             }
+        } else {
+            System.out.println("Failed");
         }
 
         return false;

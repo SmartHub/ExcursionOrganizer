@@ -27,6 +27,7 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
+>>>>>>> 6447be6cd85a01f4fff38cbca7d6b98fe4610a67
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/jetty/jetty-server-7.3.1.v20110307.jar!/" />

@@ -105,6 +105,12 @@
         [City]
         Санкт-Петербург
 
+        <empty>
+            <script><![CDATA[
+              System.out.println("Fetching " + sight_page_url.toString());
+            ]]></script>
+        </empty>
+
         <!--<template>${address.toString()}</template>-->
       </body>
     </loop>    
