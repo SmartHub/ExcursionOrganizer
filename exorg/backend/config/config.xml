@@ -8,19 +8,42 @@
 
     <context:property-placeholder location="../../custom.properties"/>
 
-    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" />
+    <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" lazy-init="false">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+
+    <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" >
+        <property name="yaletResolver" ref="yaletResolver"/>
+        <property name="saxGenerator" ref="saxGenerator"/>
+    </bean>
 
     <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
         <property name="encoding" value="utf-8"/>
+        <property name="yaletSupport" ref="yaletSupport"/>
     </bean>
 
-    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport"/>
+    <bean id="yaletSupport" class="net.sf.xfresh.core.DefaultYaletSupport">
+        <property name="singleYaletProcessor" ref="singleYaletProcessor"/>
+    </bean>
 
     <bean id="yaletResolver" class="net.sf.xfresh.core.SpringYaletResolver"/>
 
     <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
 
-    <bean id="indexYalet" class="ru.exorg.backend.yalets.IndexYalet"/>
+    <bean id = "recommendedRouteService" class="ru.exorg.backend.services.RecommendedRouteService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="indexYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
+        <property name="recommendedRouteService" ref="recommendedRouteService"/>
+    </bean>
 
     <bean id="serverDaemon" class="ru.exorg.core.server.Starter">
         <property name="interface" value="${backend.httpserver.address}"/>
@@ -47,24 +70,12 @@
 			    </bean>
 
                 <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
+
             </list>
         </property>
     </bean>
-</beans>
 
-  <!--
-  <bean id="dataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
-        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="${jdbc.url}"/>
-        <property name="username" value="${jdbc.username}"/>
-        <property name="password" value="${jdbc.password}"/>
-  </bean>
-
-  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.simple.SimpleJdbcTemplate" lazy-init="false">
-    <constructor-arg ref="dataSource"/>
-  </bean>
-  -->
-
+    </beans>
   <!-- Is it OK to initialize static members in such a way??? -->
     <!--
 	<bean id="searcher" class="eo.frontend.httpserver.InitJDBC">

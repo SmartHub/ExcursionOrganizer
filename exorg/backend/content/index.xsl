@@ -38,7 +38,7 @@
 								</xsl:attribute>
 							</img>
 						</a>	
-						<p><xsl:value-of select="descr" /></p>					
+						<p><xsl:value-of select="description" /></p>
     					</li>
 				</xsl:for-each>
 			</ul>

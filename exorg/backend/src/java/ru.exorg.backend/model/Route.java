@@ -1,5 +1,7 @@
 package ru.exorg.backend.model;
 
+import ru.exorg.core.model.POI;
+
 import java.util.List;
 
 /**
@@ -27,6 +29,13 @@ public class Route {
         this.countPoints = countPoints;
         this.duration = duration;
         this.points = points;
+    }
+
+    public Route(long id, String description, int countPoints, double duration) {
+        this.id = id;
+        this.description = description;
+        this.countPoints = countPoints;
+        this.duration = duration;
     }
 
     public long getId() {
@@ -67,6 +76,21 @@ public class Route {
 
     public void setPoints(List<RoutePoint> points) {
         this.points = points;
+    }
+
+    public void addPoint(RoutePoint newPoint)
+    {
+        points.add(newPoint);
+    }
+
+    public boolean deletePoint(POI poi) {
+        for (RoutePoint routePoint: points) {
+            if (routePoint.getPoi().equals(poi)) {
+                points.remove(routePoint);
+                return true;
+            }
+        }
+        return false;
     }
 }
 
