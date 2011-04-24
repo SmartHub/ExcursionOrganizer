@@ -103,8 +103,6 @@ final public class Main implements InitializingBean {
             conn = null;
         }
 
-        System.out.println(path);
-
         return new String(getMeth.getResponseBody());
     }
 
