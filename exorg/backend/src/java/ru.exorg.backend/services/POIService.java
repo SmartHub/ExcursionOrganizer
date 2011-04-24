@@ -39,13 +39,19 @@ public class POIService {
         sphinx_host = "localhost";
         sphinx_port = 9312;
         this.sphinxClient = new SphinxClient(sphinx_host, sphinx_port);
+
+        try {
+            this.sphinxClient.SetMatchMode(SphinxClient.SPH_MATCH_EXTENDED);
+        } catch (Exception e) {
+            System.out.println("Sun has raised in the west today :(");
+        }
     }
 
     private POI getPOIFromMatch(SphinxMatch match)
     {
         ArrayList<String> inf = match.attrValues;
 
-        Long id = Long.getLong(inf.get(Id));
+        long id = Long.parseLong(inf.get(Id));
         String name = inf.get(Name);
         POI poi = new POI(id, name);
 

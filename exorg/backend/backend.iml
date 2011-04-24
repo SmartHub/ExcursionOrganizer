@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="JAVA_MODULE" version="4">
-  <component name="FacetManager">
-    <facet type="Spring" name="Spring">
-      <configuration>
-        <fileset id="fileset1" name="My Fileset" removed="false">
-          <file>file://$MODULE_DIR$/config/config.xml</file>
-        </fileset>
-      </configuration>
-    </facet>
-  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
@@ -16,8 +7,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="core" exported="" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module" module-name="core" />
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/jetty/jetty-http-7.3.1.v20110307.jar!/" />
@@ -26,8 +17,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
->>>>>>> 6447be6cd85a01f4fff38cbca7d6b98fe4610a67
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/jetty/jetty-server-7.3.1.v20110307.jar!/" />
@@ -36,7 +26,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/jetty/servlet-api-2.5.jar!/" />
@@ -45,7 +35,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../lib/sphinxapi.jar!/" />
@@ -54,20 +44,10 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/spring/org.springframework.beans-3.1.0.M1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="3.0.0" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/commons-dbcp-1.4.jar!/" />
+          <root url="jar://$MODULE_DIR$/../lib/junit-4.9.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
