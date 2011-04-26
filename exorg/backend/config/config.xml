@@ -41,7 +41,7 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="indexYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
+    <bean id="readyroutesYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>
     </bean>
 
@@ -58,7 +58,7 @@
                         <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
                             <property name="yaletList">
                                 <list>
-                                    <value>index</value>
+                                    <value>readyroutes</value>
                                 </list>
                             </property>
                         </bean>
