@@ -8,18 +8,18 @@ package ru.exorg.backend.model;
  * To change this template use File | Settings | File Templates.
  */
 public class RecommendedRouteForWeb {
-    private long id;
+    private long rrid;
     private String description;
     private String img;
 
     public RecommendedRouteForWeb (final long id, final String description, final String imgUrl) {
-        this.id = id;
+        this.rrid = id;
         this.description = description;
         this.img = imgUrl;
     }
 
     public void setId(final long id) {
-        this.id = id;
+        this.rrid = id;
     }
     public void setDescription (final String description) {
         this.description = description;
@@ -28,7 +28,7 @@ public class RecommendedRouteForWeb {
         this.img = imgUrl;
     }
     public long getId() {
-        return id;
+        return rrid;
     }
     public String getDescription () {
         return description;

@@ -27,10 +27,10 @@
 		<input type="button" id="next" name="next" value="Листать вперед"/>
 		<div id="rotator">
   			<ul>
-				<xsl:for-each select="routes/route">
+				<xsl:for-each select="page/data/rec_routes">
     					<li> <!-- class="show"-->
 						<a>
-							<xsl:attribute name="href">route.html?id=<xsl:value-of select="id" />
+							<xsl:attribute name="href">route.html?id=<xsl:value-of select="rrid" />
 							</xsl:attribute>
 							<img>
 								<xsl:attribute name="src">

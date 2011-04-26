@@ -2,6 +2,7 @@ package ru.exorg.backend.model;
 
 import ru.exorg.core.model.POI;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class Route {
 
     private double duration;
 
-    private List<RoutePoint> points;
+    private List<RoutePoint> points = null;
 
     public Route(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
         this.id = id;
@@ -75,7 +76,18 @@ public class Route {
     }
 
     public void setPoints(List<RoutePoint> points) {
-        this.points = points;
+        if (this.points != null)
+            this.points.clear();
+        else
+            this.points = new ArrayList<RoutePoint>();
+        
+        for (RoutePoint rp : points) {
+            if (rp != null)
+                this.points.add(rp);
+        }
+        countPoints = this.points.size();
+
+        //this.points = points;
     }
 
     public void addPoint(RoutePoint newPoint)
@@ -91,6 +103,17 @@ public class Route {
             }
         }
         return false;
+    }
+
+    public String getImage () {
+        for (RoutePoint p : points) {
+            for (String img : p.getPoi().getImages()) {
+                if (img.length() > 3) {
+                    return img;
+                }
+            }
+        }
+        return "";
     }
 }
 

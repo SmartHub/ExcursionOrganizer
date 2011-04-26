@@ -53,6 +53,16 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring">
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../lib/spring" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../lib/spring" recursive="false" />
+      </library>
+    </orderEntry>
   </component>
 </module>
 
