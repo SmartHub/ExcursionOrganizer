@@ -8,6 +8,9 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.ArrayList;
 
 import java.sql.ResultSet;
 
@@ -25,6 +28,12 @@ final public class POIProvider {
     private DataProvider dataProvider;
     private JdbcTemplate jdbc;
     private POIMapper poiMapper;
+
+    private Map<Long, Long> clusters;
+    private long maxClusterId;
+
+    public interface Clusters extends Map<Long, List<Long>> { }
+    private class _Clusters extends TreeMap<Long, List<Long>> implements Clusters { }
 
     private class POIMapper implements RowMapper<POI> {
         public POI mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -99,6 +108,7 @@ final public class POIProvider {
         this.dataProvider = p;
         this.jdbc = p.getJdbcTemplate();
         this.poiMapper = new POIMapper();
+        this.clusters = new TreeMap<Long, Long>();
     }
 
 
@@ -163,6 +173,45 @@ final public class POIProvider {
         }
     }
 
+    final public List<String> getPOINames() {
+        class POINamesMapper implements RowMapper<String> {
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getString("name");
+            }
+        }
+
+        return this.jdbc.query("SELECT name FROM place_of_interest;", new Object[]{}, new POINamesMapper());
+    }
+
+    final public POI queryById(long id) {
+        List<POI> r = this.jdbc.query("SELECT * FROM place_of_interest WHERE id = ?", new Object[]{id}, poiMapper);
+        return r.get(0);
+    }
+
+    final public POI queryByName(final String name) {
+        List<POI> r = this.jdbc.query("SELECT * FROM place_of_interest WHERE name = ? LIMIT 1", new Object[]{name}, poiMapper);
+        return r.get(0);
+    }
+
+    final public List<POI> queryByAddress(final String address) {
+        if (address != null) {
+            return this.jdbc.query("SELECT * FROM place_of_interest WHERE address = ?", new Object[]{address}, poiMapper);
+        } else {
+            return null;
+        }
+    }
+
+    final public void removePOI(final POI poi) {
+        this.jdbc.update("DELETE FROM place_of_interest WHERE id=?", poi.getId());
+        this.jdbc.update("DELETE FROM poi_descr WHERE poi_id=?", poi.getId());
+        this.jdbc.update("DELETE FROM poi_image WHERE poi_id=?", poi.getId());
+    }
+
+    /*
+    final public void clearClusters() {
+        this.jdbc.update("TRUNCATE poi_cluster");
+    }
+
     final public boolean isInCluster(final POI poi) {
         return this.jdbc.queryForInt("SELECT COUNT(*) FROM poi_cluster WHERE poi_id = ?;", poi.getId()) != 0;
     }
@@ -190,23 +239,103 @@ final public class POIProvider {
         }
     }
 
+    final public void collapseClusters() throws Exception {
+        List<Long> cids = this.jdbc.queryForList("SELECT DISTINCT id FROM poi_cluster;", Long.class);
+        for (long cid : cids) {
+            List<Long> pois = this.jdbc.queryForList("SELECT poi_id FROM poi_cluster WHERE id = " + String.valueOf(cid), Long.class);
+
+            Iterator<Long> it = pois.iterator();
+            POI cur = this.queryById(it.next());
+            while (it.hasNext()) {
+                POI other = this.queryById(it.next());
+                cur.addDescriptions(other.getDescriptions());
+                cur.addImages(other.getImages());
+
+                this.removePOI(other);
+            }
+
+            this.sync(cur); // Atomicity?
+        }
+    }
+    */
+
     final public void clearClusters() {
-        this.jdbc.update("TRUNCATE poi_cluster");
+        this.clusters.clear();
+        this.maxClusterId = 1;
     }
 
-    final public List<String> getPOINames() {
-        class POINamesMapper implements RowMapper<String> {
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("name");
+    final public boolean isInCluster(final POI poi) {
+        return clusters.containsKey(poi.getId());
+    }
+
+    final public long getPOICluster(final POI poi) {
+        if (this.clusters.containsKey(poi.getId())) {
+            return this.clusters.get(poi.getId());
+        } else {
+            return 0;
+        }
+    }
+
+    final public long getMaxClusterId() {
+        return this.maxClusterId;
+    }
+
+    final public void setPOICluster(final POI poi, long clusterId) {
+        if (clusterId > 0) {
+            this.clusters.put(poi.getId(), clusterId);
+
+            if (clusterId > this.maxClusterId) {
+                this.maxClusterId = clusterId;
+            }
+        } else {
+            this.clusters.put(poi.getId(), this.maxClusterId + 1);
+            this.maxClusterId++;
+        }
+    }
+
+    final public void removeFromCluster(final POI poi) {
+        this.clusters.remove(poi.getId());
+    }
+
+    final public Clusters getClusters() {
+        Clusters icl = new _Clusters();
+
+        for (Map.Entry<Long, Long> e : clusters.entrySet()) {
+            if (!icl.containsKey(e.getValue())) {
+                icl.put(e.getValue(), new ArrayList<Long>());
+            }
+
+            icl.get(e.getValue()).add(e.getKey());
+        }
+
+        return icl;
+    }
+
+    final public void collapseClusters() throws Exception {
+        Clusters icl = this.getClusters();
+
+        for (Map.Entry<Long, List<Long>> e : icl.entrySet()) {
+            if (e.getValue().size() >= 2) {
+                Iterator<Long> it = e.getValue().iterator();
+                POI cur = this.queryById(it.next());
+
+                System.out.println("Merging:");
+                while (it.hasNext()) {
+                    POI other = this.queryById(it.next());
+                    cur.addDescriptions(other.getDescriptions());
+                    cur.addImages(other.getImages());
+
+                    this.removePOI(other);
+
+                    System.out.println(other.getName() + " " + String.valueOf(other.getId()));
+                }
+
+                System.out.println(cur.getName() + " " + String.valueOf(cur.getId()) + "\n\n");
+                this.sync(cur); // Atomicity?
             }
         }
 
-        return this.jdbc.query("SELECT name FROM place_of_interest;", new Object[]{}, new POINamesMapper());
-    }
-
-    final public POI queryByName(final String name) {
-        List<POI> r = this.jdbc.query("SELECT * FROM place_of_interest WHERE name = ? LIMIT 1", new Object[]{name}, poiMapper);
-        return r.get(0);
+        this.clearClusters();
     }
 }
 

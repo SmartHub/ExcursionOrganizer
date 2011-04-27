@@ -32,6 +32,10 @@ final public class POI {
         return this.id;
     }
 
+    final public void setId(long id) {
+        this.id = id;
+    }
+
     final public String getName() {
         return this.name;
     }
@@ -50,6 +54,12 @@ final public class POI {
 
     final public void addDescription(final String text, final String source) {
         this.descriptions.add(new Description(text, source));
+    }
+
+    final public void addDescriptions(final List<Description> ds) {
+        for (Description d : ds) {
+            this.addDescription(d.getText(), d.getSourceURL());
+        }
     }
 
     final public Location getLocation() {
@@ -97,15 +107,21 @@ final public class POI {
         this.type = type;
     }
 
-    public boolean hasType() {
+    final public boolean hasType() {
         return this.type != 1;
     }
 
-    public List<String> getImages() {
+    final public List<String> getImages() {
         return this.images;
     }
 
-    public void addImage(final String image) {
+    final public void addImage(final String image) {
         this.images.add(image);
+    }
+
+    final public void addImages(final List<String> imgs) {
+        for (String img : imgs) {
+            this.addImage(img);
+        }
     }
 }

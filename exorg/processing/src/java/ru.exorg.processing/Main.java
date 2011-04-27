@@ -26,6 +26,7 @@ final public class Main implements InitializingBean {
     private CafeProvider cafeProvider;
     private List<String> poiNames;
     private int timeout = 10000;
+    private int clusterLevel = 1;
 
     private HttpConnection conn;
 
@@ -51,6 +52,10 @@ final public class Main implements InitializingBean {
         proxyPort = Integer.parseInt(proxyConf[1]);
     }
 
+    public void setClusterLevel(int cl) {
+        this.clusterLevel = cl;
+    }
+
     private boolean doesUseProxy() {
         return proxyHost != null;
     }
@@ -62,18 +67,17 @@ final public class Main implements InitializingBean {
         HttpState state = new HttpState();
 
         boolean needOpen = false;
-        if (!doesUseProxy()) {
-            conn = new HttpConnection(hostName, httpPort);
+        if (conn == null) {
+            if (this.doesUseProxy()) {
+                conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
+            } else {
+                conn = new HttpConnection(hostName, httpPort);
+            }
             needOpen = true;
         } else {
-            if (conn == null) {
-                conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
+            /* Who knows why the connection to the proxy server suddenly closes? */
+            if (!conn.isOpen()) {
                 needOpen = true;
-            } else {
-                /* Who knows why the connection to the proxy server suddenly closes? */
-                if (!conn.isOpen()) {
-                    needOpen = true;
-                }
             }
         }
 
@@ -97,11 +101,21 @@ final public class Main implements InitializingBean {
         } else {
             getMeth.addRequestHeader("Proxy-Connection", "keep-alive");
         }
-        getMeth.execute(state, conn);
 
+        try {
+            getMeth.execute(state, conn);
+        } catch (Exception e) {
+            conn.close(); // whew an timeout occurs no data can be read from the connection later
+            conn = null;
+
+            throw e;
+        }
+
+        /*
         if (!doesUseProxy()) {
             conn = null;
         }
+        */
 
         return new String(getMeth.getResponseBody());
     }
@@ -167,8 +181,6 @@ final public class Main implements InitializingBean {
             locs = parseGeoInfo(r);
         }
 
-        System.out.println(r.toString());
-
         if (locs != null) {
             for (Location l : locs) {
                 if (dataProvider.isWithinCity(loc.getCityId(), l)) {
@@ -222,43 +234,92 @@ final public class Main implements InitializingBean {
         }
     }
 
-    private void clusterize(final POI poi) {
-        long npid = 0;
-        float m = 1;
-        POI nearest = null;
+    private void clusterize1() {
+        Iterator<POI> it = poiProvider.poiIterator();
 
-        for (String s : this.poiNames) {
-            POI other = this.poiProvider.queryByName(s);
+        while (it.hasNext()) {
+            POI poi = it.next();
 
-            if (other.getId() != poi.getId()) {
-                String n = poi.getName();
+            if (poi.hasAddress()) {
+                List<POI> poiList = poiProvider.queryByAddress(poi.getAddress());
 
-                float cm = (float)Util.getLevenshteinDistance(n, s)/max(s.length(), n.length());
-                if (cm < 0.1 && cm < m) {
-                    m = cm;
-                    nearest = other;
-                    //cid = this.poiProvider.getPOICluster(other);
+                if (poiList != null) {
+                    if (!poiProvider.isInCluster(poiList.get(0)) && poiList.size() >= 2) {
+                        long cid = poiProvider.getMaxClusterId() + 1;
+                        for (POI p : poiList) {
+                            poiProvider.setPOICluster(p, cid);
+                        }
+                    }
                 }
-
-                if (cm > 1) {
-                    System.out.println("Nonsence, edit distance is " + String.valueOf(cm));
-                }
-           }
+            }
         }
 
-        if (nearest != null) {
-            long cid = this.poiProvider.getPOICluster(nearest);
-            if (cid != 0) {
-                this.poiProvider.setPOICluster(poi, cid);
-            } else {
-                cid = this.poiProvider.getMaxClusterId() + 1;
-                this.poiProvider.setPOICluster(poi, cid);
-                this.poiProvider.setPOICluster(nearest, cid);
+        POIProvider.Clusters clusters = this.poiProvider.getClusters();
+        for (List<Long> cluster : clusters.values()) {
+            for (int i = 0; i < cluster.size(); i++) {
+                boolean remove = true;
+                POI curPOI = poiProvider.queryById(cluster.get(i));
+                String cur = curPOI.getName();
+
+                for (int j = i + 1; j < cluster.size(); j++) {
+                    String other = poiProvider.queryById(cluster.get(j)).getName();
+
+                    if ((float)Util.getLevenshteinDistance(cur, other)/max(cur.length(), other.length()) < 0.6) {
+                        remove = false;
+                        break;
+                    }
+                }
+
+                if (remove) {
+                    poiProvider.removeFromCluster(curPOI);
+                }
+            }
+        }
+    }
+
+    private void clusterize2() {
+        Iterator<POI> it = poiProvider.poiIterator();
+
+        while (it.hasNext()) {
+            float m = 1;
+            POI nearest = null;
+            POI cur = it.next();
+
+            for (String s : this.poiNames) {
+                POI other = this.poiProvider.queryByName(s);
+
+                if (other.getId() != cur.getId()) {
+                    String n = cur.getName();
+
+                    float cm = (float)Util.getLevenshteinDistance(n, s)/max(s.length(), n.length());
+                    if (cm < 0.1 && cm < m) {
+                        m = cm;
+                        nearest = other;
+                        //cid = this.poiProvider.getPOICluster(other);
+                    }
+
+                    if (cm > 1) {
+                        System.out.println("Nonsence, edit distance is " + String.valueOf(cm));
+                    }
+                }
             }
 
-            System.out.println("Addind POI #" + String.valueOf(poi.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
-        } else {
-            System.out.println("Not clustering POI #" + String.valueOf(poi.getId()));
+            if (nearest != null) {
+                long cid = this.poiProvider.getPOICluster(nearest);
+                if (cid != 0) {
+                    this.poiProvider.setPOICluster(cur, cid);
+                } else {
+                    cid = this.poiProvider.getMaxClusterId() + 1;
+                    this.poiProvider.setPOICluster(cur, cid);
+                    this.poiProvider.setPOICluster(nearest, cid);
+
+                    System.out.println("Adding POI #" + String.valueOf(nearest.getId()) + " into cluster #" + String.valueOf(cid));
+                }
+
+                System.out.println("Adding POI #" + String.valueOf(cur.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
+            } else {
+                System.out.println("Not clustering POI #" + String.valueOf(cur.getId()));
+            }
         }
     }
 
@@ -271,11 +332,26 @@ final public class Main implements InitializingBean {
         while (it.hasNext()) {
             POI poi = it.next();
 
-            this.addGeoInfo(poi);
-            this.guessType(poi);
-            //this.clusterize(poi);
+            /*
+            try {
+                this.addGeoInfo(poi);
+                this.guessType(poi);
 
-            this.poiProvider.sync(poi);
+                this.poiProvider.sync(poi);
+            } catch (SocketTimeoutException e) {
+                System.out.println("Failed to retrieve geographic information for " + poi.getName());
+            }
+            */
+        }
+
+        if (clusterLevel >= 1) {
+            this.clusterize1();
+            this.poiProvider.collapseClusters();
+
+            if (clusterLevel >= 2) {
+                this.clusterize2();
+                this.poiProvider.collapseClusters();
+            }
         }
     }
 
