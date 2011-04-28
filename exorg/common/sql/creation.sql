@@ -111,5 +111,17 @@ CREATE TABLE cafe_address (
        lng        DECIMAL(11, 8)       
 ) DEFAULT CHARACTER SET=utf8;
 
+DROP TABLE IF EXISTS geo_poi_poi_distance;
+CREATE TABLE poi_distance (
+       poi_id1	INT NOT NULL,
+       poi_id2  INT NOT NULL,
+       distance	FLOAT NOT NULL,
+
+       /*
+	FOREIGN KEY (poi_id1) REFERENCES place_of_interest(id) ON UPDATE CASCADE,
+	FOREIGN KEY (poi_id2) REFERENCES place_of_interest(id) ON UPDATE CASCADE
+        */
+) DEFAULT CHARACTER SET=utf8;
+
 /* Заливаем информацию, которую мы не сможем получить автоматически */
 \. user-session.sql

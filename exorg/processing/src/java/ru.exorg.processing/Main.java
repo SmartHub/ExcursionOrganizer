@@ -31,6 +31,7 @@ final public class Main implements InitializingBean {
     private List<String> poiNames;
     private int timeout = 10000;
     private int clusterLevel = 1;
+    private double distLim = 10000;
 
     private HttpConnection conn;
 
@@ -175,6 +176,7 @@ final public class Main implements InitializingBean {
             r = queryGAPI(new String[]{"address", guess});
             System.out.println("Quering for " + guess);
         } else {
+            System.out.println("Failed");
             return false;
         }
 
@@ -194,9 +196,9 @@ final public class Main implements InitializingBean {
                     return true;
                 }
             }
-        } else {
-            System.out.println("Failed");
         }
+
+        System.out.println("Failed");
 
         return false;
     }
@@ -327,6 +329,51 @@ final public class Main implements InitializingBean {
         }
     }
 
+
+    private static final double R = 6356800;
+
+    private double rad(double d) {
+        return d*Math.PI/180.0;
+    }
+
+    private void evalDistances() {
+        System.out.println("Be patient, this will insert more than 100000 entries into your database :)");
+
+        Iterator<POI> it1 = this.poiProvider.poiIterator();
+        while (it1.hasNext()) {
+            POI p1 = it1.next();
+
+            Iterator<POI> it2 = this.poiProvider.poiIterator();
+            while (it2.hasNext()) {
+                POI p2 = it2.next();
+
+                if (p1.getLocation().isValid() && p2.getLocation().isValid()) {
+                    double lat1 = rad(p1.getLocation().getLat());
+                    double lng1 = rad(p1.getLocation().getLng());
+                    double x1 = R*Math.cos(lat1)*Math.cos(lng1);
+                    double y1 = R*Math.cos(lat1)*Math.sin(lng1);
+                    double z1 = R*Math.sin(lat1);
+
+                    double lat2 = rad(p2.getLocation().getLat());
+                    double lng2 = rad(p2.getLocation().getLng());
+                    double x2 = R*Math.cos(lat2)*Math.cos(lng2);
+                    double y2 = R*Math.cos(lat2)*Math.sin(lng2);
+                    double z2 = R*Math.sin(lat2);
+
+                    double cosA = (x1*x2 + y1*y2 + z1*z2)/Math.sqrt((x1*x1 + y1*y1 + z1*z1)*(x2*x2 + y2*y2 + z2*z2));
+                    double d = Math.acos(cosA)*R;
+
+                    //System.out.println(String.format("%f %f %f %f %f %f", x1, y1, x1, lat1, lng1, Math.acos(cosA)*180/Math.PI));
+                    //System.out.println(String.format("%f %f %f %f %f", x2, y2, x2, lat2, lng2));
+
+                    if (d < this.distLim) {
+                        this.poiProvider.setDistance(p1, p2, d);
+                    }
+                }
+            }
+        }
+    }
+
     private void processPOI() throws Exception {
         this.poiNames = this.poiProvider.getPOINames();
 
@@ -336,7 +383,6 @@ final public class Main implements InitializingBean {
         while (it.hasNext()) {
             POI poi = it.next();
 
-
             try {
                 this.addGeoInfo(poi);
                 this.guessType(poi);
@@ -345,7 +391,6 @@ final public class Main implements InitializingBean {
             } catch (SocketTimeoutException e) {
                 System.out.println("Failed to retrieve geographic information for " + poi.getName());
             }
-
         }
 
         if (clusterLevel >= 1) {
@@ -357,6 +402,8 @@ final public class Main implements InitializingBean {
                 this.poiProvider.collapseClusters();
             }
         }
+
+        //this.evalDistances();
     }
 
     private void processCafes() throws Exception {

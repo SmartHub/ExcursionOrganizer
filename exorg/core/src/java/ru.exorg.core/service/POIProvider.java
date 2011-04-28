@@ -207,6 +207,20 @@ final public class POIProvider {
         this.jdbc.update("DELETE FROM poi_image WHERE poi_id=?", poi.getId());
     }
 
+    final private boolean hasDistance(final POI poi1, final POI poi2) {
+        return this.jdbc.queryForInt("SELECT COUNT(*) FROM poi_distance WHERE poi_id1=? AND poi_id2=?;", poi1.getId(), poi2.getId()) > 0;
+    }
+
+    final public void setDistance(final POI poi1, final POI poi2, double distance) {
+        if (poi1.getId() < poi2.getId()) {
+            if (!hasDistance(poi1, poi2)) {
+                this.jdbc.update("INSERT INTO poi_distance(poi_id1, poi_id2, distance) VALUES(?, ?, ?);", poi1.getId(), poi2.getId(), distance);
+            } else {
+                this.jdbc.update("UPDATE poi_distance SET distance=? WHERE poi_id1=? AND poi_id2=?;", distance, poi1.getId(), poi2.getId());
+            }
+        }
+    }
+
     /*
     final public void clearClusters() {
         this.jdbc.update("TRUNCATE poi_cluster");
