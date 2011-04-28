@@ -10,6 +10,8 @@ import ru.exorg.core.model.POI;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -24,6 +26,14 @@ public class RouteService {
     private JdbcTemplate jdbcTemplate;
 
     private POIService poiService;
+
+    public static class OrderPoiComparator implements Comparator<RoutePoint>
+    {
+        public int compare(RoutePoint point1, RoutePoint point2)
+        {
+            return point1.getOrder() - point2.getOrder();
+        }
+    }
 
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
@@ -109,4 +119,20 @@ public class RouteService {
         return route;
 
     }
+
+
+public Route setOrders(Route route)
+{
+    Collections.sort(route.getPoints(), new OrderPoiComparator());
+    int i = 0;
+    for(RoutePoint point: route.getPoints())
+    {
+        deletePointFromUserRoute(route.getId(), point.getPoi().getId());
+        point.setOrder(i);
+        ++i;
+        addPointInUserRoute(route.getId(), point.getPoi().getId());
+    }
+    return  route;
+}
+
 }
