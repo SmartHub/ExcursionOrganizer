@@ -127,10 +127,10 @@ public Route setOrders(Route route)
     int i = 0;
     for(RoutePoint point: route.getPoints())
     {
-        deletePointFromUserRoute(route.getId(), point.getPoi().getId());
+        //deletePointFromUserRoute(route.getId(), point.getPoi().getId());
         point.setOrder(i);
         ++i;
-        addPointInUserRoute(route.getId(), point.getPoi().getId());
+        //addPointInUserRoute(route.getId(), point.getPoi().getId());
     }
     return  route;
 }

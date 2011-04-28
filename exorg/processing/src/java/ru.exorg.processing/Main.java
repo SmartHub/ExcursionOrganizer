@@ -1,22 +1,26 @@
 package ru.exorg.processing;
 
-import java.lang.*;
-import java.util.*;
-import java.net.*;
-
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.GetMethod;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
 import org.springframework.beans.factory.InitializingBean;
+import ru.exorg.core.model.Cafe;
+import ru.exorg.core.model.Location;
+import ru.exorg.core.model.POI;
+import ru.exorg.core.service.CafeProvider;
+import ru.exorg.core.service.DataProvider;
+import ru.exorg.core.service.POIProvider;
 
-import ru.exorg.core.service.*;
-import ru.exorg.core.model.*;
+import java.lang.Exception;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.net.SocketTimeoutException;
+import java.net.URLEncoder;
+import java.util.*;
 
 // ================================================================================
 
@@ -332,7 +336,7 @@ final public class Main implements InitializingBean {
         while (it.hasNext()) {
             POI poi = it.next();
 
-            /*
+
             try {
                 this.addGeoInfo(poi);
                 this.guessType(poi);
@@ -341,7 +345,7 @@ final public class Main implements InitializingBean {
             } catch (SocketTimeoutException e) {
                 System.out.println("Failed to retrieve geographic information for " + poi.getName());
             }
-            */
+
         }
 
         if (clusterLevel >= 1) {
