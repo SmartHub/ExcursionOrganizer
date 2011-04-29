@@ -39,6 +39,7 @@ public class RouteYalet implements Yalet {
                 Route r = rrs.getRecommendedRoute(routeId);
                 for (RoutePoint rp : r.getPoints()) {
                     POI p = rp.getPoi();
+                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1) continue;
                     res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(),
                                                                         p.getName(),
                                                                         p.getAddress(),
