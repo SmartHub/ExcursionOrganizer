@@ -20,7 +20,6 @@ INSERT INTO poi_type(id, name, guess_rx) VALUES
 
 /* Load route info */
 
-\. route.sql
 \. route.data.sql
 
 /********************************************************************************/
