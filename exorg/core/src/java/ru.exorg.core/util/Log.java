@@ -9,7 +9,7 @@ import java.io.StringWriter;
 
 public class Log {
     public static void init(String path) {
-        String logConfPath = path + "/common/script/log4j.xml";
+        String logConfPath = path + "/core/script/log4j.xml";
         DOMConfigurator.configure(logConfPath);
     }
 
