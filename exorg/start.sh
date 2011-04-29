@@ -5,7 +5,7 @@ export EO_ROOT
 
 chmod +x $EO_ROOT/core/script/initdb.sh
 chmod +x $EO_ROOT/core/script/daemonize
-chmod +x $EO_ROOT/processing/script/daemonize
+chmod +x $EO_ROOT/processing/script/index.py
 
 username=$(awk '/jdbc.username/' $EO_ROOT/custom.properties | awk  -F= '{print $2}')
 password=$(awk '/jdbc.password/' $EO_ROOT/custom.properties | awk  -F= '{print $2}')
