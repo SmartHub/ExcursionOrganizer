@@ -151,3 +151,4 @@ CREATE TABLE route_poi (
 
 /* Заливаем информацию, которую мы не сможем получить автоматически */
 \. preload.sql
+\. distances.sql
