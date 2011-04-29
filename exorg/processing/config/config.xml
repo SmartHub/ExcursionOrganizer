@@ -26,7 +26,7 @@
     <bean id="processingDaemon" class="ru.exorg.processing.Main">
         <property name="geoService">
             <bean class="ru.exorg.processing.GeoService">
-                <property name="proxy" value="127.0.0.1:3128"/>
+                <property name="proxy" value="${proxy}"/>
             </bean>
         </property>
       <property name="dataProvider" ref="dataProvider"/>
