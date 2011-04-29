@@ -46,7 +46,10 @@ CREATE TABLE place_of_interest (
     lat     DECIMAL(11, 8),
     lng     DECIMAL(11, 8),
 
-    url 	VARCHAR(300) NULL
+    url 	VARCHAR(300) NULL,
+
+    descrs  TEXT,
+    photos  TEXT
 	
     /*
     photo	BLOB NULL,
@@ -103,19 +106,19 @@ CREATE TABLE cafe (
 
 DROP TABLE IF EXISTS cafe_address;
 CREATE TABLE cafe_address (
-       cafe_id    INT,
+    cafe_id    INT,
 
-       city_id    INT,
-       address    VARCHAR(300),
-       lat        DECIMAL(11, 8),
-       lng        DECIMAL(11, 8)       
+    city_id    INT,
+    address    VARCHAR(300),
+    lat        DECIMAL(11, 8),
+    lng        DECIMAL(11, 8)
 ) DEFAULT CHARACTER SET=utf8;
 
 DROP TABLE IF EXISTS poi_distance;
 CREATE TABLE poi_distance (
-       poi_id1	INT NOT NULL,
-       poi_id2  INT NOT NULL,
-       distance	FLOAT NOT NULL
+    poi_id1     INT NOT NULL,
+    poi_id2     INT NOT NULL,
+    distance    FLOAT NOT NULL
 
        /*
 	FOREIGN KEY (poi_id1) REFERENCES place_of_interest(id) ON UPDATE CASCADE,
@@ -124,4 +127,4 @@ CREATE TABLE poi_distance (
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Заливаем информацию, которую мы не сможем получить автоматически */
-\. user-session.sql
+\. preload.sql
