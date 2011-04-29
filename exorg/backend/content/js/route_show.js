@@ -13,7 +13,7 @@ function init_points()
 				Lat : $(this).attr("lat"),
 				Lng : $(this).attr("lng")
 			};
-            alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
+            //alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
         	});
 		
