@@ -216,7 +216,6 @@ final public class Main implements InitializingBean {
     }
 
     private void processPOI() throws Exception {
-        /*
         this.poiProvider.clearClusters();
 
         for (POI poi : this.pois) {
@@ -242,7 +241,6 @@ final public class Main implements InitializingBean {
                 this.pois = this.poiProvider.poiList();
             }
         }
-        */
 
         //this.evalDistances();
 

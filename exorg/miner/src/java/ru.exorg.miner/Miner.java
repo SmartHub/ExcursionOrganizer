@@ -68,10 +68,14 @@ public abstract class Miner {
     }
 
     final public void setProxy(final String proxy) {
-        String[] proxyCfg = proxy.split(":");
+        if (proxy.length() >= 1) {
+            String[] proxyCfg = proxy.split(":");
 
-        this.proxyHost = proxyCfg[0];
-        this.proxyPort = Integer.parseInt(proxyCfg[1]);
+            this.proxyHost = proxyCfg[0];
+            this.proxyPort = Integer.parseInt(proxyCfg[1]);
+        } else {
+            proxyHost = null;
+        }
     }
 
     final public void setHttpTimeout(int timeout) {

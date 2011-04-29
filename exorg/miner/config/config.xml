@@ -30,7 +30,7 @@
             <property name="dataProvider" ref="dataProvider"/>
             <property name="config" value="ilovepetersburg-ru-culture.cfg.xml;ilovepetersburg-ru-monuments.cfg.xml;imhotour-ru.cfg.xml"/>
             <!--<property name="config" value="ilovepetersburg-ru-monuments.cfg.xml"/>-->
-            <property name="proxy" value="192.168.0.2:3128"/>
+            <property name="proxy" value="${proxy}"/>
           </bean>
 
           <!--
