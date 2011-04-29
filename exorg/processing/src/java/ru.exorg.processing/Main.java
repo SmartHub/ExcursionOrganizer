@@ -1,12 +1,5 @@
 package ru.exorg.processing;
 
-import org.apache.commons.httpclient.HttpConnection;
-import org.apache.commons.httpclient.HttpMethod;
-import org.apache.commons.httpclient.HttpState;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.springframework.beans.factory.InitializingBean;
 import ru.exorg.core.model.Cafe;
 import ru.exorg.core.model.Location;
@@ -17,9 +10,7 @@ import ru.exorg.core.service.POIProvider;
 
 import java.lang.Exception;
 import java.lang.String;
-import java.lang.StringBuilder;
 import java.net.SocketTimeoutException;
-import java.net.URLEncoder;
 import java.util.*;
 
 // ================================================================================
@@ -28,22 +19,19 @@ final public class Main implements InitializingBean {
     private DataProvider dataProvider;
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
+
+    private GeoService geoService;
     private List<String> poiNames;
-    private int timeout = 10000;
+
+    private List<POI> pois;
+
     private int clusterLevel = 1;
     private double distLim = 10000;
-
-    private HttpConnection conn;
-
-    private String proxyHost;
-    private int proxyPort;
     
-    private int    httpPort = 80;
-    private String GAPI_PROTO = "http://";
-    private String GAPI_SERVER = "maps.googleapis.com";
-    private String GAPI_PATH = "/maps/api/geocode/json?";
-    private String GAPI_Q_FOOTER = "&sensor=true";
 
+    public void setGeoService(GeoService gs) {
+        this.geoService = gs;
+    }
 
     public void setDataProvider(DataProvider p) {
         this.dataProvider = p;
@@ -51,179 +39,54 @@ final public class Main implements InitializingBean {
         this.cafeProvider = p.getCafeProvider();
     }
 
-    public void setProxy(final String proxy) {
-        String[] proxyConf = proxy.split(":");
-        proxyHost = proxyConf[0];
-        proxyPort = Integer.parseInt(proxyConf[1]);
-    }
 
     public void setClusterLevel(int cl) {
         this.clusterLevel = cl;
     }
 
-    private boolean doesUseProxy() {
-        return proxyHost != null;
-    }
 
-    private String queryHttp(final String q) throws Exception {
-        String hostName = GAPI_SERVER;
-        String path = GAPI_PATH + q + GAPI_Q_FOOTER;
-
-        HttpState state = new HttpState();
-
-        boolean needOpen = false;
-        if (conn == null) {
-            if (this.doesUseProxy()) {
-                conn = new HttpConnection(proxyHost, proxyPort, hostName, httpPort);
-            } else {
-                conn = new HttpConnection(hostName, httpPort);
-            }
-            needOpen = true;
-        } else {
-            /* Who knows why the connection to the proxy server suddenly closes? */
-            if (!conn.isOpen()) {
-                needOpen = true;
-            }
-        }
-
-        if (needOpen) {
-            conn.open();
-            conn.getParams().setSoTimeout(this.timeout);
-            conn.getParams().setConnectionTimeout(this.timeout);
-        }
-
-        HttpMethod getMeth = new GetMethod();
-        getMeth.setPath(path);
-        getMeth.addRequestHeader("Host", "maps.googleapis.com");
-        getMeth.addRequestHeader("Accept", "application/json");
-        getMeth.addRequestHeader("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US)");
-        //getMeth.addRequestHeader("Accept-Language", "ru");
-        getMeth.addRequestHeader("Accept-Language", "ru;en");
-        getMeth.addRequestHeader("Accept-Charset", "utf-8");
-
-        if (!doesUseProxy()) {
-            getMeth.addRequestHeader("Connection", "close");
-        } else {
-            getMeth.addRequestHeader("Proxy-Connection", "keep-alive");
-        }
-
-        try {
-            getMeth.execute(state, conn);
-        } catch (Exception e) {
-            conn.close(); // whew an timeout occurs no data can be read from the connection later
-            conn = null;
-
-            throw e;
-        }
-
-        /*
-        if (!doesUseProxy()) {
-            conn = null;
-        }
-        */
-
-        return new String(getMeth.getResponseBody());
-    }
-
-
-    private JSONObject queryGAPI(final Map<String, String> query) throws Exception {
-        StringBuilder qs = new StringBuilder();
-        for (Map.Entry<String, String> e : query.entrySet()) {
-            qs.append(e.getKey() + "=" + URLEncoder.encode(e.getValue(), "UTF-8"));
-        }
-        
-        return (JSONObject)JSONValue.parse(queryHttp(qs.toString()));
-    }
-
-    private JSONObject queryGAPI(final String[] query) throws Exception {
-        Map<String, String> p = new TreeMap<String, String>();
-
-        for (int i = 0; i < query.length; i += 2) {
-            p.put(query[i], query[i+1]);
-        }
-
-        return queryGAPI(p);
-    }
-
-
-    private List<Location> parseGeoInfo(final JSONObject gi) {
-        if (((String)gi.get("status")).equals("OK")) {
-            List<Location> r = new ArrayList<Location>();
-            JSONArray results = (JSONArray)gi.get("results");
-            
-            for (int i = 0; i < results.size(); ++i) {
-                JSONObject first_res = (JSONObject)results.get(i);
-                String address = (String)first_res.get("formatted_address");
-                JSONObject loc = (JSONObject)((JSONObject)first_res.get("geometry")).get("location");
-                double lat = ((Double)loc.get("lat")).doubleValue();
-                double lng = ((Double)loc.get("lng")).doubleValue();
-
-                r.add(new Location(0, address, lat, lng));
-            }
-            return r;                    
-        } else {
-            return null;
-        }
-    }
-
-    private boolean lookupLocation(Location loc, final String guess) throws Exception {
-        JSONObject r;
-
-        if (loc.getAddress() != null) {
-            r = queryGAPI(new String[]{"address", loc.getAddress()});
-            System.out.println("Quering for " + loc.getAddress());
-        } else if (guess != null) {
-            r = queryGAPI(new String[]{"address", guess});
-            System.out.println("Quering for " + guess);
-        } else {
-            System.out.println("Failed");
-            return false;
-        }
-
-        List<Location> locs = parseGeoInfo(r);
-        if (locs == null && guess != null && loc.getAddress() != null) {
-            r = queryGAPI(new String[]{"address", guess});
-            System.out.println("Quering for " + guess);
-            locs = parseGeoInfo(r);
-        }
-
-        if (locs != null) {
-            for (Location l : locs) {
-                if (dataProvider.isWithinCity(loc.getCityId(), l)) {
-                    loc.setAddress(l.getAddress());
-                    loc.setLat(l.getLat());
-                    loc.setLng(l.getLng());
-                    return true;
-                }
-            }
-        }
-
-        System.out.println("Failed");
-
-        return false;
-    }
 
     private void addGeoInfo(POI poi) throws Exception {
         if (!poi.getLocation().isValid()) {
             if (poi.hasAddress()) {
                 poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", "").replaceAll("\\(.*?\\)", ""));
+
+                System.out.println("Quering for " + poi.getLocation().getAddress() + "(" + poi.getName() + ")");
+            } else {
+                System.out.println("Quering for " + poi.getName());
             }
 
-            lookupLocation(poi.getLocation(), poi.getName());
+            List<Location> locs = this.geoService.lookupLocation(poi.getLocation(), poi.getName());
+            if (locs != null) {
+                for (Location loc : locs) {
+                    if (this.dataProvider.isWithinCity(poi.getLocation().getCityId(), loc)) {
+                        poi.getLocation().setAddress(loc.getAddress());
+                        poi.getLocation().setLat(loc.getLat());
+                        poi.getLocation().setLng(loc.getLng());
+                        break;
+                    }
+                }
+            }
+
+            if (!poi.getLocation().isValid()) {
+                System.out.println("Failed");
+            }
 
             Thread.sleep(500);
         }
     }
 
+    /*
     private void addGeoInfo(Cafe cafe) throws Exception {
         for (Location loc : cafe.getLocations()) {
             if (!loc.isValid() && loc.getAddress() != null) {
-                /* Google won't find a cafe by its name */
+                //Google won't find a cafe by its name
                 lookupLocation(loc, null);
                 Thread.sleep(500);
             }
         }
     }
+   */
 
 
     private void guessType(POI poi) throws Exception {
@@ -232,20 +95,8 @@ final public class Main implements InitializingBean {
         }
     }
 
-    private static long max(long v1, long v2) {
-        if (v1 > v2) {
-            return v1;
-        } else {
-            return v2;
-        }
-    }
-
     private void clusterize1() {
-        Iterator<POI> it = poiProvider.poiIterator();
-
-        while (it.hasNext()) {
-            POI poi = it.next();
-
+        for (POI poi : this.pois) {
             if (poi.hasAddress()) {
                 List<POI> poiList = poiProvider.queryByAddress(poi.getAddress());
 
@@ -270,7 +121,7 @@ final public class Main implements InitializingBean {
                 for (int j = i + 1; j < cluster.size(); j++) {
                     String other = poiProvider.queryById(cluster.get(j)).getName();
 
-                    if ((float)Util.getLevenshteinDistance(cur, other)/max(cur.length(), other.length()) < 0.6) {
+                    if ((float)Util.getLevenshteinDistance(cur, other)/Math.max(cur.length(), other.length()) < 0.6) {
                         remove = false;
                         break;
                     }
@@ -284,20 +135,16 @@ final public class Main implements InitializingBean {
     }
 
     private void clusterize2() {
-        Iterator<POI> it = poiProvider.poiIterator();
-
-        while (it.hasNext()) {
+        for (POI cur : this.pois) {
             float m = 1;
             POI nearest = null;
-            POI cur = it.next();
 
-            for (String s : this.poiNames) {
-                POI other = this.poiProvider.queryByName(s);
-
+            for (POI other : this.pois) {
                 if (other.getId() != cur.getId()) {
-                    String n = cur.getName();
+                    String n1 = cur.getName();
+                    String n2 = other.getName();
 
-                    float cm = (float)Util.getLevenshteinDistance(n, s)/max(s.length(), n.length());
+                    float cm = (float)Util.getLevenshteinDistance(n1, n2)/Math.max(n1.length(), n2.length());
                     if (cm < 0.1 && cm < m) {
                         m = cm;
                         nearest = other;
@@ -339,14 +186,8 @@ final public class Main implements InitializingBean {
     private void evalDistances() {
         System.out.println("Be patient, this will insert more than 100000 entries into your database :)");
 
-        Iterator<POI> it1 = this.poiProvider.poiIterator();
-        while (it1.hasNext()) {
-            POI p1 = it1.next();
-
-            Iterator<POI> it2 = this.poiProvider.poiIterator();
-            while (it2.hasNext()) {
-                POI p2 = it2.next();
-
+        for (POI p1 : this.pois) {
+            for (POI p2 : this.pois) {
                 if (p1.getLocation().isValid() && p2.getLocation().isValid()) {
                     double lat1 = rad(p1.getLocation().getLat());
                     double lng1 = rad(p1.getLocation().getLng());
@@ -363,8 +204,8 @@ final public class Main implements InitializingBean {
                     double cosA = (x1*x2 + y1*y2 + z1*z2)/Math.sqrt((x1*x1 + y1*y1 + z1*z1)*(x2*x2 + y2*y2 + z2*z2));
                     double d = Math.acos(cosA)*R;
 
-                    //System.out.println(String.format("%f %f %f %f %f %f", x1, y1, x1, lat1, lng1, Math.acos(cosA)*180/Math.PI));
-                    //System.out.println(String.format("%f %f %f %f %f", x2, y2, x2, lat2, lng2));
+                    System.out.println(String.format("%f %f %f %f %f %f", x1, y1, x1, lat1, lng1, Math.acos(cosA)*180/Math.PI));
+                    System.out.println(String.format("%f %f %f %f %f", x2, y2, x2, lat2, lng2));
 
                     if (d < this.distLim) {
                         this.poiProvider.setDistance(p1, p2, d);
@@ -375,14 +216,10 @@ final public class Main implements InitializingBean {
     }
 
     private void processPOI() throws Exception {
-        this.poiNames = this.poiProvider.getPOINames();
-
+        /*
         this.poiProvider.clearClusters();
 
-        Iterator<POI> it = poiProvider.poiIterator();
-        while (it.hasNext()) {
-            POI poi = it.next();
-
+        for (POI poi : this.pois) {
             try {
                 this.addGeoInfo(poi);
                 this.guessType(poi);
@@ -393,31 +230,31 @@ final public class Main implements InitializingBean {
             }
         }
 
-        if (clusterLevel >= 1) {
+        if (this.clusterLevel >= 1) {
             this.clusterize1();
             this.poiProvider.collapseClusters();
 
-            if (clusterLevel >= 2) {
+            this.pois = this.poiProvider.poiList();
+
+            if (this.clusterLevel >= 2) {
                 this.clusterize2();
                 this.poiProvider.collapseClusters();
+                this.pois = this.poiProvider.poiList();
             }
         }
+        */
 
         //this.evalDistances();
-    }
 
-    private void processCafes() throws Exception {
-        Iterator<Cafe> it = cafeProvider.cafeIterator();
-        while (it.hasNext()) {
-            Cafe cafe = it.next();            
-            addGeoInfo(cafe);
-
-            cafeProvider.sync(cafe);
+        for (POI poi : this.pois) {
+            this.poiProvider.serializeDescriptionsAndPhotos(poi);
         }
     }
 
     public void afterPropertiesSet() {
         try {
+            this.pois = this.poiProvider.poiList();
+
             processPOI();
             //processCafes();
         } catch (Exception e) {

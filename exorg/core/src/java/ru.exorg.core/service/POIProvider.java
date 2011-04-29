@@ -1,6 +1,5 @@
 package ru.exorg.core.service;
  
-import ru.exorg.core.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -13,6 +12,10 @@ import java.util.TreeMap;
 import java.util.ArrayList;
 
 import java.sql.ResultSet;
+
+import org.json.simple.JSONObject;
+
+import ru.exorg.core.model.*;
 
 // ================================================================================
 
@@ -60,50 +63,6 @@ final public class POIProvider {
         }
     }
 
-    /*
-    private static POI extractPOI(final ResultSet rs) throws SQLException {
-
-        return poi;
-    }
-    */
-
-    /*
-    private static class POIIterator implements Iterator<POI> {
-        private DataProvider dataProvider;
-        private JdbcTemplate jdbc;
-        private SqlRowSet rs;
-        private boolean valid;
-
-        private POI extractPOI() {
-
-        }
-
-        public POIIterator(DataProvider p, final String q) {
-            this.dataProvider = p;
-            this.jdbc = p.getJdbcTemplate();
-            this.rs = this.dataProvider.getJdbcOperations().queryForRowSet(q);
-            this.valid = this.rs.first();
-        }
-
-        public boolean hasNext() {
-            return this.valid;
-        }
-
-        public POI next() {
-            if (valid) {
-                POI poi = extractPOI();
-                this.valid = rs.next();
-                return poi;
-            } else {
-                throw new NoSuchElementException();
-            }
-        }
-
-        public void remove() { }
-    }
-    */
-
-
     public POIProvider(DataProvider p) {
         this.dataProvider = p;
         this.jdbc = p.getJdbcTemplate();
@@ -116,6 +75,9 @@ final public class POIProvider {
         return this.jdbc.query("SELECT * FROM place_of_interest;", new Object[]{}, poiMapper).iterator();
     }        
 
+    final public List<POI> poiList() {
+        return this.jdbc.query("SELECT * FROM place_of_interest;", new Object[]{}, poiMapper);
+    }
 
     final public POI add(final String name) throws Exception {
         String q = String.format(
@@ -159,6 +121,18 @@ final public class POIProvider {
                             img);
             }
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    final public void serializeDescriptionsAndPhotos(final POI poi) {
+        JSONObject photos = new JSONObject();
+        photos.put("photos", poi.getImages());
+
+        JSONObject descrs = new JSONObject();
+        descrs.put("descriptions", poi.getDescriptions());
+
+        this.jdbc.update("UPDATE place_of_interest SET descrs=? WHERE id=?", descrs.toString(), poi.getId());
+        this.jdbc.update("UPDATE place_of_interest SET photos=? WHERE id=?", photos.toString(), poi.getId());
     }
 
     final public void guessPOIType(POI poi) {
@@ -221,57 +195,6 @@ final public class POIProvider {
         }
     }
 
-    /*
-    final public void clearClusters() {
-        this.jdbc.update("TRUNCATE poi_cluster");
-    }
-
-    final public boolean isInCluster(final POI poi) {
-        return this.jdbc.queryForInt("SELECT COUNT(*) FROM poi_cluster WHERE poi_id = ?;", poi.getId()) != 0;
-    }
-
-    final public long getPOICluster(final POI poi) {
-        if (this.isInCluster(poi)) {
-            return this.jdbc.queryForLong("SELECT id FROM poi_cluster WHERE poi_id=? LIMIT 1;", poi.getId());
-        } else {
-            return 0;
-        }
-    }
-
-    final public long getMaxClusterId() {
-        return this.jdbc.queryForInt("SELECT MAX(id) FROM poi_cluster;");
-    }
-
-    final public void setPOICluster(final POI poi, long clusterId) {
-        this.jdbc.update("DELETE FROM poi_cluster WHERE poi_id = ?;", poi.getId());
-
-        if (clusterId > 0) {
-            this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", clusterId, poi.getId());
-        } else {
-            long maxClusterId = getMaxClusterId();
-            this.jdbc.update("INSERT INTO poi_cluster(id, poi_id) VALUES (?, ?)", maxClusterId + 1, poi.getId());
-        }
-    }
-
-    final public void collapseClusters() throws Exception {
-        List<Long> cids = this.jdbc.queryForList("SELECT DISTINCT id FROM poi_cluster;", Long.class);
-        for (long cid : cids) {
-            List<Long> pois = this.jdbc.queryForList("SELECT poi_id FROM poi_cluster WHERE id = " + String.valueOf(cid), Long.class);
-
-            Iterator<Long> it = pois.iterator();
-            POI cur = this.queryById(it.next());
-            while (it.hasNext()) {
-                POI other = this.queryById(it.next());
-                cur.addDescriptions(other.getDescriptions());
-                cur.addImages(other.getImages());
-
-                this.removePOI(other);
-            }
-
-            this.sync(cur); // Atomicity?
-        }
-    }
-    */
 
     final public void clearClusters() {
         this.clusters.clear();

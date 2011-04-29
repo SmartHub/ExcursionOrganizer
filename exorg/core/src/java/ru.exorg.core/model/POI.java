@@ -2,6 +2,8 @@ package ru.exorg.core.model;
 
 import java.lang.*;
 import java.util.*;
+import java.io.*;
+import org.json.simple.JSONStreamAware;
 
 // ================================================================================
 
@@ -124,4 +126,6 @@ final public class POI {
             this.addImage(img);
         }
     }
+
+
 }

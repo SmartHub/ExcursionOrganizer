@@ -1,9 +1,4 @@
-#!/bin/bash
-
 #!/bin/sh
-
-PWD=$(pwd)
-cd $PWD/common/sql
 
 if [ "$2" != "" ]
     then
@@ -14,6 +9,6 @@ if [ "$2" != "" ]
         cat preload.sql  | mysql -u $1 excursion_organizer
 fi
 
-cd $PWD
+cd $EO_ROOT
 #if [[ -n file ]]; then echo "Not found"; fi;
-#if [[ ! -a ../../frontend/index ]]; then mkdir ../../frontend/index; fi
+if [[ ! -a $EO_ROOT/backend/index ]]; then mkdir $EO_ROOT/backend/index; fi
