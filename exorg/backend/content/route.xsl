@@ -19,18 +19,31 @@
 	</xsl:template>
 
 	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>
-
 	<xsl:template name="template-content">
 		<table cellpadding = "10">
-		<xsl:for-each select="/route/pois/poi">
+		<xsl:for-each select="page/data/route_point">
 			<tr>
+                <td>
+                    <input id="" type="text" maxlength="2" size="2">
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="@order"/>
+                        </xsl:attribute>
+                    </input>
+                    <!--input type="hidden">
+                        <xsl:attribute name="value">
+                            <xsl:value-of select="@lat"/>
+                        </xsl:attribute>
+                    </input-->
+                </td>
 				<td>
 					<B><xsl:apply-templates select="name"/></B>
 				</td>
 				<td>
-					тут будет адрес
+					<xsl:apply-templates select="address"/>
 				</td>
+
 			</tr>
+            
 		</xsl:for-each>
 		</table>
 	</xsl:template>

@@ -39,7 +39,7 @@
             <div id="leftcolumn">
               <ul>
                 <li>
-                  <a href="index.html" title="">
+                  <a href="readyroutes.html" title="">
                     Готовые экскурсии
                   </a>
                 </li>

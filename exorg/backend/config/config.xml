@@ -41,8 +41,20 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
+    <bean id="poiService" class="ru.exorg.backend.services.POIService"/>
+
+    <bean id="routeService" class="ru.exorg.backend.services.RouteService">
+        <property name="poiService" ref="poiService"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
     <bean id="readyroutesYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>
+    </bean>
+
+    <bean id="routeYalet" class="ru.exorg.backend.yalets.RouteYalet">
+        <property name="recommendedRouteService" ref="recommendedRouteService"/>
+        <property name="routeService" ref="routeService"/>
     </bean>
 
     <bean id="serverDaemon" class="ru.exorg.core.server.Starter">
@@ -59,6 +71,7 @@
                             <property name="yaletList">
                                 <list>
                                     <value>readyroutes</value>
+                                    <value>route</value>
                                 </list>
                             </property>
                         </bean>

@@ -4,15 +4,16 @@ function init_points()
 
 	$.get(document.location.href + '&_ox', {}, function(xml)
 	{
-        	$(xml).find('route').find('pois').find('poi').each(function()
+        $(xml).find('route_point').each(function()
 		{
 			Poi =
 			{
-				Id : $(this).find('id').text(),
+				Id : $(this).attr("poi-id"),
 				Name : $(this).find('name').text(),
-				Lat : $(this).find('lat').text(),
-				Lng : $(this).find('lng').text()
+				Lat : $(this).attr("lat"),
+				Lng : $(this).attr("lng")
 			};
+            alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
         	});
 		
