@@ -9,14 +9,15 @@ final public class POI {
     private long id;
     private String name;
     private long type;
+    private String url;
+
     private long clusterId;
     private boolean clusterHeadFlag;
 
-    private String url;
-    
     private List<Description> descriptions;
     private List<String> images;
 
+    private int squareId;
     private Location location;
 
     public POI(long id, final String name) {
@@ -31,6 +32,7 @@ final public class POI {
 
         this.clusterId = 0;
         this.clusterHeadFlag = false;
+        this.squareId = 0;
     }
 
     final public long getId() {
@@ -150,5 +152,11 @@ final public class POI {
         }
     }
 
+    final public int getSquareId() {
+        return this.squareId;
+    }
 
+    final public void setSquareId(int sqn) {
+        this.squareId = sqn;
+    }
 }

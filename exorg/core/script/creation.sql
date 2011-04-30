@@ -20,7 +20,10 @@ CREATE TABLE city (
     ne_lat DECIMAL(11, 8),
     ne_lng DECIMAL(11, 8),
     sw_lat DECIMAL(11, 8),
-    sw_lng DECIMAL(11, 8)
+    sw_lng DECIMAL(11, 8),
+
+    lat_subdiv INT,
+    lng_subdiv INT
 ) DEFAULT CHARACTER SET=utf8;
 
 
@@ -50,6 +53,8 @@ CREATE TABLE place_of_interest (
 
     cluster_id INT,
     is_head INT,
+
+    sq_n    INT,
 
     descrs  TEXT,
     photos  TEXT

@@ -24,6 +24,10 @@
     </bean>
 
     <bean id="processingDaemon" class="ru.exorg.processing.Main">
+        <property name="clusteringService">
+            <bean class="ru.exorg.processing.Clustering"/>
+        </property>
+
         <property name="geoService">
             <bean class="ru.exorg.processing.GeoService">
                 <property name="proxy" value="${proxy}"/>

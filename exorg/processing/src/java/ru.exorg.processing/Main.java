@@ -1,7 +1,7 @@
 package ru.exorg.processing;
 
 import org.springframework.beans.factory.InitializingBean;
-import ru.exorg.core.model.Cafe;
+import ru.exorg.core.model.City;
 import ru.exorg.core.model.Location;
 import ru.exorg.core.model.POI;
 import ru.exorg.core.service.CafeProvider;
@@ -21,7 +21,7 @@ final public class Main implements InitializingBean {
     private CafeProvider cafeProvider;
 
     private GeoService geoService;
-    private List<String> poiNames;
+    private Clustering clustering;
 
     private List<POI> pois;
 
@@ -39,18 +39,19 @@ final public class Main implements InitializingBean {
         this.cafeProvider = p.getCafeProvider();
     }
 
+    public void setClusteringService(Clustering c) {
+        this.clustering = c;
+    }
+
 
     public void setClusterLevel(int cl) {
         this.clusterLevel = cl;
     }
 
 
-
     private void addGeoInfo(POI poi) throws Exception {
         if (!poi.getLocation().isValid()) {
             if (poi.hasAddress()) {
-                //poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", "").replaceAll("\\(.*?\\)", ""));
-
                 System.out.println("Quering for " + poi.getLocation().getAddress() + " (" + poi.getName() + ")");
             } else {
                 System.out.println("Quering for " + poi.getName());
@@ -60,9 +61,19 @@ final public class Main implements InitializingBean {
             if (locs != null) {
                 for (Location loc : locs) {
                     if (this.dataProvider.isWithinCity(poi.getLocation().getCityId(), loc)) {
+                        double lat = loc.getLat();
+                        double lng = loc.getLng();
+
                         poi.getLocation().setAddress(loc.getAddress());
-                        poi.getLocation().setLat(loc.getLat());
-                        poi.getLocation().setLng(loc.getLng());
+                        poi.getLocation().setLat(lat);
+                        poi.getLocation().setLng(lng);
+
+                        City c = this.dataProvider.queryCity(poi.getCityId());
+                        int sqId = (int)(Math.abs(lat - c.getNeLatLng().getLat())/c.getLngSubdivLen()*c.getLatSubdivs()
+                                +
+                                Math.abs(lng - c.getSwLatLng().getLng())/c.getLatSubdivLen() + 1);
+
+                        poi.setSquareId(sqId);
                         break;
                     }
                 }
@@ -76,19 +87,6 @@ final public class Main implements InitializingBean {
         }
     }
 
-    /*
-    private void addGeoInfo(Cafe cafe) throws Exception {
-        for (Location loc : cafe.getLocations()) {
-            if (!loc.isValid() && loc.getAddress() != null) {
-                //Google won't find a cafe by its name
-                lookupLocation(loc, null);
-                Thread.sleep(500);
-            }
-        }
-    }
-   */
-
-
     private void guessType(POI poi) throws Exception {
         if (!poi.hasType()) {
             dataProvider.guessPOIType(poi);
@@ -98,28 +96,28 @@ final public class Main implements InitializingBean {
     private void clusterize1() {
         for (POI poi : this.pois) {
             if (poi.hasAddress()) {
-                List<POI> poiList = poiProvider.queryByAddress(poi.getAddress());
+                List<POI> poiList = this.poiProvider.queryByAddress(poi.getAddress());
 
                 if (poiList != null) {
-                    if (!poiProvider.isInCluster(poiList.get(0)) && poiList.size() >= 2) {
-                        long cid = poiProvider.getMaxClusterId() + 1;
+                    if (!this.clustering.isInCluster(poiList.get(0)) && poiList.size() >= 2) {
+                        long cid = this.clustering.getMaxClusterId() + 1;
                         for (POI p : poiList) {
-                            poiProvider.setPOICluster(p, cid);
+                            this.clustering.setPOICluster(p, cid);
                         }
                     }
                 }
             }
         }
 
-        POIProvider.Clusters clusters = this.poiProvider.getClusters();
+        Clustering.Clusters clusters = this.clustering.getClusters();
         for (List<Long> cluster : clusters.values()) {
             for (int i = 0; i < cluster.size(); i++) {
                 boolean remove = true;
-                POI curPOI = poiProvider.queryById(cluster.get(i));
+                POI curPOI = this.poiProvider.queryById(cluster.get(i));
                 String cur = curPOI.getName();
 
                 for (int j = i + 1; j < cluster.size(); j++) {
-                    String other = poiProvider.queryById(cluster.get(j)).getName();
+                    String other = this.poiProvider.queryById(cluster.get(j)).getName();
 
                     if ((float)Util.getLevenshteinDistance(cur, other)/Math.max(cur.length(), other.length()) < 0.6) {
                         remove = false;
@@ -128,12 +126,13 @@ final public class Main implements InitializingBean {
                 }
 
                 if (remove) {
-                    poiProvider.removeFromCluster(curPOI);
+                    this.clustering.removeFromCluster(curPOI);
                 }
             }
         }
     }
 
+    /*
     private void clusterize2() {
         for (POI cur : this.pois) {
             float m = 1;
@@ -176,12 +175,12 @@ final public class Main implements InitializingBean {
         }
     }
 
-
     private static final double R = 6356800;
 
     private double rad(double d) {
         return d*Math.PI/180.0;
     }
+
 
     private void evalDistances() {
         System.out.println("Be patient, this will insert more than 100000 entries into your database :)");
@@ -214,10 +213,12 @@ final public class Main implements InitializingBean {
             }
         }
     }
+    */
 
     private void processPOI() throws Exception {
-        this.poiProvider.clearClusters();
+        this.clustering.clearClusters();
 
+        /*
         for (POI poi : this.pois) {
             try {
                 this.addGeoInfo(poi);
@@ -228,10 +229,11 @@ final public class Main implements InitializingBean {
                 System.out.println("Failed to retrieve geographic information for " + poi.getName());
             }
         }
+        */
 
         if (this.clusterLevel >= 1) {
             this.clusterize1();
-            this.poiProvider.commitClusters();
+            this.clustering.commitClusters();
 
             this.pois = this.poiProvider.poiList();
 

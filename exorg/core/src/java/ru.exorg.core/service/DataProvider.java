@@ -2,11 +2,16 @@ package ru.exorg.core.service;
 
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.jdbc.core.RowMapper;
 import ru.exorg.core.model.Location;
 import ru.exorg.core.model.POI;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import ru.exorg.core.model.City;
+import ru.exorg.core.model.LatLng;
 
 // ================================================================================
 
@@ -16,6 +21,23 @@ public class DataProvider {
 
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
+
+    private static CityMapper cityMapper = new CityMapper();
+
+    private static class CityMapper implements RowMapper<City> {
+        public City mapRow(ResultSet rs, int rowNum) throws SQLException {
+            City city = new City();
+
+            city.setId(rs.getLong("id"));
+            city.setName(rs.getString("name"));
+            city.setNeLatLng(new LatLng(rs.getDouble("ne_lat"), rs.getDouble("ne_lng")));
+            city.setSwLatLng(new LatLng(rs.getDouble("sw_lat"), rs.getDouble("sw_lng")));
+            city.setLatSubdivs(rs.getInt("lat_subdiv"));
+            city.setLngSubdivs(rs.getInt("lng_subdiv"));
+
+            return city;
+        }
+    }
 
     public DataProvider(JdbcTemplate jdbcTemplate) throws Exception {
         this.jdbc = jdbcTemplate;
@@ -46,27 +68,25 @@ public class DataProvider {
     }
 
     public boolean isWithinCity(long cityId, final Location loc) {
-        SqlRowSet rs = 
-            jdbc.queryForRowSet(
-                                "SELECT sw_lat, sw_lng, ne_lat, ne_lng FROM city WHERE id=?;",
-                                new Object[]{cityId}
-                                );
-        rs.first();
+        City city = this.queryCity(cityId);
 
-        double swLat = rs.getDouble("sw_lat");
-        double neLat = rs.getDouble("ne_lat");
-        double swLng = rs.getDouble("sw_lng");
-        double neLng = rs.getDouble("ne_lng");
+        LatLng sw = city.getSwLatLng();
+        LatLng ne = city.getNeLatLng();
+
         return 
-            (loc.getLat() >= swLat && loc.getLat() <= neLat) 
+            (loc.getLat() >= sw.getLat() && loc.getLat() <= ne.getLat())
             && 
-            (loc.getLng() >= swLng && loc.getLng() <= neLng);
+            (loc.getLng() >= sw.getLng() && loc.getLng() <= ne.getLng());
     }
 
     public long getCityId(final String cityName) throws Exception {
         return jdbc.queryForLong(
                                  "SELECT id FROM city WHERE name=?;",
                                  new Object[]{cityName});
+    }
+
+    public City queryCity(long cityId) {
+        return this.jdbc.query("SELECT * FROM city WHERE id=?;", new Object[]{cityId}, cityMapper).get(0);
     }
 
     public void guessPOIType(POI poi) {

@@ -32,12 +32,6 @@ final public class POIProvider {
     private JdbcTemplate jdbc;
     private POIMapper poiMapper;
 
-    private Map<Long, Long> clusters;
-    private long maxClusterId;
-
-    public interface Clusters extends Map<Long, List<Long>> { }
-    private class _Clusters extends TreeMap<Long, List<Long>> implements Clusters { }
-
     private class POIMapper implements RowMapper<POI> {
         public POI mapRow(ResultSet rs, int rowNum) throws SQLException {
             POI poi = new POI(rs.getLong("id"), rs.getString("name"));
@@ -47,6 +41,7 @@ final public class POIProvider {
             poi.setLocation(rs.getDouble("lat"), rs.getDouble("lng"));
             poi.setClusterId(rs.getLong("cluster_id"));
             poi.setClusterHeadFlag(rs.getBoolean("is_head"));
+            poi.setSquareId(rs.getInt("sq_n"));
 
             SqlRowSet d_rs = jdbc.queryForRowSet("SELECT descr, src_url FROM poi_descr WHERE poi_id=?;", new Object[]{poi.getId()});
             boolean v = d_rs.first();
@@ -69,7 +64,6 @@ final public class POIProvider {
         this.dataProvider = p;
         this.jdbc = p.getJdbcTemplate();
         this.poiMapper = new POIMapper();
-        this.clusters = new TreeMap<Long, Long>();
     }
 
 
@@ -94,7 +88,7 @@ final public class POIProvider {
 
     final public void sync(final POI poi) throws Exception {
         jdbc.update(
-                    "UPDATE place_of_interest SET address=?, lat=?, lng=?, city_id=?, url=?, type_id=?, cluster_id=?, is_head=? WHERE id=?;",
+                    "UPDATE place_of_interest SET address=?, lat=?, lng=?, city_id=?, url=?, type_id=?, cluster_id=?, is_head=?, sq_n=? WHERE id=?;",
                     poi.getLocation().getAddress(),
                     poi.getLocation().getLat(),
                     poi.getLocation().getLng(),
@@ -103,6 +97,7 @@ final public class POIProvider {
                     poi.getType(),
                     poi.getClusterId(),
                     poi.isClusterHead(),
+                    poi.getSquareId(),
                     poi.getId());
 
         jdbc.update("DELETE FROM poi_descr WHERE poi_id=?;",
@@ -195,114 +190,6 @@ final public class POIProvider {
                 this.jdbc.update("INSERT INTO poi_distance(poi_id1, poi_id2, distance) VALUES(?, ?, ?);", poi1.getId(), poi2.getId(), distance);
             } else {
                 this.jdbc.update("UPDATE poi_distance SET distance=? WHERE poi_id1=? AND poi_id2=?;", distance, poi1.getId(), poi2.getId());
-            }
-        }
-    }
-
-
-    final public void clearClusters() {
-        this.clusters.clear();
-        this.maxClusterId = 1;
-    }
-
-    final public boolean isInCluster(final POI poi) {
-        return clusters.containsKey(poi.getId());
-    }
-
-    final public long getPOICluster(final POI poi) {
-        if (this.clusters.containsKey(poi.getId())) {
-            return this.clusters.get(poi.getId());
-        } else {
-            return 0;
-        }
-    }
-
-    final public long getMaxClusterId() {
-        return this.maxClusterId;
-    }
-
-    final public void setPOICluster(final POI poi, long clusterId) {
-        if (clusterId > 0) {
-            this.clusters.put(poi.getId(), clusterId);
-
-            if (clusterId > this.maxClusterId) {
-                this.maxClusterId = clusterId;
-            }
-        } else {
-            this.clusters.put(poi.getId(), this.maxClusterId + 1);
-            this.maxClusterId++;
-        }
-    }
-
-    final public void removeFromCluster(final POI poi) {
-        this.clusters.remove(poi.getId());
-    }
-
-    final public Clusters getClusters() {
-        Clusters icl = new _Clusters();
-
-        for (Map.Entry<Long, Long> e : clusters.entrySet()) {
-            if (!icl.containsKey(e.getValue())) {
-                icl.put(e.getValue(), new ArrayList<Long>());
-            }
-
-            icl.get(e.getValue()).add(e.getKey());
-        }
-
-        return icl;
-    }
-
-    /*
-    final public void collapseClusters() throws Exception {
-        Clusters icl = this.getClusters();
-
-        for (Map.Entry<Long, List<Long>> e : icl.entrySet()) {
-            if (e.getValue().size() >= 2) {
-                Iterator<Long> it = e.getValue().iterator();
-                POI cur = this.queryById(it.next());
-
-                System.out.println("Merging:");
-                while (it.hasNext()) {
-                    POI other = this.queryById(it.next());
-                    cur.addDescriptions(other.getDescriptions());
-                    cur.addImages(other.getImages());
-
-                    this.removePOI(other);
-
-                    System.out.println(other.getName() + " " + String.valueOf(other.getId()));
-                }
-
-                System.out.println(cur.getName() + " " + String.valueOf(cur.getId()) + "\n\n");
-                this.sync(cur); // Atomicity?
-            }
-        }
-
-        this.clearClusters();
-    }*/
-
-    final public void commitClusters() throws Exception {
-        Clusters icl = this.getClusters();
-
-        for (Map.Entry<Long, List<Long>> c : icl.entrySet()) {
-            long clusterId = c.getKey();
-            System.out.println("Merging");
-
-            for (long poiId : c.getValue()) {
-                POI poi = this.queryById(poiId);
-                poi.setClusterId(clusterId);
-                this.sync(poi);
-
-                System.out.println(poi.getName());
-            }
-        }
-
-        long cid = this.maxClusterId;
-        for (POI poi : this.poiList()) {
-            if (!this.isInCluster(poi)) {
-                poi.setClusterId(cid);
-                cid++;
-
-                this.sync(poi);
             }
         }
     }
