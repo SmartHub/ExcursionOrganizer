@@ -57,6 +57,9 @@
         <property name="routeService" ref="routeService"/>
     </bean>
 
+    <bean id="test1Yalet" class="ru.exorg.backend.yalets.SidDemo.TestSid1"/>
+    <bean id="test2Yalet" class="ru.exorg.backend.yalets.SidDemo.TestSid2"/>
+
     <bean id="serverDaemon" class="ru.exorg.core.server.Starter">
         <property name="interface" value="${backend.httpserver.address}"/>
         <property name="handlers">
@@ -72,9 +75,11 @@
                                 <list>
                                     <value>readyroutes</value>
                                     <value>route</value>
+                                    <value>test1</value>
+                                    <value>test2</value>
                                 </list>
                             </property>
-                        </bean>
+                         </bean>
                     </property>
                 </bean>
 
