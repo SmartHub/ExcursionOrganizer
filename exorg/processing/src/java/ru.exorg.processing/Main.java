@@ -49,9 +49,9 @@ final public class Main implements InitializingBean {
     private void addGeoInfo(POI poi) throws Exception {
         if (!poi.getLocation().isValid()) {
             if (poi.hasAddress()) {
-                poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", "").replaceAll("\\(.*?\\)", ""));
+                //poi.setAddress(poi.getAddress().replaceAll("^\\d+,\\s*", "").replaceAll("\\(.*?\\)", ""));
 
-                System.out.println("Quering for " + poi.getLocation().getAddress() + "(" + poi.getName() + ")");
+                System.out.println("Quering for " + poi.getLocation().getAddress() + " (" + poi.getName() + ")");
             } else {
                 System.out.println("Quering for " + poi.getName());
             }
@@ -231,22 +231,26 @@ final public class Main implements InitializingBean {
 
         if (this.clusterLevel >= 1) {
             this.clusterize1();
-            this.poiProvider.collapseClusters();
+            this.poiProvider.commitClusters();
 
             this.pois = this.poiProvider.poiList();
 
+            /*
             if (this.clusterLevel >= 2) {
                 this.clusterize2();
                 this.poiProvider.collapseClusters();
                 this.pois = this.poiProvider.poiList();
             }
+            */
         }
 
         //this.evalDistances();
 
+        /*
         for (POI poi : this.pois) {
             this.poiProvider.serializeDescriptionsAndPhotos(poi);
         }
+        */
     }
 
     public void afterPropertiesSet() {

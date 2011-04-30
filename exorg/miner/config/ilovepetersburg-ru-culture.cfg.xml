@@ -83,14 +83,29 @@
         <var name="sight_page_url"/>
 
         [Address]
-        <var-def name="address">
-          <xpath expression="/wrap//table//table/tbody/tr[2]/td[2]/node()">
-            <var name="sight_info" />
-          </xpath>
-        </var-def>
+        <empty>
+            <var-def name="address">
+                <xpath expression="/wrap//table//table/tbody/tr[2]/td[2]/node()">
+                    <var name="sight_info" />
+                </xpath>
+            </var-def>
+        </empty>
+
+        <script return="clean_address"><![CDATA[
+          clean_address = address.toString().replaceAll("^\\d+,\\s*", "").replaceAll("\\(.*?\\)", "");
+        ]]></script>
+
+
 
         [City]
         Санкт-Петербург
+
+        <empty>
+            <script><![CDATA[
+              System.out.println("Fetching " + sight_page_url.toString());
+              //Thread.sleep(1000);
+            ]]></script>
+        </empty>
       </body>
     </loop>    
   </var-def>

@@ -2,8 +2,6 @@ package ru.exorg.core.model;
 
 import java.lang.*;
 import java.util.*;
-import java.io.*;
-import org.json.simple.JSONStreamAware;
 
 // ================================================================================
 
@@ -11,6 +9,8 @@ final public class POI {
     private long id;
     private String name;
     private long type;
+    private long clusterId;
+    private boolean clusterHeadFlag;
 
     private String url;
     
@@ -28,6 +28,9 @@ final public class POI {
         this.images = new ArrayList<String>();
 
         this.location = new Location();
+
+        this.clusterId = 0;
+        this.clusterHeadFlag = false;
     }
 
     final public long getId() {
@@ -40,6 +43,26 @@ final public class POI {
 
     final public String getName() {
         return this.name;
+    }
+
+    final public long getClusterId() {
+        return this.clusterId;
+    }
+
+    final public void setClusterId(long cid) {
+        this.clusterId = cid;
+
+        if (this.location.isValid()) {
+            this.setClusterHeadFlag(true);
+        }
+    }
+
+    final public boolean isClusterHead() {
+        return this.clusterHeadFlag;
+    }
+
+    final public void setClusterHeadFlag(boolean f) {
+        this.clusterHeadFlag = f;
     }
 
     final public long getCityId() {

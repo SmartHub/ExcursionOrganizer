@@ -45,6 +45,8 @@ final public class POIProvider {
             poi.setURL(rs.getString("url"));
             poi.setAddress(rs.getString("address"));
             poi.setLocation(rs.getDouble("lat"), rs.getDouble("lng"));
+            poi.setClusterId(rs.getLong("cluster_id"));
+            poi.setClusterHeadFlag(rs.getBoolean("is_head"));
 
             SqlRowSet d_rs = jdbc.queryForRowSet("SELECT descr, src_url FROM poi_descr WHERE poi_id=?;", new Object[]{poi.getId()});
             boolean v = d_rs.first();
@@ -92,13 +94,15 @@ final public class POIProvider {
 
     final public void sync(final POI poi) throws Exception {
         jdbc.update(
-                    "UPDATE place_of_interest SET address=?, lat=?, lng=?, city_id=?, url=?, type_id=? WHERE id=?;",
+                    "UPDATE place_of_interest SET address=?, lat=?, lng=?, city_id=?, url=?, type_id=?, cluster_id=?, is_head=? WHERE id=?;",
                     poi.getLocation().getAddress(),
                     poi.getLocation().getLat(),
                     poi.getLocation().getLng(),
                     poi.getCityId(),
                     poi.getURL(),
                     poi.getType(),
+                    poi.getClusterId(),
+                    poi.isClusterHead(),
                     poi.getId());
 
         jdbc.update("DELETE FROM poi_descr WHERE poi_id=?;",
@@ -248,6 +252,7 @@ final public class POIProvider {
         return icl;
     }
 
+    /*
     final public void collapseClusters() throws Exception {
         Clusters icl = this.getClusters();
 
@@ -273,6 +278,33 @@ final public class POIProvider {
         }
 
         this.clearClusters();
+    }*/
+
+    final public void commitClusters() throws Exception {
+        Clusters icl = this.getClusters();
+
+        for (Map.Entry<Long, List<Long>> c : icl.entrySet()) {
+            long clusterId = c.getKey();
+            System.out.println("Merging");
+
+            for (long poiId : c.getValue()) {
+                POI poi = this.queryById(poiId);
+                poi.setClusterId(clusterId);
+                this.sync(poi);
+
+                System.out.println(poi.getName());
+            }
+        }
+
+        long cid = this.maxClusterId;
+        for (POI poi : this.poiList()) {
+            if (!this.isInCluster(poi)) {
+                poi.setClusterId(cid);
+                cid++;
+
+                this.sync(poi);
+            }
+        }
     }
 }
 

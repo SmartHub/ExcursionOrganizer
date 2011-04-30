@@ -15,12 +15,12 @@ SET CHARSET utf8;
 /* таблица городов */
 DROP TABLE IF EXISTS city;
 CREATE TABLE city (
-       id     INT AUTO_INCREMENT PRIMARY KEY,
-       name   VARCHAR(100) NOT NULL,
-       ne_lat DECIMAL(11, 8),
-       ne_lng DECIMAL(11, 8),
-       sw_lat DECIMAL(11, 8),
-       sw_lng DECIMAL(11, 8)
+    id     INT AUTO_INCREMENT PRIMARY KEY,
+    name   VARCHAR(100) NOT NULL,
+    ne_lat DECIMAL(11, 8),
+    ne_lng DECIMAL(11, 8),
+    sw_lat DECIMAL(11, 8),
+    sw_lng DECIMAL(11, 8)
 ) DEFAULT CHARACTER SET=utf8;
 
 
@@ -47,6 +47,9 @@ CREATE TABLE place_of_interest (
     lng     DECIMAL(11, 8),
 
     url 	VARCHAR(300) NULL,
+
+    cluster_id INT,
+    is_head INT,
 
     descrs  TEXT,
     photos  TEXT
@@ -120,10 +123,10 @@ CREATE TABLE poi_distance (
     poi_id2     INT NOT NULL,
     distance    FLOAT NOT NULL
 
-       /*
+    /*
 	FOREIGN KEY (poi_id1) REFERENCES place_of_interest(id) ON UPDATE CASCADE,
 	FOREIGN KEY (poi_id2) REFERENCES place_of_interest(id) ON UPDATE CASCADE
-        */
+    */
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Таблицы для рекомендуемых маршрутов*/
@@ -131,24 +134,24 @@ CREATE TABLE poi_distance (
 /* таблица рекомендованных маршрутов с описаниями и протяженностью (duration в метрах)*/
 DROP TABLE IF EXISTS route_recommended;
 CREATE TABLE route_recommended (
-       id           INT AUTO_INCREMENT PRIMARY KEY,
-       descr        TEXT NULL,
-       count_point  INT NOT NULL,
-       duration     INT NULL
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    descr        TEXT NULL,
+    count_point  INT NOT NULL,
+    duration     INT NULL
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Таблица с георграфической информацией о достопримечательностей */
 DROP TABLE IF EXISTS route_poi;
 CREATE TABLE route_poi (
-       poi_id      INT NOT NULL,
-       route_id    INT NOT NULL,
-       order_num   INT,
+    poi_id      INT NOT NULL,
+    route_id    INT NOT NULL,
+    order_num   INT,
 
-       PRIMARY KEY (poi_id, route_id),
-       FOREIGN KEY (poi_id)   REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
-       FOREIGN KEY (route_id) REFERENCES route_recommended(id) ON UPDATE RESTRICT ON DELETE RESTRICT
+    PRIMARY KEY (poi_id, route_id),
+    FOREIGN KEY (poi_id)   REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT,
+    FOREIGN KEY (route_id) REFERENCES route_recommended(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 ) DEFAULT CHARACTER SET=utf8;
 
 /* Заливаем информацию, которую мы не сможем получить автоматически */
 \. preload.sql
-\. distances.sql
+/*\. distances.sql */
