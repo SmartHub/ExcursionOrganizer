@@ -218,7 +218,7 @@ final public class Main implements InitializingBean {
     private void processPOI() throws Exception {
         this.clustering.clearClusters();
 
-        /*
+        
         for (POI poi : this.pois) {
             try {
                 this.addGeoInfo(poi);
@@ -229,7 +229,7 @@ final public class Main implements InitializingBean {
                 System.out.println("Failed to retrieve geographic information for " + poi.getName());
             }
         }
-        */
+        
 
         if (this.clusterLevel >= 1) {
             this.clusterize1();
