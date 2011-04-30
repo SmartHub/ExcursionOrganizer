@@ -52,7 +52,7 @@ public class YaletHtmlPageHandler extends AbstractHandler {
                 if (target.endsWith(".html")) {
                     try {
                         /* How to get server configuration here?*/
-                        this.yaletProcessor.process(request, response, "http://127.0.0.1:8080/" + resName + ".xml");
+                        this.yaletProcessor.process(request, response, "http://127.0.0.1:8081/" + resName + ".xml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -15,7 +15,7 @@
                 <bean class="ru.exorg.frontend.handler.RedirectHandler">
                     <property name="redirectionMap">
                         <map>
-                            <entry key="/index.html" value="http://${backend.httpserver.address}/index.html"/>
+                            <entry key="/readyroutes.html" value="http://${backend.httpserver.address}/readyroutes.html"/>
                             <!--<entry key="/index.html" value="http://www.wikipedia.org"/>-->
                         </map>
                     </property>
