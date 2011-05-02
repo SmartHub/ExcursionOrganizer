@@ -12,7 +12,7 @@ function theRotator() {
 	intervalID = setInterval('rotate()',5000);
 }
  
-function rotate() {	
+function rotate(fast) {	
 	// Берем первую картинку
 	var current = ($('div#rotator ul li.show')?  $('div#rotator ul li.show') : $('div#rotator ul li:first'));
  
@@ -24,17 +24,21 @@ function rotate() {
 	// var rndNum = Math.floor(Math.random() * sibs.length );
 	// var next = $( sibs[ rndNum ] );
  
+	var delay = 1000;
+	if (fast == true){
+		delay = 0;
+	}
 	// Подключаем эффект растворения/затухания для показа картинок, css-класс show имеет больший z-index
 	next.css({opacity: 0.0})
 	.addClass('show')
-	.animate({opacity: 1.0}, 1000);
+	.animate({opacity: 1.0}, delay);
  
 	// Прячем текущую картинку
-	current.animate({opacity: 0.0}, 1000)
+	current.animate({opacity: 0.0}, delay)
 	.removeClass('show');
 };
 
-function rotate_back() {	
+function rotate_back(fast) {	
 	// Берем первую картинку
 	var current = ($('div#rotator ul li.show')?  $('div#rotator ul li.show') : $('div#rotator ul li:first'));
  
@@ -46,13 +50,17 @@ function rotate_back() {
 	// var rndNum = Math.floor(Math.random() * sibs.length );
 	// var next = $( sibs[ rndNum ] );
  
+	var delay = 1000;
+	if (fast == true){
+		delay = 0;
+	}
 	// Подключаем эффект растворения/затухания для показа картинок, css-класс show имеет больший z-index
 	next.css({opacity: 0.0})
 	.addClass('show')
-	.animate({opacity: 1.0}, 1000);
+	.animate({opacity: 1.0}, delay);
  
 	// Прячем текущую картинку
-	current.animate({opacity: 0.0}, 1000)
+	current.animate({opacity: 0.0}, delay)
 	.removeClass('show');
 };
 
@@ -68,13 +76,13 @@ $(document).ready(function() {
     $("#next").click(function() {
         //alert("Hello world!");
 	clearInterval(intervalID);
-	rotate();
+	rotate(true);
     });
 
     $("#prev").click(function() {
         //alert("Hello world!");
 	clearInterval(intervalID);
-	rotate_back();
+	rotate_back(true);
     });
 
 });
