@@ -55,6 +55,9 @@ public class PoiService {
         String name = inf.get(Name);
         POI poi = new POI(id, name);
 
+        int type = Integer.parseInt(inf.get(Type));
+        poi.setType(type);
+
         poi.setAddress(inf.get(Address));
 
         Double lat = Double.parseDouble(inf.get(Lat));
@@ -64,8 +67,6 @@ public class PoiService {
         poi.addDescription(inf.get(Description), inf.get(Description_url));
 
         poi.addImage(inf.get(Img_url));
-
-        //poi.setType();
 
         return poi;
     }
