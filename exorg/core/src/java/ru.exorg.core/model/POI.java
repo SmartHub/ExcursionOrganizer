@@ -142,6 +142,15 @@ final public class POI {
         return this.images;
     }
 
+    final public String getImage() {
+        for (String img : images) {
+            if (img.length() > 3) {
+                return img;
+            }
+        }
+        return "";
+    }
+
     final public void addImage(final String image) {
         this.images.add(image);
     }

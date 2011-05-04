@@ -25,7 +25,7 @@ public class RouteService {
 
     private JdbcTemplate jdbcTemplate;
 
-    private POIService poiService;
+    private PoiService poiService;
 
     public static class OrderPoiComparator implements Comparator<RoutePoint>
     {
@@ -45,7 +45,7 @@ public class RouteService {
     }
 
     @Required
-    public void setPoiService (final POIService poiService) {
+    public void setPoiService (final PoiService poiService) {
         this.poiService = poiService;
     }
 

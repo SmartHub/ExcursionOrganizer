@@ -7,17 +7,28 @@ package ru.exorg.core.model;
  * Time: 01:27:45
  * To change this template use File | Settings | File Templates.
  */
-public class POIType {
+public class PoiType {
     private long id;
     private String name;
     private String guess_rx;
 
-    public POIType (long id, String name, String guess_rx) {
+    public PoiType(long id, String name, String guess_rx) {
         this.id = id;
         this.name = name;
         this.guess_rx = guess_rx;
     }
 
+    public long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getGuessRx() {
+        return guess_rx;
+    }
     // like Searcher.queryByType
     public int[] GetAllPoiTypes () {
         return null;

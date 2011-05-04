@@ -17,7 +17,7 @@ import java.util.List;
  * Time: 1:43
  * To change this template use File | Settings | File Templates.
  */
-public class POIService {
+public class PoiService {
 
     private String sphinx_host;
 
@@ -35,7 +35,7 @@ public class POIService {
     private static final int Lat = 7;
     private static final int Lng = 8;
 
-    public POIService() {
+    public PoiService() {
         sphinx_host = "localhost";
         sphinx_port = 9312;
         this.sphinxClient = new SphinxClient(sphinx_host, sphinx_port);

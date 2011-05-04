@@ -14,12 +14,12 @@
 	</head>
 	<body onLoad = "parent.init_inner_frame()">  			
   				<ul list-style="none">
-					<xsl:for-each select="pois/poi">
+					<xsl:for-each select="page/data/poi">
     					<li>
 						<H3><a href="#"><xsl:attribute name="onClick">parent.location.href='test-poi.html?id=<xsl:value-of select="id" />'</xsl:attribute><xsl:value-of select="name"/></a></H3>
 						<a>
 							<xsl:attribute name="onClick">parent.location.href='test-poi.html?id=<xsl:value-of select="id" />'</xsl:attribute>
-								<img><xsl:attribute name="src"><xsl:value-of select="img__url" /></xsl:attribute></img>
+								<img><xsl:attribute name="src"><xsl:value-of select="imgUrl" /></xsl:attribute></img>
 						</a>
 						<input type="checkbox" onclick="parent.add_poi(this.id, this.checked)"><xsl:attribute name="id"><xsl:value-of select="id" /></xsl:attribute></input>Хочу посетить!<br/>
 						<HR/>

@@ -41,7 +41,11 @@
         <property name="jdbcTemplate" ref="jdbcTemplate"/>
     </bean>
 
-    <bean id="poiService" class="ru.exorg.backend.services.POIService"/>
+    <bean id="poiService" class="ru.exorg.backend.services.PoiService"/>
+
+    <bean id="poiTypeService" class="ru.exorg.backend.services.PoiTypeService">
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
 
     <bean id="routeService" class="ru.exorg.backend.services.RouteService">
         <property name="poiService" ref="poiService"/>
@@ -55,6 +59,18 @@
     <bean id="routeYalet" class="ru.exorg.backend.yalets.RouteYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>
         <property name="routeService" ref="routeService"/>
+    </bean>
+
+    <bean id="constructorYalet" class="ru.exorg.backend.yalets.ConstructorYalet">
+        <property name="poiTypeService" ref="poiTypeService"/>
+    </bean>
+
+    <bean id="constructor_frameYalet" class="ru.exorg.backend.yalets.ConstructorFrameYalet">
+        <property name="poiService" ref="poiService"/>
+    </bean>
+
+    <bean id="poiYalet" class="ru.exorg.backend.yalets.PoiYalet">
+        <property name="poiService" ref="poiService"/>
     </bean>
 
     <bean id="test1Yalet" class="ru.exorg.backend.yalets.SidDemo.TestSid1"/>
@@ -75,6 +91,9 @@
                                 <list>
                                     <value>readyroutes</value>
                                     <value>route</value>
+                                    <value>constructor</value>
+                                    <value>constructor_frame</value>
+                                    <value>poi</value>
                                     <value>test1</value>
                                     <value>test2</value>
                                 </list>
@@ -108,7 +127,7 @@
 
 
               <!--
-	      <bean class="eo.frontend.httpserver.POIService" />
+	      <bean class="eo.frontend.httpserver.PoiService" />
 
 	      <bean class="eo.frontend.httpserver.RouteService">
 		<property name="SM" ref="session_manager" />

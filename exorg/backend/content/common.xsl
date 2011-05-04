@@ -44,7 +44,7 @@
                   </a>
                 </li>
                 <li>
-                  <a href="poi_types.html" title="">
+                  <a href="constructor.html" title="">
                     Конструктор
                   </a>
                 </li>

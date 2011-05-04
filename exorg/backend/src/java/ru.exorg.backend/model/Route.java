@@ -107,10 +107,8 @@ public class Route {
 
     public String getImage () {
         for (RoutePoint p : points) {
-            for (String img : p.getPoi().getImages()) {
-                if (img.length() > 3) {
-                    return img;
-                }
+            if (p.getPoi().getImage().length() > 1) {
+                return p.getPoi().getImage();
             }
         }
         return "";

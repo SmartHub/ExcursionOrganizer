@@ -17,30 +17,30 @@
 
 
 	<!-- писать только одной строкой! -->
-	<xsl:template name="template-init-function">initialize(<xsl:value-of select="/poi/lat"/>, <xsl:value-of select="/poi/lng"/>, '<xsl:value-of select="/poi/name"/>', '<xsl:value-of select="/poi/address"/>')</xsl:template>
+	<xsl:template name="template-init-function">initialize(<xsl:value-of select="page/data/poi/@lat"/>, <xsl:value-of select="page/data/poi/@lng"/>, '<xsl:value-of select="page/data/poi/name"/>', '<xsl:value-of select="page/data/poi/address"/>')</xsl:template>
 
 
 	<xsl:template name="template-content">
 		<table cellpadding = "10">
 			<tr>
 				<td>
-					<B><xsl:apply-templates select="poi/name"/></B>
+					<B><xsl:apply-templates select="page/data/poi/name"/></B>
 					<br/>
 					<br/>				
-					<img src="{poi/img__url}"  alt="pic1" />
+					<img src="{page/data/poi/img-url}" alt="pic1" />
 				</td>
 			</tr>
 			<tr>
 				<td>
-						<xsl:apply-templates select="poi/description"/>
-							<a href="{poi/src__url}" color = "blue">
+						<xsl:apply-templates select="page/data/poi/description"/>
+							<a href="{page/data/poi/description-url}" color = "blue">
 								<font color = "blue">
 									[дальше]
 								</font>
 							</a>
 						<br/><br/>
 						<B>Адрес:</B>
-						<xsl:apply-templates select="poi/address"/>
+						<xsl:apply-templates select="page/data/poi/address"/>
 				</td>
 			</tr>
 		</table>

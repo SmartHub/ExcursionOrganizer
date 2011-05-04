@@ -59,7 +59,7 @@ public class RecommendedRouteService {
 
              RowMapper<RoutePoint> pointMapper = new RowMapper<RoutePoint>() {
                  public RoutePoint mapRow(ResultSet rs, int i) throws SQLException {
-                     POIService searcher = new POIService();
+                     PoiService searcher = new PoiService();
                      RoutePoint routePoint = null;
                      try
                      {

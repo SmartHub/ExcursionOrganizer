@@ -30,7 +30,7 @@
   <xsl:template name="template-content">
     <div class="menu" id = "menu_obj">
       <ul>
-	<xsl:for-each select="/user-constructor/types/type">
+	<xsl:for-each select="page/data/type">
 	  <li>
 	    <a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'constructor_frame.html?name={name}';">
               <xsl:value-of select="name"/>
