@@ -4,11 +4,13 @@ import ru.exorg.core.model.POI;
 import ru.exorg.core.service.DataProvider;
 import ru.exorg.core.service.POIProvider;
 
-import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.tartarus.snowball.SnowballStemmer;
+import org.tartarus.snowball.ext.russianStemmer;
 
 public class Clustering {
     private Map<Long, Long> clusters;
@@ -111,7 +113,7 @@ public class Clustering {
 
         for (Map.Entry<Long, List<Long>> c : icl.entrySet()) {
             long clusterId = c.getKey();
-            System.out.println("Merging");
+            System.out.println("\nMerging");
 
             for (long poiId : c.getValue()) {
                 POI poi = this.poiProvider.queryById(poiId);

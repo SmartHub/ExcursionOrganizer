@@ -13,6 +13,8 @@ import java.lang.String;
 import java.net.SocketTimeoutException;
 import java.util.*;
 
+import org.tartarus.snowball.ext.russianStemmer;
+
 // ================================================================================
 
 final public class Main implements InitializingBean {
@@ -27,7 +29,20 @@ final public class Main implements InitializingBean {
 
     private int clusterLevel = 1;
     private double distLim = 10000;
-    
+
+    private static Set<String> prohibitedStems
+            = toSet(new String[]{"дом", "особ", "мост", "здан", "двор", "театр", "особняк", "церков", "ансамбл"});
+
+    private static Set<String> toSet(final String[] strings) {
+        Set<String> res = new HashSet<String>();
+
+        for (String s : strings) {
+            res.add(s);
+        }
+
+        return res;
+    }
+
 
     public void setGeoService(GeoService gs) {
         this.geoService = gs;
@@ -93,6 +108,15 @@ final public class Main implements InitializingBean {
         }
     }
 
+    private boolean isLike(final String pn1, final String pn2) {
+        return Util.getLevenshteinDistance(pn1, pn2) <= 6;
+    }
+
+    private int edist(final String s1, final String s2) {
+        return Util.getLevenshteinDistance(s1, s2);
+    }
+
+
     private void clusterize1() {
         for (POI poi : this.pois) {
             if (poi.hasAddress()) {
@@ -119,7 +143,7 @@ final public class Main implements InitializingBean {
                 for (int j = i + 1; j < cluster.size(); j++) {
                     String other = this.poiProvider.queryById(cluster.get(j)).getName();
 
-                    if ((float)Util.getLevenshteinDistance(cur, other)/Math.max(cur.length(), other.length()) < 0.6) {
+                    if (isLike(cur, other)) {
                         remove = false;
                         break;
                     }
@@ -132,88 +156,40 @@ final public class Main implements InitializingBean {
         }
     }
 
-    /*
     private void clusterize2() {
-        for (POI cur : this.pois) {
-            float m = 1;
-            POI nearest = null;
+        russianStemmer stemmer = new russianStemmer();
 
-            for (POI other : this.pois) {
-                if (other.getId() != cur.getId()) {
-                    String n1 = cur.getName();
-                    String n2 = other.getName();
+        for (POI poi : this.pois) {
+            if (!this.clustering.isInCluster(poi) && !poi.getLocation().isValid()) {
+                String[] ws = poi.getName().split("\\s+");
 
-                    float cm = (float)Util.getLevenshteinDistance(n1, n2)/Math.max(n1.length(), n2.length());
-                    if (cm < 0.1 && cm < m) {
-                        m = cm;
-                        nearest = other;
-                        //cid = this.poiProvider.getPOICluster(other);
+                for (String w : ws) {
+                    stemmer.setCurrent(w);
+                    stemmer.stem();
+                    String stem = stemmer.getCurrent().toLowerCase();
+
+                    if (prohibitedStems.contains(stem) || stem.length() <= 3) {
+                        continue;
                     }
 
-                    if (cm > 1) {
-                        System.out.println("Nonsence, edit distance is " + String.valueOf(cm));
-                    }
-                }
-            }
-
-            if (nearest != null) {
-                long cid = this.poiProvider.getPOICluster(nearest);
-                if (cid != 0) {
-                    this.poiProvider.setPOICluster(cur, cid);
-                } else {
-                    cid = this.poiProvider.getMaxClusterId() + 1;
-                    this.poiProvider.setPOICluster(cur, cid);
-                    this.poiProvider.setPOICluster(nearest, cid);
-
-                    System.out.println("Adding POI #" + String.valueOf(nearest.getId()) + " into cluster #" + String.valueOf(cid));
-                }
-
-                System.out.println("Adding POI #" + String.valueOf(cur.getId()) + " into cluster #" + String.valueOf(cid) + "; min edit distance is " + String.valueOf(m));
-            } else {
-                System.out.println("Not clustering POI #" + String.valueOf(cur.getId()));
-            }
-        }
-    }
-
-    private static final double R = 6356800;
-
-    private double rad(double d) {
-        return d*Math.PI/180.0;
-    }
-
-
-    private void evalDistances() {
-        System.out.println("Be patient, this will insert more than 100000 entries into your database :)");
-
-        for (POI p1 : this.pois) {
-            for (POI p2 : this.pois) {
-                if (p1.getLocation().isValid() && p2.getLocation().isValid()) {
-                    double lat1 = rad(p1.getLocation().getLat());
-                    double lng1 = rad(p1.getLocation().getLng());
-                    double x1 = R*Math.cos(lat1)*Math.cos(lng1);
-                    double y1 = R*Math.cos(lat1)*Math.sin(lng1);
-                    double z1 = R*Math.sin(lat1);
-
-                    double lat2 = rad(p2.getLocation().getLat());
-                    double lng2 = rad(p2.getLocation().getLng());
-                    double x2 = R*Math.cos(lat2)*Math.cos(lng2);
-                    double y2 = R*Math.cos(lat2)*Math.sin(lng2);
-                    double z2 = R*Math.sin(lat2);
-
-                    double cosA = (x1*x2 + y1*y2 + z1*z2)/Math.sqrt((x1*x1 + y1*y1 + z1*z1)*(x2*x2 + y2*y2 + z2*z2));
-                    double d = Math.acos(cosA)*R;
-
-                    System.out.println(String.format("%f %f %f %f %f %f", x1, y1, x1, lat1, lng1, Math.acos(cosA)*180/Math.PI));
-                    System.out.println(String.format("%f %f %f %f %f", x2, y2, x2, lat2, lng2));
-
-                    if (d < this.distLim) {
-                        this.poiProvider.setDistance(p1, p2, d);
+                    List<POI> likes = this.poiProvider.queryLike(stem);
+                    for (POI like : likes) {
+                        if (edist(poi.getName(), like.getName()) < 6 && like.getLocation().isValid()) {
+                            if (this.clustering.isInCluster(like)) {
+                                this.clustering.setPOICluster(poi, this.clustering.getPOICluster(like));
+                                break;
+                            } else {
+                                long cid = this.clustering.getMaxClusterId() + 1;
+                                this.clustering.setPOICluster(poi, cid);
+                                this.clustering.setPOICluster(like, cid);
+                                break;
+                            }
+                        }
                     }
                 }
             }
         }
     }
-    */
 
     private void processPOI() throws Exception {
         this.clustering.clearClusters();
@@ -232,30 +208,20 @@ final public class Main implements InitializingBean {
 
         if (this.clusterLevel >= 1) {
             this.clusterize1();
+            this.clusterize2();
             this.clustering.commitClusters();
-
-            this.pois = this.poiProvider.poiList();
-
-            /*
-            if (this.clusterLevel >= 2) {
-                this.clusterize2();
-                this.poiProvider.collapseClusters();
-                this.pois = this.poiProvider.poiList();
-            }
-            */
         }
-
-        //this.evalDistances();
-
-        /*
-        for (POI poi : this.pois) {
-            this.poiProvider.serializeDescriptionsAndPhotos(poi);
-        }
-        */
     }
 
     public void afterPropertiesSet() {
         try {
+            /*
+            List<POI> l = this.poiProvider.queryLike("марс");
+            for (POI i : l) {
+                System.out.println(i.getName());
+            }
+            */
+
             this.pois = this.poiProvider.poiList();
 
             processPOI();

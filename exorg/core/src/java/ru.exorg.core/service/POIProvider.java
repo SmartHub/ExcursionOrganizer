@@ -174,6 +174,10 @@ final public class POIProvider {
         }
     }
 
+    final public List<POI> queryLike(final String name) {
+        return this.jdbc.query("SELECT * FROM place_of_interest WHERE name LIKE ?", new Object[]{"%" + name.toLowerCase() + "%"}, poiMapper);
+    }
+
     final public void removePOI(final POI poi) {
         this.jdbc.update("DELETE FROM place_of_interest WHERE id=?", poi.getId());
         this.jdbc.update("DELETE FROM poi_descr WHERE poi_id=?", poi.getId());
