@@ -86,25 +86,37 @@
                     </property>
 
                     <property name="handler">
-                        <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
-                            <property name="yaletList">
+                        <bean class="org.eclipse.jetty.server.handler.HandlerCollection">
+                            <property name="handlers">
                                 <list>
-                                    <value>readyroutes</value>
-                                    <value>route</value>
-                                    <value>constructor</value>
-                                    <value>constructor_frame</value>
-                                    <value>poi</value>
-                                    <value>test1</value>
-                                    <value>test2</value>
+                                    <bean class="ru.exorg.backend.handler.DirectYaletHandler">
+                                        <property name="yaletList">
+                                            <value>readyroutes</value>
+                                        </property>
+                                    </bean>
+
+                                    <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
+                                        <property name="yaletList">
+                                            <list>
+                                                <value>readyroutes</value>
+                                                <value>route</value>
+                                                <value>constructor</value>
+                                                <value>constructor_frame</value>
+                                                <value>poi</value>
+                                                <value>test1</value>
+                                                <value>test2</value>
+                                            </list>
+                                        </property>
+                                    </bean>
                                 </list>
                             </property>
-                         </bean>
+                        </bean>
                     </property>
                 </bean>
 
                 <bean class="org.eclipse.jetty.server.handler.ResourceHandler">
-			    	<property name="resourceBase" value="../content"/>
-			    </bean>
+                    <property name="resourceBase" value="../content"/>
+                </bean>
 
                 <bean class="org.eclipse.jetty.server.handler.DefaultHandler" />
 
@@ -112,66 +124,66 @@
         </property>
     </bean>
 
-    </beans>
-  <!-- Is it OK to initialize static members in such a way??? -->
-    <!--
-	<bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
-		<constructor-arg ref="jdbcTemplate" />
-	</bean>
+</beans>
+        <!-- Is it OK to initialize static members in such a way??? -->
+        <!--
+      <bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
+          <constructor-arg ref="jdbcTemplate" />
+      </bean>
 
-	<bean id="session_manager" class="eo.frontend.httpserver.SessionManager">
-		<property name="conn" ref="jdbcTemplate" />
-	</bean>
-	-->
+      <bean id="session_manager" class="eo.frontend.httpserver.SessionManager">
+          <property name="conn" ref="jdbcTemplate" />
+      </bean>
+      -->
 
 
 
-              <!--
-	      <bean class="eo.frontend.httpserver.PoiService" />
+        <!--
+<bean class="eo.frontend.httpserver.PoiService" />
 
-	      <bean class="eo.frontend.httpserver.RouteService">
-		<property name="SM" ref="session_manager" />
-	      </bean>
+<bean class="eo.frontend.httpserver.RouteService">
+<property name="SM" ref="session_manager" />
+</bean>
 
-	      <bean class="eo.frontend.httpserver.DynamicHandlerCollection">
-		<property name="base" value="../content"/>
-		<property name="handlers">
-		  <map>
+<bean class="eo.frontend.httpserver.DynamicHandlerCollection">
+<property name="base" value="../content"/>
+<property name="handlers">
+<map>
 
-					<entry key="/test-poi.html">
-						<bean class="eo.frontend.httpserver.TestPOI"/>
-					</entry>
+    <entry key="/test-poi.html">
+        <bean class="eo.frontend.httpserver.TestPOI"/>
+    </entry>
 
-					<entry key="/poi_types.html">
-						<bean class="eo.frontend.httpserver.POITypesHandler"/>
-					</entry>
+    <entry key="/poi_types.html">
+        <bean class="eo.frontend.httpserver.POITypesHandler"/>
+    </entry>
 
-					<entry key="/type.html">
-						<bean class="eo.frontend.httpserver.POITypeHandler"/>
-					</entry>
+    <entry key="/type.html">
+        <bean class="eo.frontend.httpserver.POITypeHandler"/>
+    </entry>
 
-					<entry key="/index.html">
-						<bean class="eo.frontend.httpserver.IndexHandler"/>
-					</entry>
+    <entry key="/index.html">
+        <bean class="eo.frontend.httpserver.IndexHandler"/>
+    </entry>
 
-					<entry key="/route.html">
-						<bean class="eo.frontend.httpserver.RouteHandler">
-							<property name="SM" ref="session_manager"/>
-						</bean>
-					</entry>
-					<entry key="/constructor.html">
-						<bean class="eo.frontend.httpserver.ConstructorHandler" >
+    <entry key="/route.html">
+        <bean class="eo.frontend.httpserver.RouteHandler">
+            <property name="SM" ref="session_manager"/>
+        </bean>
+    </entry>
+    <entry key="/constructor.html">
+        <bean class="eo.frontend.httpserver.ConstructorHandler" >
 
-							<property name="SM" ref="session_manager"/>
-						</bean>
-					</entry>
+            <property name="SM" ref="session_manager"/>
+        </bean>
+    </entry>
 
-				</map>
-				</property>
-			</bean>
+</map>
+</property>
+</bean>
 
-			<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
-				<property name="resourceBase" value="../content"/>
-			</bean>
-                        -->
+<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
+<property name="resourceBase" value="../content"/>
+</bean>
+        -->
 
