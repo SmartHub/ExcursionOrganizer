@@ -35,12 +35,17 @@ source poi
 
   sql_query = \
     SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref, \
-            poi_image.img_url, poi.lat, poi.lng, \
+            poi_image.img_url, poi.lat, poi.lng,            \
             poi.cluster_id, poi.is_head, poi.sq_n square_num\
-      FROM place_of_interest poi \
+      FROM place_of_interest poi                            \
            LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id \
            LEFT JOIN poi_type ON poi.type_id = poi_type.id  \
-           LEFT JOIN poi_image ON poi_image.poi_id = poi.id
+           LEFT JOIN poi_image ON poi_image.poi_id = poi.id \
+      WHERE poi.cluster_id IN                               \
+            (SELECT DISTINCT cluster_id                     \
+                FROM place_of_interest                      \
+                WHERE (lat > 0) AND (lng > 0))              \
+
 
   # It took me about an hour to learn that this is nessesary :(
   sql_query_pre = SET CHARSET utf8

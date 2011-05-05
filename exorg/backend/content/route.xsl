@@ -16,6 +16,9 @@
     		<script src="js/route_constructor.js"></script>
 		<script src="js/route_show.js"></script>
 		<script src="js/jquery-latest.min.js"></script>
+		<style type="text/css">
+			div#leftcolumn ul li a.route {color: #000;}
+		</style>
 	</xsl:template>
 
 	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>

@@ -22,8 +22,8 @@ a{
 	border:1px solid #a4ce60;
 	margin:0 0 5px 0;
 	line-height:50px;
-	text-align:center;
-	font:bold 25px Verdana, Arial, Helvetica, sans-serif;
+	text-align:right;
+	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
 }
 #main{
 	float:left;
