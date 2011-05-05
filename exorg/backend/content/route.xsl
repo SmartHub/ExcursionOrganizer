@@ -11,14 +11,17 @@
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 		<link rel="stylesheet" href="css/map.css" type="text/css" media="all" />
-    		<link rel="stylesheet" type="text/css" href="css/style_menu.css" />
-    		<script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
-    		<script src="js/route_constructor.js"></script>
-		<script src="js/route_show.js"></script>
-		<script src="js/jquery-latest.min.js"></script>
+    	<link rel="stylesheet" type="text/css" href="css/style_menu.css" />
 		<style type="text/css">
 			div#leftcolumn ul li a.route {color: #000;}
-		</style>
+		</style>        
+    	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    	<script src="js/route_constructor.js"></script>
+
+
+		<script src="js/route_show.js"></script>
+		<script src="js/jquery-latest.min.js"></script>
+        <script src="js/change_order.js"></script>
 	</xsl:template>
 
 	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>
@@ -27,7 +30,7 @@
 		<xsl:for-each select="page/data/route_point">
 			<tr>
                 <td>
-                    <input id="" type="text" maxlength="2" size="2">
+                    <input id="" type="text" maxlength="2" size="2" class="number">
                         <xsl:attribute name="value">
                             <xsl:value-of select="@order"/>
                         </xsl:attribute>
