@@ -8,6 +8,9 @@
   </xsl:template>
 
   <xsl:template name="template-header">
+    <style type="text/css">
+		div#leftcolumn ul li a.constructor {color: #000;}
+	</style>
     <xsl:text disable-output-escaping="yes">
       <![CDATA[
       <meta name="viewport" content="initial-scale=1.0, user-scalable=no">

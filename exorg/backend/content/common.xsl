@@ -39,17 +39,17 @@
             <div id="leftcolumn">
               <ul>
                 <li>
-                  <a href="readyroutes.html" title="">
+                  <a href="readyroutes.html" title="" class="index">
                     Готовые экскурсии
                   </a>
                 </li>
                 <li>
-                  <a href="constructor.html" title="">
+                  <a href="constructor.html" title="" class="constructor">
                     Конструктор
                   </a>
                 </li>
                 <li>
-		  <a href="#" onClick="top.location.href= 'route.html?sid=' + sid;" title="">
+		  <a href="#" onClick="top.location.href= 'route.html?sid=' + sid;" title="" class="route">
                     Маршрут
                   </a>
                 </li>

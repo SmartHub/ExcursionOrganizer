@@ -14,6 +14,9 @@
 			div#rotator ul li {float:left; position:absolute; list-style: none;}
 			div#rotator ul li.show {z-index:500;}
 		</style>
+		<style type="text/css">
+			div#leftcolumn ul li a.index {color: #000;}
+		</style>
 		<script type="text/javascript" src="js/jquery-latest.min.js"></script>
 		<script type="text/javascript" src="js/rotator.js"></script>
 	</xsl:template>
