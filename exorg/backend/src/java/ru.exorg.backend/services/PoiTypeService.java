@@ -1,12 +1,11 @@
 package ru.exorg.backend.services;
 
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
+import org.sphx.api.SphinxClient;
+import org.sphx.api.SphinxException;
+import org.sphx.api.SphinxMatch;
+import org.sphx.api.SphinxResult;
 import ru.exorg.core.model.PoiType;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,103 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class PoiTypeService {
+
+    private String sphinx_host;
+
+    private int sphinx_port;
+
+    private SphinxClient sphinxClient;
+
+    private static final int Id = 0;
+    private static final int Name = 1;
+
+
+    public PoiTypeService() {
+        sphinx_host = "localhost";
+        sphinx_port = 9312;
+        this.sphinxClient = new SphinxClient(sphinx_host, sphinx_port);
+
+        try {
+            this.sphinxClient.SetMatchMode(SphinxClient.SPH_MATCH_EXTENDED);
+        } catch (Exception e) {
+            System.out.println("Sun has raised in the west today :(");
+        }
+    }
+
+    private PoiType getPOIFromMatch(SphinxMatch match)
+    {
+        ArrayList<String> inf = match.attrValues;
+
+        long id = Long.parseLong(inf.get(Id));
+        String name = inf.get(Name);
+        PoiType poiType = new PoiType(id, name);
+
+        return poiType;
+    }
+
+    public PoiType getPoiTypeById(long id)
+    {
+        PoiType poiType = null;
+        try {
+            SphinxResult result = sphinxClient.Query("@type_id " + String.valueOf(id), "poi_type_index");
+
+            for(SphinxMatch match: result.matches)
+            {
+                poiType = getPOIFromMatch(match);
+                if(poiType.getId() == id)
+                {
+                    return poiType;
+                }
+            }
+
+        } catch (SphinxException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+        }
+        return poiType = null;
+    }
+
+    public PoiType getPoiTypeByName(String name)
+    {
+        PoiType poiType = null;
+        try {
+            SphinxResult result = sphinxClient.Query("@name " + name, "poi_type_index");
+
+            for(SphinxMatch match: result.matches)
+            {
+                poiType = getPOIFromMatch(match);
+                if(poiType.getName().equals(name))
+                {
+                    return poiType;
+                }
+            }
+
+        } catch (SphinxException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+        }
+        return poiType = null;
+    }
+
+    public List<PoiType> getPoiTypes()
+    {
+        List<PoiType> typeList = new ArrayList<PoiType>();
+        try {
+            SphinxResult result = sphinxClient.Query("@*", "poi_type_index");
+            for (SphinxMatch match: result.matches)
+            {
+                typeList.add(getPOIFromMatch(match));
+            }
+
+        } catch (SphinxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return typeList;
+    }
+
+  /*
     private JdbcTemplate jdbcTemplate;
 
     public JdbcTemplate getJdbcTemplate() {
@@ -30,10 +126,10 @@ public class PoiTypeService {
     }
 
     private PoiType getPoiTypeById (final long id) {
-        String q = String.format("SELECT name, guess_rx FROM poi_type WHERE id = %d;", id);
+        String q = String.format("SELECT name FROM poi_type WHERE id = %d;", id);
         RowMapper<PoiType> mapper = new RowMapper<PoiType>() {
             public PoiType mapRow(ResultSet rs, int i) throws SQLException {
-                PoiType poiType = new PoiType(id, rs.getString("name"), rs.getString("guess_rx"));
+                PoiType poiType = new PoiType(id, rs.getString("name"));
                 return poiType;
             }
         };
@@ -57,4 +153,6 @@ public class PoiTypeService {
         }
         return null;
     }
+
+    */
 }

@@ -4,8 +4,8 @@ import org.sphx.api.SphinxClient;
 import org.sphx.api.SphinxException;
 import org.sphx.api.SphinxMatch;
 import org.sphx.api.SphinxResult;
-
 import ru.exorg.core.model.POI;
+import ru.exorg.core.model.PoiType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +34,9 @@ public class PoiService {
     private static final int Img_url = 6;
     private static final int Lat = 7;
     private static final int Lng = 8;
+    private static final int Cluster_id = 9;
+    private static final int Is_head = 10;
+    private static final int Square_num = 11;
 
     public PoiService() {
         sphinx_host = "localhost";
@@ -55,8 +58,10 @@ public class PoiService {
         String name = inf.get(Name);
         POI poi = new POI(id, name);
 
-        int type = Integer.parseInt(inf.get(Type));
-        poi.setType(type);
+        PoiTypeService typeService = new PoiTypeService();
+        PoiType type = typeService.getPoiTypeByName(inf.get(Type));
+        poi.setTypeObj(type);
+        poi.setType(type.getId());
 
         poi.setAddress(inf.get(Address));
 
@@ -68,13 +73,22 @@ public class PoiService {
 
         poi.addImage(inf.get(Img_url));
 
+        poi.setClusterId(Long.parseLong(inf.get(Cluster_id)));
+
+        if (Integer.parseInt(inf.get(Is_head)) == 0) {
+            poi.setClusterHeadFlag(false);
+        } else {
+            poi.setClusterHeadFlag(true);
+        }
+        poi.setSquareId(Integer.parseInt(inf.get(Square_num)));
+
         return poi;
     }
 
     public List<POI> getPoiListByKey(String key) throws SphinxException {
         //System.out.println ("getPoiListByKey: key = "+key);
         
-        SphinxResult sphinxResult = sphinxClient.Query("@id "+key);
+        SphinxResult sphinxResult = sphinxClient.Query(key);
         List<POI> result = new ArrayList<POI>();
         for(SphinxMatch match: sphinxResult.matches)
         {
@@ -101,15 +115,17 @@ public class PoiService {
 
     public POI getPoiById(long id) throws SphinxException {
 
-        List<POI> result = getPoiListByKey(String.valueOf(id));
-        for(POI poi: result)
+        POI poi = null;
+        SphinxResult result = sphinxClient.Query("@id " + String.valueOf(id), "poi_index");
+        for(SphinxMatch match: result.matches)
         {
-            if (poi.getId() != id)
-            {
-                result.remove(poi);
-            }
+             poi = getPOIFromMatch(match);
+             if (poi.getId() == id)
+             {
+                 return poi;
+             }
         }
-        return result.get(0);
+        return poi = null;
     }
 
 

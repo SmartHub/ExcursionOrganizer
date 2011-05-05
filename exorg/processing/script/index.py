@@ -34,7 +34,9 @@ source poi
 
 
   sql_query = \
-    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref,  poi_image.img_url, poi.lat, poi.lng \
+    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref, \
+            poi_image.img_url, poi.lat, poi.lng, \
+            poi.cluster_id, poi.is_head, poi.sq_n square_num\
       FROM place_of_interest poi \
            LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id \
            LEFT JOIN poi_type ON poi.type_id = poi_type.id  \
@@ -52,6 +54,30 @@ source poi
   sql_field_string = img_url
   sql_field_string = lat
   sql_field_string = lng
+  sql_field_string = cluster_id
+  sql_field_string = is_head
+  sql_field_string = square_num
+}
+
+source poi_type
+{
+
+  type = mysql
+
+  sql_host = localhost
+  sql_user = %(DB_USER)s
+  sql_pass = %(DB_PWD)s
+  sql_db   = excursion_organizer
+  sql_port = 3306
+
+  sql_query = \
+    SELECT poi_type.id, poi_type.id type_id, name FROM poi_type
+
+  sql_query_pre = SET CHARSET utf8
+
+  sql_field_string = type_id
+  sql_field_string = name
+
 }
 
 ################################################################################
@@ -71,6 +97,22 @@ index poi_index
   min_word_len = 1
 
   charset_type = utf-8
+}
+
+index poi_type_index
+{
+  source = poi_type
+
+  path = %(EO_PATH)s/backend/index/poi_type
+  docinfo = extern
+
+  mlock = 0
+
+  morphology = none
+  min_word_len = 1
+
+  charset_type = utf-8
+
 }
 
 #############################################################################

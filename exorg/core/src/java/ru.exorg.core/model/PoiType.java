@@ -10,12 +10,14 @@ package ru.exorg.core.model;
 public class PoiType {
     private long id;
     private String name;
-    private String guess_rx;
 
-    public PoiType(long id, String name, String guess_rx) {
+    public PoiType(long id, String name) {
         this.id = id;
         this.name = name;
-        this.guess_rx = guess_rx;
+    }
+
+    public PoiType(String name) {
+        this.name = name;
     }
 
     public long getId() {
@@ -26,9 +28,7 @@ public class PoiType {
         return name;
     }
 
-    public String getGuessRx() {
-        return guess_rx;
-    }
+
     // like Searcher.queryByType
     public int[] GetAllPoiTypes () {
         return null;

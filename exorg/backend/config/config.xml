@@ -44,7 +44,7 @@
     <bean id="poiService" class="ru.exorg.backend.services.PoiService"/>
 
     <bean id="poiTypeService" class="ru.exorg.backend.services.PoiTypeService">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <!--<property name="jdbcTemplate" ref="jdbcTemplate"/> -->
     </bean>
 
     <bean id="routeService" class="ru.exorg.backend.services.RouteService">
