@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 cd $EO_ROOT/core/script
 if [ "$2" != "" ]

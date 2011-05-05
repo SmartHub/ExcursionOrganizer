@@ -54,10 +54,7 @@ CREATE TABLE place_of_interest (
     cluster_id INT,
     is_head INT,
 
-    sq_n    INT,
-
-    descrs  TEXT,
-    photos  TEXT
+    sq_n    INT
 	
     /*
     photo	BLOB NULL,
@@ -83,11 +80,6 @@ CREATE TABLE poi_image (
     FOREIGN KEY (poi_id) REFERENCES place_of_interest(id) ON UPDATE RESTRICT ON DELETE RESTRICT
 ) DEFAULT CHARACTER SET=utf8;
 
-DROP TABLE IF EXISTS poi_cluster;
-CREATE TABLE poi_cluster (
-    id      INT,
-    poi_id  INT
-) DEFAULT CHARACTER SET=utf8;
 
 /******************************************************************************/
 /* Do not look here until its time comes :) */

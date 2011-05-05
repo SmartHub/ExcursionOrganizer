@@ -9,6 +9,8 @@ final public class POI {
     private long id;
     private String name;
     private long type;
+    private PoiType typeObj;
+
     private String url;
 
     private long clusterId;
@@ -33,6 +35,14 @@ final public class POI {
         this.clusterId = 0;
         this.clusterHeadFlag = false;
         this.squareId = 0;
+    }
+
+    public PoiType getTypeObj() {
+        return typeObj;
+    }
+
+    public void setTypeObj(PoiType typeObj) {
+        this.typeObj = typeObj;
     }
 
     final public long getId() {
@@ -130,7 +140,7 @@ final public class POI {
         return this.type;
     }
 
-    final public void setType(int type) {
+    final public void setType(long type) {
         this.type = type;
     }
 
