@@ -93,6 +93,11 @@ final public class POI {
         this.descriptions.add(new Description(text, source));
     }
 
+    public void addDescription(Description description)
+    {
+        this.descriptions.add(description);
+    }
+
     final public void addDescriptions(final List<Description> ds) {
         for (Description d : ds) {
             this.addDescription(d.getText(), d.getSourceURL());

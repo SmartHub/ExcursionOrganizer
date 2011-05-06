@@ -4,6 +4,7 @@ import org.sphx.api.SphinxClient;
 import org.sphx.api.SphinxException;
 import org.sphx.api.SphinxMatch;
 import org.sphx.api.SphinxResult;
+import ru.exorg.core.model.Description;
 import ru.exorg.core.model.POI;
 import ru.exorg.core.model.PoiType;
 
@@ -109,6 +110,62 @@ public class PoiService {
              pois.add(getPOIFromMatch(match));
 
         }
+        return pois;
+    }
+
+    public POI getFullPoi(long poiId)
+    {
+        POI poi = null;
+        try {
+            poi = getPoiById(poiId);
+            List<POI> clusteredPois = getClusteredPoiList(poi.getClusterId());
+            for(POI p: clusteredPois)
+            {
+                if ((poi.getLocation().getLat() < 0) && (p.getLocation().getLat() > 0))    //hasLocation ??
+                {
+                    poi.setLocation(p.getLocation().getLat(), p.getLocation().getLng());
+                }
+                if ((!poi.hasAddress()) && (p.hasAddress()))
+                {
+                    poi.setAddress(p.getAddress());
+                }
+                if (p.getDescriptions().size() > 0)
+                {
+                    for (Description descr: p.getDescriptions())
+                    {
+                        poi.addDescription(descr);
+                    }
+                }
+                if (p.getImages().size() > 0)
+                {
+                    for (String imageUrl: p.getImages())
+                    {
+                        poi.addImage(imageUrl);
+                    }
+                }
+            }
+        } catch (SphinxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        return poi;
+    }
+
+    public List<POI> getClusteredPoiList(long clusterId)
+    {
+        List<POI> pois = new ArrayList<POI>();
+
+        SphinxResult result = null;
+        try {
+            result = sphinxClient.Query("@cluster_id " + clusterId, "poi_index");
+            for(SphinxMatch match: result.matches)
+            {
+             pois.add(getPOIFromMatch(match));
+
+            }
+        } catch (SphinxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
         return pois;
     }
 
