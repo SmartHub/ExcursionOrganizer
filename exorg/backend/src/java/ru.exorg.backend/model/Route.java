@@ -37,6 +37,7 @@ public class Route {
         this.description = description;
         this.countPoints = countPoints;
         this.duration = duration;
+        points = new ArrayList<RoutePoint>();
     }
 
     public long getId() {

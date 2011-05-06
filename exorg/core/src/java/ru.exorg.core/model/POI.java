@@ -35,6 +35,20 @@ final public class POI {
         this.clusterId = 0;
         this.clusterHeadFlag = false;
         this.squareId = 0;
+        this.url = "";
+    }
+
+    public POI() {
+       this.type = 1;
+       this.descriptions = new ArrayList<Description>();
+       this.images = new ArrayList<String>();
+       this.clusterId = 0;
+       this.clusterHeadFlag = false;
+       this.squareId = 0;
+       this.location = new Location();
+       this.id = 0;
+       this.name = "";
+       this.url = "";
     }
 
     public PoiType getTypeObj() {
