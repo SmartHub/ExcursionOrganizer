@@ -9,7 +9,8 @@ $(document).ready(
 function check(){
 	var text = [];
 	var text2 = [];
-	$("#btn-ok").attr("disabled", false);
+	var do_update = true;
+
 	$("input.number").each(
 			function(){
 				$(this).css( "background-color", "white" );
@@ -29,9 +30,14 @@ function check(){
 				for(i = 0; i < text2.length; ++i){
 					if (this.value == text2[i]){
 						$(this).css( "background-color", "red" );
-						$("#btn-ok").attr("disabled", true);
+						do_update = false;
 					};
 				}
 	});
+
+	if(do_update)
+	{
+	    update_points();
+	}
 
 };
