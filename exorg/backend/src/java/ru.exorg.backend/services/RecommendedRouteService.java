@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
 
 /**
  * Created by IntelliJ IDEA.
@@ -69,7 +69,7 @@ public class RecommendedRouteService {
 
                      catch (SphinxException e) {
                          System.out.println("extract poi SphinxException");
-                         System.out.println(e.getMessage());
+                         println(e.getMessage());
                      }
                      catch (IndexOutOfBoundsException e)
                      {
