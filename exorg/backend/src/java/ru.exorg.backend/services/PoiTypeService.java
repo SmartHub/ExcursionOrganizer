@@ -46,6 +46,8 @@ public class PoiTypeService {
 
         long id = Long.parseLong(inf.get(Id));
         String name = inf.get(Name);
+        name = name.substring(0, name.length()-5);
+        System.out.println("getPOIFromMatch: "+name);
         PoiType poiType = new PoiType(id, name);
 
         return poiType;
@@ -78,11 +80,14 @@ public class PoiTypeService {
     {
         PoiType poiType = null;
         try {
-            SphinxResult result = sphinxClient.Query("@name " + name, "poi_type_index");
+            String searchName = name + " all ";
+            SphinxResult result = sphinxClient.Query("@name " + searchName, "poi_type_index");
+            //System.out.println("getPoiTypeByName: search by name " + searchName);
 
             for(SphinxMatch match: result.matches)
             {
                 poiType = getPOIFromMatch(match);
+                //System.out.println("getPoiTypeByName: found poi_type name: "+ poiType.getName());
                 if(poiType.getName().equals(name))
                 {
                     return poiType;
@@ -101,10 +106,12 @@ public class PoiTypeService {
     {
         List<PoiType> typeList = new ArrayList<PoiType>();
         try {
-            SphinxResult result = sphinxClient.Query("@*", "poi_type_index");
+            SphinxResult result = sphinxClient.Query("@* all", "poi_type_index");
             for (SphinxMatch match: result.matches)
             {
+                //System.out.println("getPoiTypes");
                 typeList.add(getPOIFromMatch(match));
+                //System.out.println(typeList.get(typeList.size()-1).toString());
             }
 
         } catch (SphinxException e) {

@@ -76,7 +76,7 @@ source poi_type
   sql_port = 3306
 
   sql_query = \
-    SELECT poi_type.id, poi_type.id type_id, name FROM poi_type
+    SELECT poi_type.id, poi_type.id type_id, CONCAT(name, ' all ') name FROM poi_type
 
   sql_query_pre = SET CHARSET utf8
 
