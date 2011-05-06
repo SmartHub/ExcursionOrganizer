@@ -101,16 +101,15 @@ public class PoiService {
 
     public List<POI> getPoiListByType(String type) throws SphinxException {
 
-        List<POI> result = getPoiListByKey(type);
-        long type_id = 1; //
-        for(POI poi: result)
+        List<POI> pois = new ArrayList<POI>();
+
+        SphinxResult result = sphinxClient.Query("@type " + type, "poi_index");
+        for(SphinxMatch match: result.matches)
         {
-            if (poi.getType() != type_id)
-            {
-                result.remove(poi);
-            }
+             pois.add(getPOIFromMatch(match));
+
         }
-        return result;
+        return pois;
     }
 
     public POI getPoiById(long id) throws SphinxException {
