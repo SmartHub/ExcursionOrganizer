@@ -42,6 +42,7 @@ final public class POIProvider {
             poi.setClusterId(rs.getLong("cluster_id"));
             poi.setClusterHeadFlag(rs.getBoolean("is_head"));
             poi.setSquareId(rs.getInt("sq_n"));
+            poi.setType(rs.getLong("type_id"));
 
             SqlRowSet d_rs = jdbc.queryForRowSet("SELECT descr, src_url FROM poi_descr WHERE poi_id=?;", new Object[]{poi.getId()});
             boolean v = d_rs.first();
