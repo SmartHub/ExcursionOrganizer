@@ -105,6 +105,8 @@ final public class Main implements InitializingBean {
     private void guessType(POI poi) throws Exception {
         if (!poi.hasType()) {
             dataProvider.guessPOIType(poi);
+        } else {
+            System.out.println("Skipping POI " + poi.getName() + " of type " + String.valueOf(poi.getType()));
         }
     }
 

@@ -91,7 +91,7 @@ public class DataProvider {
 
     public void guessPOIType(POI poi) {
         try {
-            int t = this.jdbc.queryForInt("SELECT id FROM poi_type WHERE lcase(?) rlike poi_type.guess_rx;", 
+            int t = this.jdbc.queryForInt("SELECT id FROM poi_type WHERE lcase(?) rlike poi_type.guess_rx;",
                                           poi.getName());
             if (t != 0) {
                 poi.setType(t);
