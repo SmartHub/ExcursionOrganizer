@@ -34,6 +34,18 @@
                         <xsl:attribute name="value">
                             <xsl:value-of select="@order"/>
                         </xsl:attribute>
+                        <xsl:attribute name="lat">
+                            <xsl:value-of select="@lat"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="lng">
+                            <xsl:value-of select="@lng"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="poi-id">
+                            <xsl:value-of select="@poi-id"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="name"/>
+                        </xsl:attribute>
                     </input>
                     <!--input type="hidden">
                         <xsl:attribute name="value">
