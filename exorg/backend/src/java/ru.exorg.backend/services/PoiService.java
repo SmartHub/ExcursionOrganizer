@@ -38,6 +38,7 @@ public class PoiService {
     private static final int Cluster_id = 9;
     private static final int Is_head = 10;
     private static final int Square_num = 11;
+    private static final int SourceUrl = 13;
 
     public PoiService() {
         sphinx_host = "localhost";
@@ -51,12 +52,27 @@ public class PoiService {
         }
     }
 
+    private String returnValue(List<String> inf, int index)
+    {
+        String res = inf.get(index);
+        if (res.equals(null))
+        {
+            return "";
+        }else
+        {
+            return res;
+        }
+
+    }
+
     private POI getPOIFromMatch(SphinxMatch match)
     {
         ArrayList<String> inf = match.attrValues;
 
         long id = Long.parseLong(inf.get(Id));
-        String name = inf.get(Name);
+
+        String name = returnValue(inf, Name); //inf.get(Name);
+
         POI poi = new POI(id, name);
 
         PoiTypeService typeService = new PoiTypeService();
@@ -64,17 +80,36 @@ public class PoiService {
         poi.setTypeObj(type);
         poi.setType(type.getId());
 
-        poi.setAddress(inf.get(Address));
+        poi.setAddress(returnValue(inf, Address));
+
 
         Double lat = Double.parseDouble(inf.get(Lat));
+
         Double lng = Double.parseDouble(inf.get(Lng));
+
         poi.setLocation(lat, lng);
 
-        poi.addDescription(inf.get(Description), inf.get(Description_url));
 
-        poi.addImage(inf.get(Img_url));
+        String descr = returnValue(inf,Description);
+
+        String descrUrl = returnValue(inf,Description_url);
+
+        if (!descr.equals("") && !descrUrl.equals(""))
+        {
+            poi.addDescription(descr, descrUrl);
+        }
+
+        if (!inf.get(Img_url).equals(null))
+        {
+            poi.addImage(inf.get(Img_url));
+
+        }
+
+        Long clId = Long.parseLong(inf.get(Cluster_id));
 
         poi.setClusterId(Long.parseLong(inf.get(Cluster_id)));
+
+
 
         if (Integer.parseInt(inf.get(Is_head)) == 0) {
             poi.setClusterHeadFlag(false);
@@ -82,13 +117,15 @@ public class PoiService {
             poi.setClusterHeadFlag(true);
         }
         poi.setSquareId(Integer.parseInt(inf.get(Square_num)));
-
+        //System.out.println("getPOIFromMatch: squareId " + String.valueOf(Integer.parseInt(inf.get(Square_num))));
+        //System.out.println("getPOIFromMatch: URL " + returnValue(inf, SourceUrl));
+        //poi.setURL(returnValue(inf, SourceUrl));
+        //System.out.println("getPOIFromMatch: before return: " + poi.toString());
         return poi;
     }
 
     public List<POI> getPoiListByKey(String key) throws SphinxException {
-        //System.out.println ("getPoiListByKey: key = "+key);
-        
+
         SphinxResult sphinxResult = sphinxClient.Query(key);
         List<POI> result = new ArrayList<POI>();
         for(SphinxMatch match: sphinxResult.matches)
@@ -96,39 +133,53 @@ public class PoiService {
             result.add(getPOIFromMatch(match));
         }
 
-        //System.out.println (result.size());
         return result;
     }
 
     public List<POI> getPoiListByType(String type) throws SphinxException {
 
         List<POI> pois = new ArrayList<POI>();
-
+        POI poi = null;
         SphinxResult result = sphinxClient.Query("@type " + type, "poi_index");
         for(SphinxMatch match: result.matches)
         {
-             pois.add(getPOIFromMatch(match));
+            poi = getPOIFromMatch(match);
+            poi = getPoiById(poi.getId());
+            pois.add(poi);
 
         }
         return pois;
     }
 
-    public POI getFullPoi(long poiId)
+    public POI getPoiById(long poiId)
     {
-        POI poi = null;
+        POI poi = new POI();
         try {
-            poi = getPoiById(poiId);
+            poi = getRawPoiById(poiId);
+
+
             List<POI> clusteredPois = getClusteredPoiList(poi.getClusterId());
+
             for(POI p: clusteredPois)
             {
+              if (p.getId() != poi.getId()) {
                 if ((poi.getLocation().getLat() < 0) && (p.getLocation().getLat() > 0))    //hasLocation ??
                 {
+
                     poi.setLocation(p.getLocation().getLat(), p.getLocation().getLng());
                 }
                 if ((!poi.hasAddress()) && (p.hasAddress()))
                 {
+
                     poi.setAddress(p.getAddress());
                 }
+                /*
+                if ((poi.getURL().equals("")) && (!p.getURL().equals("")) )
+                {
+                    System.out.println("getPoiById: update URL " + p.getURL());
+                    poi.setURL(p.getURL());
+                }
+                */
                 if (p.getDescriptions().size() > 0)
                 {
                     for (Description descr: p.getDescriptions())
@@ -143,9 +194,11 @@ public class PoiService {
                         poi.addImage(imageUrl);
                     }
                 }
+              }
             }
         } catch (SphinxException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println("getRawPoiById failed for id " + String.valueOf(poiId));
         }
         return poi;
     }
@@ -154,34 +207,34 @@ public class PoiService {
     {
         List<POI> pois = new ArrayList<POI>();
 
-        SphinxResult result = null;
         try {
-            result = sphinxClient.Query("@cluster_id " + clusterId, "poi_index");
+            SphinxResult result = sphinxClient.Query("@cluster_id " + clusterId, "poi_index");
             for(SphinxMatch match: result.matches)
             {
-             pois.add(getPOIFromMatch(match));
-
+                pois.add(getPOIFromMatch(match));
             }
         } catch (SphinxException e) {
+            System.out.println("There is no any poi in the index with cluster_id = " + String.valueOf(clusterId));
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
         return pois;
     }
 
-    public POI getPoiById(long id) throws SphinxException {
+    private POI getRawPoiById(long id) throws SphinxException {
 
-        POI poi = null;
         SphinxResult result = sphinxClient.Query("@id " + String.valueOf(id), "poi_index");
+
         for(SphinxMatch match: result.matches)
         {
-             poi = getPOIFromMatch(match);
+             POI poi = getPOIFromMatch(match);
+
              if (poi.getId() == id)
              {
+
                  return poi;
              }
         }
-        return poi = null;
+        return new POI();
     }
 
 

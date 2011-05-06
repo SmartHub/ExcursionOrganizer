@@ -35,16 +35,17 @@ source poi
 
   sql_query = \
     SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref, \
-            poi_image.img_url, poi.lat, poi.lng,            \
-            poi.cluster_id, poi.is_head, poi.sq_n square_num\
-      FROM place_of_interest poi                            \
-           LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id \
-           LEFT JOIN poi_type ON poi.type_id = poi_type.id  \
-           LEFT JOIN poi_image ON poi_image.poi_id = poi.id \
-      WHERE poi.cluster_id IN                               \
-            (SELECT DISTINCT cluster_id                     \
-                FROM place_of_interest                      \
-                WHERE (lat > 0) AND (lng > 0))              \
+        poi_image.img_url, poi.lat, poi.lng,            \
+        poi.cluster_id, poi.is_head, poi.sq_n square_num\
+    FROM place_of_interest poi                            \
+        LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id \
+        LEFT JOIN poi_type ON poi.type_id = poi_type.id  \
+        LEFT JOIN poi_image ON poi_image.poi_id = poi.id \
+    WHERE poi.cluster_id IN                               \
+        (SELECT DISTINCT cluster_id                     \
+            FROM place_of_interest                      \
+            WHERE (lat > 0) AND (lng > 0))              \
+
 
 
   # It took me about an hour to learn that this is nessesary :(
@@ -62,6 +63,7 @@ source poi
   sql_field_string = cluster_id
   sql_field_string = is_head
   sql_field_string = square_num
+  #sql_field_string = source_url
 }
 
 source poi_type

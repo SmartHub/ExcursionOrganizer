@@ -1,6 +1,5 @@
 package ru.exorg.backend.services;
 
-import org.sphx.api.SphinxException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -61,13 +60,10 @@ public class RouteService {
                 Long poi_id = rs.getLong("poi_id");
 
                 RoutePoint routePoint = null;
-                try {
-                    POI poi = poiService.getPoiById(poi_id);
-                    routePoint = new RoutePoint(poi, rs.getInt("ord_num"));
+                POI poi = poiService.getPoiById(poi_id);
+                routePoint = new RoutePoint(poi, rs.getInt("ord_num"));
 
-                } catch (SphinxException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
+
                 return routePoint; // hack ??
             }
         };
@@ -79,7 +75,7 @@ public class RouteService {
     }
 
 
-
+     /*
     public Route addPointInUserRoute(long userId, long pointId)
     {
         Route route = null;
@@ -119,7 +115,7 @@ public class RouteService {
         return route;
 
     }
-
+    */
 
 public Route setOrders(Route route)
 {

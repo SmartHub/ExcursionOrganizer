@@ -1,6 +1,5 @@
 package ru.exorg.backend.services;
 
-import org.sphx.api.SphinxException;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -59,15 +58,13 @@ public class RecommendedRouteService {
                  public RoutePoint mapRow(ResultSet rs, int i) throws SQLException {
                      PoiService searcher = new PoiService();
                      RoutePoint routePoint = null;
-                     try
-                     {
-                         //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
-                         routePoint = new RoutePoint(searcher.getPoiById(rs.getInt("poi_id")), rs.getInt("order_num"));
-                     }
 
-                     catch (SphinxException e) {
-                         System.out.println("extract poi SphinxException");
-                         System.out.println(e.getMessage());
+                     try{
+                         //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
+                         routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
+
+                         //System.out.println("extract poi SphinxException");
+                         //println(e.getMessage());
                      }
                      catch (IndexOutOfBoundsException e)
                      {
@@ -89,7 +86,7 @@ public class RecommendedRouteService {
             }
         }
         else
-            System.out.println ("FUCK");      
+            System.out.println ("FUCK");
         return list.get(0);
     }
 

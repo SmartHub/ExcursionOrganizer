@@ -25,6 +25,7 @@ function init_points()
 	}, 'xml'); // указываем явно тип данных
 };
 
+
 function update_points()
 {
 	var PoiList = [];
@@ -45,11 +46,13 @@ function update_points()
         //alert(Poi.Id + " " + Poi.Name + " " + Poi.Lat + " " + Poi.Lng + " " + Poi.Url);
     });
 
+    //alert('update');
     PoiList.sort(Comparator);
     calculate_route(PoiList);
     /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
 };
+
 
 function Comparator(i, ii) {
     if (i.Order > ii.Order)
