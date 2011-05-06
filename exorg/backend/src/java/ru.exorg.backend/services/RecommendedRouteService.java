@@ -12,8 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Util.println;
-
 /**
  * Created by IntelliJ IDEA.
  * User: lana
@@ -69,7 +67,7 @@ public class RecommendedRouteService {
 
                      catch (SphinxException e) {
                          System.out.println("extract poi SphinxException");
-                         println(e.getMessage());
+                         System.out.println(e.getMessage());
                      }
                      catch (IndexOutOfBoundsException e)
                      {
