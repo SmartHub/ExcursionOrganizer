@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class YaletHtmlPageHandler extends AbstractHandler {
+public class YaletHtmlPageHandler extends YaletHandler {
     private YaletProcessor yaletProcessor;
     private SessionManager sm;
     private Map<String, String> yalets;
@@ -36,9 +36,12 @@ public class YaletHtmlPageHandler extends AbstractHandler {
 
     final public void setYaletMap(final Map<String, String> ym) {
         this.yalets = ym;
-
-        System.out.println("Setting yalet map ");
     }
+
+    final private static String xmlTemplate =
+            "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<?xml-stylesheet type=\"text/xsl\" href=\"%s.xsl\"?>\n" +
+            "<page><yalet id=\"%s\"/></page>";
 
     public void handle(String target,
                        Request baseRequest,
@@ -51,27 +54,11 @@ public class YaletHtmlPageHandler extends AbstractHandler {
         if (yalets.containsKey(resName)) {
             if (target.endsWith(".html")) {
                 try {
-                    /* How to get server configuration here?*/
-                    this.yaletProcessor.process(request, response, "http://127.0.0.1:8081/" + resName + ".xml");
+                    String s = String.format(xmlTemplate, resName, this.yalets.get(resName));
+                    process(target, baseRequest, request, response, s);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                baseRequest.setHandled(true);
-            } else if (target.endsWith(".xml")) {
-                String t = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                        "<?xml-stylesheet type=\"text/xsl\" href=\"%s.xsl\"?>\n" +
-                        "<page><yalet id=\"%s\"/></page>";
-                String s = String.format(t, resName, this.yalets.get(resName));
-
-                response.setCharacterEncoding("UTF-8");
-                response.setContentLength(s.getBytes().length);
-                response.setStatus(HttpServletResponse.SC_OK);
-
-                PrintWriter pw = response.getWriter();
-                pw.print(s + "\n\n");
-                pw.flush();
-
-                baseRequest.setHandled(true);
             }
         }
     }

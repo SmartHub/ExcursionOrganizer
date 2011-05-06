@@ -15,25 +15,14 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 import net.sf.xfresh.core.YaletSupport;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
-import org.xml.sax.XMLReader;
 
 
-public class DirectYaletHandler extends AbstractHandler {
-    private YaletSupport yaletSupport;
+public class DirectYaletHandler extends YaletHandler {
     private Set<String> yalets;
-    private static final OutputFormat of = new OutputFormat("XML", "utf-8", false);
-
-    final public void setYaletSupport(final YaletSupport ys) {
-        this.yaletSupport = ys;
-    }
 
     final public void setYaletList(final String[] yl) {
         this.yalets = new HashSet<String>();
@@ -43,14 +32,15 @@ public class DirectYaletHandler extends AbstractHandler {
         }
     }
 
+    /*
     private XMLReader createReader() throws ParserConfigurationException, SAXException {
         final SAXParserFactory parserFactory = SAXParserFactory.newInstance();
         parserFactory.setXIncludeAware(true);
-        final SAXParser saxParser = parserFactory.newSAXParser();
-        final XMLReader xmlReader = saxParser.getXMLReader();
-        xmlReader.setFeature("http://xml.org/sax/features/namespaces", true);
-        return xmlReader;
     }
+    */
+
+    private static String xmlTemplate = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
+            "<page><yalet id=\"%s\"/></page>";
 
     public void handle(String target,
                        Request baseRequest,
@@ -60,18 +50,8 @@ public class DirectYaletHandler extends AbstractHandler {
 
         if (this.yalets.contains(resName)) {
             try {
-                String t = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                            "<page><yalet id=\"%s\"/></page>";
-                String s = String.format(t, resName);
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                XMLFilter f = this.yaletSupport.createFilter(this.yaletSupport.createRequest(request,target), this.yaletSupport.createResponse(response));
-                f.setParent(this.createReader());
-                f.setContentHandler(new XMLSerializer(stream, of));
-                f.parse(new InputSource(new StringReader(s)));
-                response.getOutputStream().write(stream.toByteArray());
-                response.getOutputStream().flush();
-                baseRequest.setHandled(true);
+                String s = String.format(xmlTemplate, resName);
+                process(target, baseRequest, request, response, s);
             } catch (Exception e) {
                 System.out.println("Exception was caught");
                 e.printStackTrace();
