@@ -145,6 +145,18 @@ public class PoiService {
         {
             poi = getPOIFromMatch(match);
             poi = getPoiById(poi.getId());
+            System.out.println("getPoiListByType: poi" + poi.toString());
+            System.out.println("getPoiListByType: id" + String.valueOf(poi.getId()));
+            System.out.println("getPoiListByType: lat" + String.valueOf(poi.getLocation().getLat()));
+            System.out.println("getPoiListByType: lng" + String.valueOf(poi.getLocation().getLng()));
+            System.out.println("getPoiListByType: address" + poi.getAddress());
+            System.out.println("getPoiListByType: cluster_id" + String.valueOf(poi.getClusterId()));
+            System.out.println("getPoiListByType: square_id" + String.valueOf(poi.getSquareId()));
+            System.out.println("getPoiListByType: image" + poi.getImage());
+            System.out.println("getPoiListByType: name" + poi.getName());
+            System.out.println("getPoiListByType: type" + poi.getTypeObj().getName());
+            System.out.println("getPoiListByType: description_size" + String.valueOf(poi.getDescriptions().size()));
+            //System.out.println("getPoiListByType: i" + String.valueOf(poi.getImage()));
             pois.add(poi);
 
         }
