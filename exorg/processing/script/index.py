@@ -32,23 +32,27 @@ source poi
   # main document fetch query
   # mandatory, integer document ID field MUST be the first selected column
 
+  sql_query =                                                                   \
+    SELECT                                                                      \
+        poi.id, poi.id id,                                                      \
+        poi.name,                                                               \
+        (SELECT name FROM poi_type WHERE id=poi.type_id LIMIT 1) type,          \
+        poi.address,                                                            \
+        (SELECT descr FROM poi_descr WHERE poi_id=poi.id LIMIT 1) descr,        \
+        (SELECT src_url FROM poi_descr WHERE poi_id=poi.id LIMIT 1) descr_ref,  \
+        (SELECT img_url FROM poi_image WHERE poi_id=poi.id LIMIT 1) img_url,    \
+        poi.lat,                                                                \
+        poi.lng,                                                                \
+        poi.cluster_id,                                                         \
+        poi.is_head,                                                            \
+        poi.sq_n square_num                                                     \
+                                                                                \
+    FROM                                                                        \
+        place_of_interest poi                                                   \
+    WHERE                                                                       \
+        (lat > 0) AND (lng > 0)
 
-  sql_query = \
-    SELECT poi.id, poi.id id, poi.name, poi_type.name type, poi.address, poi_descr.descr descr, poi_descr.src_url descr_ref, \
-        poi_image.img_url, poi.lat, poi.lng,            \
-        poi.cluster_id, poi.is_head, poi.sq_n square_num\
-    FROM place_of_interest poi                            \
-        LEFT JOIN poi_descr ON poi.id = poi_descr.poi_id \
-        LEFT JOIN poi_type ON poi.type_id = poi_type.id  \
-        LEFT JOIN poi_image ON poi_image.poi_id = poi.id \
-    WHERE poi.cluster_id IN                               \
-        (SELECT DISTINCT cluster_id                     \
-            FROM place_of_interest                      \
-            WHERE (lat > 0) AND (lng > 0))              \
-
-
-
-  # It took me about an hour to learn that this is nessesary :(
+  # It took me about an hour to learn that this is necessary :(
   sql_query_pre = SET CHARSET utf8
 
   sql_field_string = id

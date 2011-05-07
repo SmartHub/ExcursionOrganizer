@@ -1,15 +1,12 @@
 package ru.exorg.backend.handler;
 
-import net.sf.xfresh.core.YaletProcessor;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.SessionManager;
-import org.eclipse.jetty.server.handler.AbstractHandler;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
 import java.util.TreeMap;
 
