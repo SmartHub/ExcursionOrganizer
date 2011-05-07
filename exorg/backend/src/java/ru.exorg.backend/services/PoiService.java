@@ -140,7 +140,7 @@ public class PoiService {
 
         List<POI> pois = new ArrayList<POI>();
         POI poi = null;
-        SphinxResult result = sphinxClient.Query("@type " + type, "poi_index");
+        SphinxResult result = sphinxClient.Query("@type " + type + "@is_head 1" , "poi_index");
         for(SphinxMatch match: result.matches)
         {
             poi = getPOIFromMatch(match);
@@ -166,9 +166,10 @@ public class PoiService {
     public POI getPoiById(long poiId)
     {
         POI poi = new POI();
-        try {
-            poi = getRawPoiById(poiId);
+        poi = getRawPoiById(poiId);
 
+        if (poi.getId() != 0)
+        {
 
             List<POI> clusteredPois = getClusteredPoiList(poi.getClusterId());
 
@@ -185,13 +186,13 @@ public class PoiService {
 
                     poi.setAddress(p.getAddress());
                 }
-                /*
-                if ((poi.getURL().equals("")) && (!p.getURL().equals("")) )
-                {
-                    System.out.println("getPoiById: update URL " + p.getURL());
-                    poi.setURL(p.getURL());
-                }
-                */
+            /*
+            if ((poi.getURL().equals("")) && (!p.getURL().equals("")) )
+            {
+                System.out.println("getPoiById: update URL " + p.getURL());
+                poi.setURL(p.getURL());
+            }
+            */
                 if (p.getDescriptions().size() > 0)
                 {
                     for (Description descr: p.getDescriptions())
@@ -208,9 +209,6 @@ public class PoiService {
                 }
               }
             }
-        } catch (SphinxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            System.out.println("getRawPoiById failed for id " + String.valueOf(poiId));
         }
         return poi;
     }
@@ -232,21 +230,107 @@ public class PoiService {
         return pois;
     }
 
-    private POI getRawPoiById(long id) throws SphinxException {
+    private POI getRawPoiById(long id) {
 
-        SphinxResult result = sphinxClient.Query("@id " + String.valueOf(id), "poi_index");
+        try{
+           SphinxResult result = sphinxClient.Query("@id " + String.valueOf(id), "poi_index");
 
-        for(SphinxMatch match: result.matches)
+           for(SphinxMatch match: result.matches)
+            {
+                POI poi = getPOIFromMatch(match);
+
+                if (poi.getId() == id)
+                {
+                    return poi;
+                }
+            }
+        } catch (SphinxException e)
         {
-             POI poi = getPOIFromMatch(match);
-
-             if (poi.getId() == id)
-             {
-
-                 return poi;
-             }
+             System.out.println("getRawPoiById: poi with id " + String.valueOf(id) + "is absent in the index");
         }
         return new POI();
+    }
+
+    private int[] getNearestSquares(int square, int rows, int columns)
+    {
+        int[] squares = new int[8];
+        int lastIndex = -1;
+        if (square%columns != 0)
+        {
+            squares[++lastIndex] = square -1;
+        }
+        if ((square - columns) >= 0)
+        {
+            squares[++lastIndex] = square - columns;
+            if (square%columns != columns-1)
+            {
+                squares[++lastIndex] = square - columns + 1;
+            }
+            if (square%columns != 0)
+            {
+                squares[++lastIndex] = square - columns -1;
+            }
+
+        }
+        if ((square + columns) <= (columns-1)*(rows-1))
+        {
+            squares[++lastIndex] = square + columns;
+            if (square%columns != columns-1)
+            {
+                squares[++lastIndex] = square + columns + 1;
+            }
+            if (square%columns != 0)
+            {
+                squares[++lastIndex] = square + columns -1;
+            }
+        }
+        if (square%columns != (columns - 1))
+        {
+            squares[++lastIndex] = square + 1;
+        }
+        if (lastIndex < 7)
+        {
+            int[] sqs = new int[lastIndex+1];
+            for (int i = 0; i <= lastIndex; ++i)
+            {
+                sqs[i] = squares[i];
+            }
+            return sqs;
+        }
+        return squares;
+
+    }
+
+    private List<POI> getPoisFromSquare(int square)
+    {
+        List<POI> pois = new ArrayList<POI>();
+        try{
+            SphinxResult result = sphinxClient.Query("@square_num " + String.valueOf(square), "poi_index");
+            for (SphinxMatch match: result.matches)
+            {
+                pois.add(getPOIFromMatch(match));
+            }
+        } catch (SphinxException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            System.out.println("getPoisFromSquare: failed");
+        }
+        return  pois;
+    }
+
+    public List<POI> getNearestPois(long poiId)
+    {
+        List<POI> pois = new ArrayList<POI>();
+
+        POI poi = getRawPoiById(poiId);
+        if (poi.getId() != 0)
+        {
+            int[] squares = getNearestSquares(poi.getSquareId(), 20, 20);      //hack, because we shoul take info about cols and rows from db or index
+            for (int i = 0; i < squares.length -1; ++i)
+            {
+                pois.addAll(getPoisFromSquare(squares[i]));
+            }
+        }
+        return pois;
     }
 
 
