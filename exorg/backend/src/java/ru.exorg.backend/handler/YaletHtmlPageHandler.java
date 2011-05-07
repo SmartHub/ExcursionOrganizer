@@ -42,6 +42,8 @@ public class YaletHtmlPageHandler extends YaletHandler {
         if (yalets.containsKey(resName)) {
             if (target.endsWith(".html")) {
                 try {
+                    request.getSession(true);
+
                     String s = String.format(xmlTemplate, resName, this.yalets.get(resName));
                     this.processor.process(request, response, s, true);
                     baseRequest.setHandled(true);

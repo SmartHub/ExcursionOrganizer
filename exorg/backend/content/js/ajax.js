@@ -16,7 +16,7 @@ function add_poi(id, checked)
 	{
 		do_delete = '&action="delete"';
 	}
-	$.get('constructor.html?poi_id=' + id + '&_ox&sid=' + sid + do_delete, {}, function(xml)
+	$.get('constructor.html?poi_id=' + id + '&_ox' + do_delete, {}, function(xml)
 	{
         	$(xml).find('route').find('pois').find('poi').each(function()
 		{
