@@ -86,7 +86,7 @@ public class RecommendedRouteService {
             }
         }
         else
-            System.out.println ("FUCK");      
+            System.out.println ("FUCK");
         return list.get(0);
     }
 

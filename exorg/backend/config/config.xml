@@ -24,7 +24,7 @@
         <property name="saxGenerator" ref="saxGenerator"/>
     </bean>
 
-    <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor">
+    <bean id="yaletProcessor" class="net.sf.xfresh.core.YaletProcessor2">
         <property name="encoding" value="utf-8"/>
         <property name="yaletSupport" ref="yaletSupport"/>
     </bean>
@@ -43,9 +43,7 @@
 
     <bean id="poiService" class="ru.exorg.backend.services.PoiService"/>
 
-    <bean id="poiTypeService" class="ru.exorg.backend.services.PoiTypeService">
-        <!--<property name="jdbcTemplate" ref="jdbcTemplate"/> -->
-    </bean>
+    <bean id="poiTypeService" class="ru.exorg.backend.services.PoiTypeService"/>
 
     <bean id="routeService" class="ru.exorg.backend.services.RouteService">
         <property name="poiService" ref="poiService"/>
@@ -89,11 +87,13 @@
                         <bean class="org.eclipse.jetty.server.handler.HandlerCollection">
                             <property name="handlers">
                                 <list>
+                                    <!--
                                     <bean class="ru.exorg.backend.handler.DirectYaletHandler">
                                         <property name="yaletList">
                                             <value>readyroutes</value>
                                         </property>
                                     </bean>
+                                    -->
 
                                     <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
                                         <property name="yaletList">
