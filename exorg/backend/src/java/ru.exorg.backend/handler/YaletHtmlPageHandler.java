@@ -28,7 +28,7 @@ public class YaletHtmlPageHandler extends YaletHandler {
 
     final private static String xmlTemplate =
             "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n" +
-                    "<?xml-stylesheet type=\"text/xsl\" href=\"http://127.0.0.1:8081/%s.xsl\"?>\n" +
+                    "<?xml-stylesheet type=\"text/xsl\" href=\"http://127.0.0.1:8080/%s.xsl\"?>\n" +
                     "<page><yalet id=\"%s\"/></page>";
 
     public void handle(String target,
