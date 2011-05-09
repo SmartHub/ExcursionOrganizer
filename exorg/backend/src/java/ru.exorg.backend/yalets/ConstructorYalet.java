@@ -64,7 +64,7 @@ public class ConstructorYalet implements Yalet {
                 s.setAttribute("route", rps);
             }
 
-            POI poi = poiService.getPoiById(Long.parseLong(req.getParameter("poi_id")));
+            POI poi = poiService.getPoiById(req.getLongParameter("poi_id"));
             res.addWrapped("poi", poi);
             rps.add(poi.getId());
 

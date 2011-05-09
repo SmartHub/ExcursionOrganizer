@@ -18,7 +18,7 @@ public class PoiShortForWeb {
         this.imgUrl = imgUrl;
     }
 
-    public Long getId () {
+    public long getId () {
         return id;
     }
     public String getName () {

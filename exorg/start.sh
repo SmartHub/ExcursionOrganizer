@@ -32,7 +32,7 @@ searchd -c $EO_ROOT/backend/exorg.sphinx
 
 echo "Running frontend HTTP server"
 cd $EO_ROOT/frontend/config
-$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+#$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "Running backend HTTP server"
 cd $EO_ROOT/backend/config

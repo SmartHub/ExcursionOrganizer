@@ -42,19 +42,18 @@ public class RouteYalet implements Yalet {
         this.poiService = ps;
     }
 
-    private void SetRoutePoints (InternalRequest req, InternalResponse res, final int routeId, final String routeType) {
-        if (routeType.equals("r"))
+    private void SetRoutePoints (InternalRequest req, InternalResponse res) {
+        int routeId  = 0;
+        if (req.getAllParameters().containsKey("id")) {
+            routeId = req.getIntParameter("id");
+        }
+
+        final String routeType = req.getParameter("type");
+
+        if (routeType != null)
         {
             HttpSession s = req.getHttpServletRequest().getSession();
             List<Long> rps = new ArrayList<Long>();
-
-            /*
-            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route_points");
-            if (rps == null) {
-                rps = new ArrayList<RoutePointForWeb>();
-                s.setAttribute("route_points", rps);
-            }
-            */
 
             try {
                 Route r = rrs.getRecommendedRoute(routeId);
@@ -76,22 +75,24 @@ public class RouteYalet implements Yalet {
                 e.printStackTrace();
             }
             return;
-        }
+        } else {
+            HttpSession s = req.getHttpServletRequest().getSession();
+            List<Long> rps = (List<Long>)s.getAttribute("route");
 
-        /*
-        HttpSession s = req.getHttpServletRequest().getSession();
-        List<Long> rps = (List<Long>)s.getAttribute("route");
-        for (Long id : rps) {
-            System.out.println("Item: " + poiService.getPoiById(id).getName());
-        }
-        */
+            for (int i = 0; i < rps.size(); ++i) {
+                POI p = poiService.getPoiById(rps.get(i));
 
-        // user route
-        System.out.println("user route");
-        
+                res.addWrapped("route_point", new RoutePointForWeb(i,
+                                                                   p.getName(),
+                                                                   p.getAddress(),
+                                                                   p.getId(),
+                                                                   p.getLocation().getLat(),
+                                                                   p.getLocation().getLng()));
+            }
+        }
     }
 
     public void process (InternalRequest req, InternalResponse res) {
-        SetRoutePoints(req, res, req.getIntParameter("id"), req.getParameter("type"));//req.getHttpServletRequest().getSession().getAttribute("route_type").toString());
+        SetRoutePoints(req, res);
     }
 }
