@@ -1,42 +1,20 @@
-//var sid='';
-
-var PoiList = [];
-
 function init_inner_frame()
 {
 	updateCheckBoxes();
+	
 }
 
 function add_poi(id, checked)
 {
-	PoiList = [];
-
-	var do_delete = '';
+	var action = '';
 	if(checked == false)
 	{
-		do_delete = '&action="delete"';
+		action = '&action="delete"';
+        $.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {}, 'xml');
+        return;
 	}
-	$.get('constructor.html?poi_id=' + id + '&_ox' + do_delete, {}, function(xml)
-	{
-        	$(xml).find('route').find('pois').find('poi').each(function()
-		{
-			Poi =
-			{
-				Id : $(this).find('id').text(),
-				Name : $(this).find('name').text(),
-				Lat : $(this).find('lat').text(),
-				Lng : $(this).find('lng').text()
-			};
-			PoiList.push(Poi);
-        	});
-
-		printPoiList(PoiList);
-		
-		calculate_route(PoiList);
-		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
-
-		sid = $(xml).find('route').find('sid').text();
-	}, 'xml'); // указываем явно тип данных
+    action = '&action="add"';
+	$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 };
 
 
@@ -53,7 +31,7 @@ function updateCheckBoxes()
 	}
 }
 
-
+/*
 function printPoiList(List)
 {
 	$('#poi-print').html('');
@@ -62,4 +40,4 @@ function printPoiList(List)
 	{
 		$('#poi-print').append(List[i].Name + '<br/><hr/>');
 	};
-}
+} */

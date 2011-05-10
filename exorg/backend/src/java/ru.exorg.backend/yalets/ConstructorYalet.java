@@ -6,15 +6,16 @@ import net.sf.xfresh.core.Yalet;
 import org.springframework.beans.factory.annotation.Required;
 import ru.exorg.backend.model.PoiShortForWeb;
 import ru.exorg.backend.model.PoiTypeForWeb;
-import ru.exorg.backend.services.PoiTypeService;
+import ru.exorg.backend.model.RoutePointForWeb;
 import ru.exorg.backend.services.PoiService;
-import ru.exorg.core.model.PoiType;
+import ru.exorg.backend.services.PoiTypeService;
 import ru.exorg.core.model.POI;
+import ru.exorg.core.model.PoiType;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpSession;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,15 +33,26 @@ public class ConstructorYalet implements Yalet {
         this.poiTypeService = pts;
     }
 
+    @Required
     public void setPoiService (final PoiService ps) {
         this.poiService = ps;
     }
 
-    private void SetData(InternalResponse res) {
+    private void SetData(final InternalRequest req, InternalResponse res) {
         try {
             List<PoiType> poiTypes = poiTypeService.getPoiTypes();
             for (PoiType t : poiTypes) {
                 res.addWrapped("type", new PoiTypeForWeb(t.getName()));
+            }
+
+            HttpSession s = req.getHttpServletRequest().getSession();
+            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
+            if (rps != null) {
+                for (RoutePointForWeb r : rps) {
+                    POI poi = poiService.getPoiById(r.getPoiId());
+                    res.addWrapped("poi", new PoiShortForWeb(poi));
+                    res.addWrapped("route_point", new RoutePointForWeb(rps.indexOf(r), poi));
+                }
             }
         }
         catch (Exception e) {
@@ -48,31 +60,53 @@ public class ConstructorYalet implements Yalet {
         }
     }
 
+
+
     public void process(InternalRequest req, InternalResponse res) {
-        /*
-        Map<String, List<String>> m = req.getAllParameters();
+
+        /*Map<String, List<String>> m = req.getAllParameters();
         for (Map.Entry<String, List<String>> e : m.entrySet()) {
             System.out.println("Param: " + e.getKey() + ", value:" + e.getValue().get(0));
-        }
-        */
+        }*/
+        
 
         if (req.getParameter("poi_id") != null) {
             HttpSession s = req.getHttpServletRequest().getSession();
-            List<Long> rps = (List<Long>)s.getAttribute("route");
+            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
             if (rps == null) {
-                rps = new ArrayList<Long>();
+                rps = new ArrayList<RoutePointForWeb>();
                 s.setAttribute("route", rps);
             }
-
             POI poi = poiService.getPoiById(req.getLongParameter("poi_id"));
-            res.addWrapped("poi", poi);
-            rps.add(poi.getId());
+            if (req.getParameter("action") != null) {
 
-            for (Long id : rps) {
-                System.out.println("Item: " + poiService.getPoiById(id).getName());
+                System.out.println("action... : " + req.getParameter("action"));
+
+                //System.out.println(req.getParameter("action").toString().equals('"delete"'));
+                System.out.println(req.getParameter("action").toString().length());
+
+                if (req.getParameter("action").toString().length()==8) { // delete
+                    //System.out.println("deleting");
+                    //System.out.println(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+                    rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+                }
+                else { // add
+                    if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
+                        res.addWrapped("poi", new PoiShortForWeb(poi));
+                        int order = (rps.size() != 0) ? rps.get(rps.size()-1).getOrder()+1 : 0;
+                        res.addWrapped("route_point", new RoutePointForWeb(order, poi));
+                        rps.add(new RoutePointForWeb(order, poi));
+                    }
+                }
             }
-        } else {
-            SetData(res);
+
+            res.addWrapped("route", rps);
+            for (RoutePointForWeb p : rps) {
+                System.out.println("Item: " + p.getOrder() + " " + p.getName());
+            }
+
         }
+        
+        SetData(req, res);
     }
 }

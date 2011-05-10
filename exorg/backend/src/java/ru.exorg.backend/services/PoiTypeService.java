@@ -47,7 +47,7 @@ public class PoiTypeService {
         long id = Long.parseLong(inf.get(Id));
         String name = inf.get(Name);
         name = name.substring(0, name.length()-5);
-        System.out.println("getPOIFromMatch: "+name);
+        //System.out.println("getPOIFromMatch: "+name);
         PoiType poiType = new PoiType(id, name);
 
         return poiType;

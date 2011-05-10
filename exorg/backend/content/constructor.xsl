@@ -19,6 +19,7 @@
       <link rel="stylesheet" type="text/css" href="css/style_menu.css" />
       <script src="http://maps.google.com/maps/api/js?sensor=false"></script> 
       <script src="js/route_constructor.js"></script>
+      <script src="js/route_show.js"></script>
       <script src="js/jquery-latest.min.js"></script>
       <script src="js/ajax.js"></script>
       ]]>
@@ -27,7 +28,7 @@
 
 
   <!-- писать только одной строкой! -->
-  <xsl:template name="template-init-function">initialize();change_frame('музей');</xsl:template>
+  <xsl:template name="template-init-function">initialize();change_frame('музей');init_points();</xsl:template>
   
 
   <xsl:template name="template-content">
@@ -53,7 +54,34 @@
     <div id="map">
     </div>
     <div id="poi-print">
-      <br/>Выбранные для посещения POI:
+        <br/>Выбранные для посещения POI:<br/><hr/>
+        <li>
+            <xsl:for-each select="page/data/route_point">
+                <xsl:value-of select="name"/>
+                <route_point>
+                        <xsl:attribute name="order">
+                            <xsl:value-of select="@order"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="lat">
+                            <xsl:value-of select="@lat"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="lng">
+                            <xsl:value-of select="@lng"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="poi-id">
+                            <xsl:value-of select="@poi-id"/>
+                        </xsl:attribute>
+                        <xsl:attribute name="name">
+                            <xsl:value-of select="name"/>
+                        </xsl:attribute>
+                </route_point>
+
+
+                
+
+                <br/><hr/>
+            </xsl:for-each>
+        </li>
     </div>
   </xsl:template>
     

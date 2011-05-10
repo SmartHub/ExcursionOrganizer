@@ -1,5 +1,7 @@
 package ru.exorg.backend.model;
 
+import ru.exorg.core.model.POI;
+
 /**
  * Created by IntelliJ IDEA.
  * User: kate
@@ -11,11 +13,15 @@ public class PoiShortForWeb {
     private long id;
     private String name;
     private String imgUrl;
+    private double lat;
+    private double lng;
 
-    public PoiShortForWeb(final long id, final String name, final String imgUrl) {
-        this.id = id;
-        this.name = name;
-        this.imgUrl = imgUrl;
+    public PoiShortForWeb(final POI poi) {
+        id = poi.getId();
+        name = poi.getName();
+        imgUrl = poi.getImage();
+        lat = poi.getLocation().getLat();
+        lng = poi.getLocation().getLng();
     }
 
     public long getId () {
@@ -26,5 +32,11 @@ public class PoiShortForWeb {
     }
     public String getImgUrl () {
         return imgUrl;
+    }
+    public double getLat() {
+        return lat;
+    }
+    public double getLng() {
+        return lng;
     }
 }

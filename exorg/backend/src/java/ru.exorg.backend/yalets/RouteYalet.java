@@ -38,6 +38,7 @@ public class RouteYalet implements Yalet {
         this.rrs = rrs;
     }
 
+    @Required
     public void setPoiService(final PoiService ps) {
         this.poiService = ps;
     }
@@ -51,23 +52,19 @@ public class RouteYalet implements Yalet {
         final String routeType = req.getParameter("type");
 
         if (routeType != null)
-        {
+        {  // recommended route
             HttpSession s = req.getHttpServletRequest().getSession();
-            List<Long> rps = new ArrayList<Long>();
+            List<RoutePointForWeb> rps = new ArrayList<RoutePointForWeb>();
 
             try {
                 Route r = rrs.getRecommendedRoute(routeId);
                 for (RoutePoint rp : r.getPoints()) {
                     POI p = rp.getPoi();
-                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1) continue;
+                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1)
+                        continue;
 
-                    res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(),
-                                                                        p.getName(),
-                                                                        p.getAddress(),
-                                                                        p.getId(),
-                                                                        p.getLocation().getLat(),
-                                                                        p.getLocation().getLng()));
-                    rps.add(p.getId());
+                    res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(), p));
+                    rps.add(new RoutePointForWeb(rp.getOrder(), p));
                 }
 
                 s.setAttribute("route", rps);
@@ -75,19 +72,14 @@ public class RouteYalet implements Yalet {
                 e.printStackTrace();
             }
             return;
-        } else {
+        }
+        else { // user route
             HttpSession s = req.getHttpServletRequest().getSession();
-            List<Long> rps = (List<Long>)s.getAttribute("route");
+            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
 
             for (int i = 0; i < rps.size(); ++i) {
-                POI p = poiService.getPoiById(rps.get(i));
-
-                res.addWrapped("route_point", new RoutePointForWeb(i,
-                                                                   p.getName(),
-                                                                   p.getAddress(),
-                                                                   p.getId(),
-                                                                   p.getLocation().getLat(),
-                                                                   p.getLocation().getLng()));
+                POI p = poiService.getPoiById(rps.get(i).getPoiId());
+                res.addWrapped("route_point", new RoutePointForWeb(i, p));
             }
         }
     }

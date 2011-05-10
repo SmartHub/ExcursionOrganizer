@@ -145,7 +145,7 @@ public class PoiService {
         {
             poi = getPOIFromMatch(match);
             poi = getPoiById(poi.getId());
-            System.out.println("getPoiListByType: poi" + poi.toString());
+           /* System.out.println("getPoiListByType: poi" + poi.toString());
             System.out.println("getPoiListByType: id" + String.valueOf(poi.getId()));
             System.out.println("getPoiListByType: lat" + String.valueOf(poi.getLocation().getLat()));
             System.out.println("getPoiListByType: lng" + String.valueOf(poi.getLocation().getLng()));
@@ -156,7 +156,7 @@ public class PoiService {
             System.out.println("getPoiListByType: name" + poi.getName());
             System.out.println("getPoiListByType: type" + poi.getTypeObj().getName());
             System.out.println("getPoiListByType: description_size" + String.valueOf(poi.getDescriptions().size()));
-            //System.out.println("getPoiListByType: i" + String.valueOf(poi.getImage()));
+            //System.out.println("getPoiListByType: i" + String.valueOf(poi.getImage()));*/
             pois.add(poi);
 
         }
@@ -165,8 +165,7 @@ public class PoiService {
 
     public POI getPoiById(long poiId)
     {
-        POI poi = new POI();
-        poi = getRawPoiById(poiId);
+        POI poi = getRawPoiById(poiId);
 
         if (poi.getId() != 0)
         {
