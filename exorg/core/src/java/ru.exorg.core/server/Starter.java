@@ -37,7 +37,7 @@ public class Starter implements InitializingBean, ApplicationContextAware {
     }
 
     final public void afterPropertiesSet() {
-        Server s = new Server(new InetSocketAddress(bindHost, bindPort));
+        Server s = new Server(new InetSocketAddress("0.0.0.0", bindPort));
         s.setHandler(handlers);
 
         try {

@@ -1,7 +1,6 @@
 package ru.exorg.backend.handler;
 
 import org.eclipse.jetty.server.Request;
-import org.eclipse.jetty.server.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class YaletHtmlPageHandler extends YaletHandler {
-    private SessionManager sm;
     private Map<String, String> yalets;
 
     final public void setYaletList(final String[] yl) {
@@ -36,8 +34,6 @@ public class YaletHtmlPageHandler extends YaletHandler {
                        HttpServletRequest request,
                        HttpServletResponse response) throws IOException, ServletException {
         String resName = target.substring(target.lastIndexOf("/") + 1, target.lastIndexOf("."));
-
-        //System.out.println("Yalet Html page handler was called on " + target);
 
         if (yalets.containsKey(resName)) {
             if (target.endsWith(".html")) {
