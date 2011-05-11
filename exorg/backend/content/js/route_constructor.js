@@ -1,6 +1,7 @@
 var map;
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
+var markersArray = [];
 
 
 function show_infowindow(marker, name_poi, address, url){
@@ -30,10 +31,10 @@ function initialize() {
 
 function calculate_route(data){
 
-	var waypts = [];
+	//var waypts = [];
 	var count = data.length;
 	for (var i = 1; i < count - 1; i++) {
-		waypts.push({
+		markersArray.push({
 			location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
 			stopover:true
 		});
@@ -45,7 +46,7 @@ function calculate_route(data){
 	var request = {
 		origin: start, 
 		destination: end,
-		waypoints: waypts,
+		waypoints: markersArray,
 		optimizeWaypoints: true,
 		travelMode: google.maps.DirectionsTravelMode.WALKING
 	};	
@@ -57,4 +58,12 @@ function calculate_route(data){
 	});
 }
 
+function clearMap() {
+  if (markersArray) {
+    for (i in markersArray) {
+      markersArray[i].setMap(null);
+    }
+    markersArray = [];
+  }
+}
 
