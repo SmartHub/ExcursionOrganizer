@@ -22,7 +22,7 @@
 								<img><xsl:attribute name="src"><xsl:value-of select="img-url" /></xsl:attribute></img>
 						</a>
 
-						<input type="checkbox" onclick="parent.add_poi(this.id, this.checked)">
+						<input type="checkbox" class="cb" onclick="parent.add_poi(this.id, this.checked)">
                             <xsl:attribute name="id"> <xsl:value-of select="@id" /> </xsl:attribute>
                         </input>Хочу посетить!<br/>
 
