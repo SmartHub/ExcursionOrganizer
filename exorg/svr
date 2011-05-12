@@ -3,7 +3,7 @@
 case $1 in 
     start) 
         echo "Starting..."
-        ssh eom@exorg.ru "cd /home/eom/eo-svr; source init_env.sh; frontend/http_server/script/run -D"
+        ssh eom@exorg.ru "cd eo-svr; ./start.sh"
         ;;
 
     stop) 

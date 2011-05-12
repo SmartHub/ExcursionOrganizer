@@ -2,20 +2,32 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-  <appender name="console" class="org.apache.log4j.FileAppender">
-    <param name="File" value="debug.log"/>
-    <layout class="org.apache.log4j.PatternLayout">
-      <param name="ConversionPattern" value="%t %d %p %m IN %c%n"/>
-    </layout>
-  </appender>
+    <appender name="console" class="org.apache.log4j.FileAppender">
+        <param name="File" value="debug.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%t %d %p %m IN %c%n"/>
+        </layout>
+    </appender>
 
-  <logger name="org.webharvest.definition.XmlParser" additivity="false">
-    <level value="WARN" />
-    <appender-ref ref="console" />
-  </logger>
- 
-  <root>
-    <priority value="WARN"/>
-    <appender-ref ref="console"/>
-  </root>
+    <appender name="server" class="org.apache.log4j.FileAppender">
+        <param name="File" value="server.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%t %d %p %m IN %c%n"/>
+        </layout>
+    </appender>
+
+    <logger name="org.webharvest.definition.XmlParser" additivity="false">
+        <level value="WARN" />
+        <appender-ref ref="console" />
+    </logger>
+
+    <logger name="ru.exorg.backend.handler.LoggingHandler" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="server" />
+    </logger>
+
+    <root>
+        <priority value="WARN"/>
+        <appender-ref ref="console"/>
+    </root>
 </log4j:configuration>

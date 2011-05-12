@@ -9,7 +9,12 @@ import ru.exorg.backend.model.RoutePoint;
 import ru.exorg.backend.model.RoutePointForWeb;
 import ru.exorg.backend.services.RecommendedRouteService;
 import ru.exorg.backend.services.RouteService;
+import ru.exorg.backend.services.PoiService;
 import ru.exorg.core.model.POI;
+
+import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
@@ -21,6 +26,7 @@ import ru.exorg.core.model.POI;
 public class RouteYalet implements Yalet {
     private RouteService rs;
     private RecommendedRouteService rrs;
+    private PoiService poiService;
 
     @Required
     public void setRouteService (final RouteService rs) {
@@ -32,32 +38,53 @@ public class RouteYalet implements Yalet {
         this.rrs = rrs;
     }
 
-    private void SetRoutePoints (InternalResponse res, final int routeId, final String routeType) {
-        if (routeType.equals("r"))
-        {
+    @Required
+    public void setPoiService(final PoiService ps) {
+        this.poiService = ps;
+    }
+
+    private void SetRoutePoints (InternalRequest req, InternalResponse res) {
+        int routeId  = 0;
+        if (req.getAllParameters().containsKey("id")) {
+            routeId = req.getIntParameter("id");
+        }
+
+        final String routeType = req.getParameter("type");
+
+        if (routeType != null)
+        {  // recommended route
+            HttpSession s = req.getHttpServletRequest().getSession();
+            List<RoutePointForWeb> rps = new ArrayList<RoutePointForWeb>();
+
             try {
                 Route r = rrs.getRecommendedRoute(routeId);
                 for (RoutePoint rp : r.getPoints()) {
                     POI p = rp.getPoi();
-                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1) continue;
-                    res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(),
-                                                                        p.getName(),
-                                                                        p.getAddress(),
-                                                                        p.getId(),
-                                                                        p.getLocation().getLat(),
-                                                                        p.getLocation().getLng()));
+                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1)
+                        continue;
+
+                    res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(), p));
+                    rps.add(new RoutePointForWeb(rp.getOrder(), p));
                 }
+
+                s.setAttribute("route", rps);
             } catch (Exception e) {
                 e.printStackTrace();
             }
             return;
         }
-        // user route
-        System.out.println("user route");
-        
+        else { // user route
+            HttpSession s = req.getHttpServletRequest().getSession();
+            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
+
+            for (int i = 0; i < rps.size(); ++i) {
+                POI p = poiService.getPoiById(rps.get(i).getPoiId());
+                res.addWrapped("route_point", new RoutePointForWeb(i, p));
+            }
+        }
     }
 
     public void process (InternalRequest req, InternalResponse res) {
-        SetRoutePoints(res, req.getIntParameter("id"), req.getParameter("type"));//req.getHttpServletRequest().getSession().getAttribute("route_type").toString());
+        SetRoutePoints(req, res);
     }
 }

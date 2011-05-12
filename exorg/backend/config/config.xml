@@ -57,10 +57,12 @@
     <bean id="routeYalet" class="ru.exorg.backend.yalets.RouteYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>
         <property name="routeService" ref="routeService"/>
+        <property name="poiService" ref="poiService"/>
     </bean>
 
     <bean id="constructorYalet" class="ru.exorg.backend.yalets.ConstructorYalet">
         <property name="poiTypeService" ref="poiTypeService"/>
+        <property name="poiService" ref="poiService"/>
     </bean>
 
     <bean id="constructor_frameYalet" class="ru.exorg.backend.yalets.ConstructorFrameYalet">
@@ -78,6 +80,8 @@
         <property name="interface" value="${backend.httpserver.address}"/>
         <property name="handlers">
             <list>
+                <bean class="ru.exorg.backend.handler.LoggingHandler"/>
+
                 <bean class="org.eclipse.jetty.server.session.SessionHandler">
                     <property name="sessionManager">
                         <bean class="org.eclipse.jetty.server.session.HashSessionManager"/>
@@ -123,67 +127,4 @@
             </list>
         </property>
     </bean>
-
 </beans>
-        <!-- Is it OK to initialize static members in such a way??? -->
-        <!--
-      <bean id="searcher" class="eo.frontend.httpserver.InitJDBC">
-          <constructor-arg ref="jdbcTemplate" />
-      </bean>
-
-      <bean id="session_manager" class="eo.frontend.httpserver.SessionManager">
-          <property name="conn" ref="jdbcTemplate" />
-      </bean>
-      -->
-
-
-
-        <!--
-<bean class="eo.frontend.httpserver.PoiService" />
-
-<bean class="eo.frontend.httpserver.RouteService">
-<property name="SM" ref="session_manager" />
-</bean>
-
-<bean class="eo.frontend.httpserver.DynamicHandlerCollection">
-<property name="base" value="../content"/>
-<property name="handlers">
-<map>
-
-    <entry key="/test-poi.html">
-        <bean class="eo.frontend.httpserver.TestPOI"/>
-    </entry>
-
-    <entry key="/poi_types.html">
-        <bean class="eo.frontend.httpserver.POITypesHandler"/>
-    </entry>
-
-    <entry key="/type.html">
-        <bean class="eo.frontend.httpserver.POITypeHandler"/>
-    </entry>
-
-    <entry key="/index.html">
-        <bean class="eo.frontend.httpserver.IndexHandler"/>
-    </entry>
-
-    <entry key="/route.html">
-        <bean class="eo.frontend.httpserver.RouteHandler">
-            <property name="SM" ref="session_manager"/>
-        </bean>
-    </entry>
-    <entry key="/constructor.html">
-        <bean class="eo.frontend.httpserver.ConstructorHandler" >
-
-            <property name="SM" ref="session_manager"/>
-        </bean>
-    </entry>
-
-</map>
-</property>
-</bean>
-
-<bean class="org.eclipse.jetty.server.handler.ResourceHandler">
-<property name="resourceBase" value="../content"/>
-</bean>
-        -->
-

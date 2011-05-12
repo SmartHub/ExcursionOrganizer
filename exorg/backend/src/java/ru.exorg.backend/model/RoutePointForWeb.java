@@ -1,5 +1,9 @@
 package ru.exorg.backend.model;
 
+import ru.exorg.core.model.POI;
+
+import java.util.List;
+
 /**
  * Created by IntelliJ IDEA.
  * User: kate
@@ -17,13 +21,13 @@ public class RoutePointForWeb {
     private String address;
     //private String image;
 
-    public RoutePointForWeb (final int order, final String name, final String address, final long poiId, final double lat, final double lng) {
+    public RoutePointForWeb (final int order, final POI poi) {
         this.order = order;
-        this.name = name;
-        this.address = address;
-        this.poiId = poiId;
-        this.lat = lat;
-        this.lng = lng;
+        name = poi.getName();
+        address = poi.getAddress();
+        poiId = poi.getId();
+        lat = poi.getLocation().getLat();
+        lng = poi.getLocation().getLng();
     }
 
     public int getOrder () {
@@ -48,5 +52,21 @@ public class RoutePointForWeb {
 
     public double getLat () {
         return lat;
+    }
+
+    public static int getListIndexOf(final List<RoutePointForWeb> list, final String name) {
+        for (RoutePointForWeb r : list) {
+            if (r.getName().equals(name))
+                return list.indexOf(r);
+        }
+        return -1;
+    }
+
+    public static boolean existsInList(final List<RoutePointForWeb> list, final String name) {
+        for (RoutePointForWeb r : list) {
+            if (r.getName().equals(name))
+                return true;
+        }
+        return false;
     }
 }

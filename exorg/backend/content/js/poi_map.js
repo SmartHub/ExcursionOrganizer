@@ -1,4 +1,5 @@
 var map;
+var markersArray = [];
 
 function show_infowindow(marker, name_poi, address, url){
 	var contentString = '<div style="color: black;">' + name_poi + ' Адрес: ' + address + '<a href="' + url + '" >подробнее...</a></div>';

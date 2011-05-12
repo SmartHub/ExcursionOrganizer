@@ -32,7 +32,7 @@ public class ConstructorFrameYalet implements Yalet {
             System.out.println(pois.size());
 
             for (POI poi: pois) {
-                res.addWrapped("poi", new PoiShortForWeb(poi.getId(), poi.getName(), poi.getImage()));
+                res.addWrapped("poi", new PoiShortForWeb(poi));
             }
         }
         catch (Exception e) {
