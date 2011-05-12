@@ -28,7 +28,7 @@
 
 
   <!-- писать только одной строкой! -->
-  <xsl:template name="template-init-function">initialize();change_frame('музей');init_points();</xsl:template>
+  <xsl:template name="template-init-function">initialize();change_frame('музей');init_points();init_inner_frame();</xsl:template>
   
 
   <xsl:template name="template-content">
@@ -36,7 +36,7 @@
       <ul>
 	<xsl:for-each select="page/data/type">
 	  <li>
-	    <a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'constructor_frame.html?name={name}';">
+	    <a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'constructor_frame.html?name={name}';loadPoiList('');">
               <xsl:value-of select="name"/>
 	      </a>
 	  </li>
@@ -54,7 +54,7 @@
     <div id="map">
     </div>
     <div id="poi-print">
-        <br/>Выбранные для посещения POI:<br/><hr/>
+        <!--br/>Выбранные для посещения POI:<br/><hr/>
         <li>
             <xsl:for-each select="page/data/route_point">
                 <xsl:value-of select="name"/>
@@ -81,7 +81,7 @@
 
                 <br/><hr/>
             </xsl:for-each>
-        </li>
+        </li-->
     </div>
   </xsl:template>
     

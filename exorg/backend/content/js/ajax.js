@@ -1,20 +1,13 @@
 function init_inner_frame()
 {
-	updateCheckBoxes();
-	alert("init_inner_frame");
+	loadPoiList("");
+	//alert();
 }
 
-function add_poi(id, checked)
+function loadPoiList(Action)
 {
-	var action = '';
-	if(checked == false)
-		action = '&action="delete"';
-    else
-        action = '&action="add"';
-    $.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
-
-    var PoiList = [];
-	$.get('constructor.html?_ox', {}, function(xml)
+    var PoiList = [];  
+	$.get('constructor.html?_ox' + Action, {}, function(xml)
 	{
         $(xml).find('route_point').each(function()
 		{
@@ -26,24 +19,39 @@ function add_poi(id, checked)
 				Lng : $(this).attr("lng"),
 				Url : "poi.html?id=" + $(this).attr("poi-id")
 			};
-			//Poi.Url = "poi.html?id=" + Poi.Id;
-            alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
         	});
-		alert(PoiList.length & " items draw");
-		calculate_route(PoiList);
+        printPoiList(PoiList);
+        updateCheckBoxes(PoiList);
+        calculate_route(PoiList);
+	}, 'xml'); // указываем явно тип данных
+}
+
+function add_poi(id, checked)
+{
+    //alert(checked);
+	var action = '';
+	if(checked == false){
+		action = '&action="delete"';
+	}
+    else{
+        action = '&action="add"';
+    }
+    //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
+
+    loadPoiList('&poi_id=' + id + action);
 		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
-	}, 'xml'); // указываем явно тип данных
+
 };
 
 
-function updateCheckBoxes()
+function updateCheckBoxes(List)
 {
-	for(var i = 0; i < PoiList.length; ++i)
+	for(var i = 0; i < List.length; ++i)
 	{
 		/* HACK */
-		var cb = top.frames["inner-frame"].document.getElementById(PoiList[i].Id);
+		var cb = top.frames["inner-frame"].document.getElementById(List[i].Id);
 		if (cb != undefined)
 		{
 			cb.checked = true;
@@ -51,13 +59,14 @@ function updateCheckBoxes()
 	}
 }
 
-/*
+
 function printPoiList(List)
 {
+    //alert("printPoiList()" + List.length);
 	$('#poi-print').html('');
 	$('#poi-print').append('<br/>Выбранные для посещения POI:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
 		$('#poi-print').append(List[i].Name + '<br/><hr/>');
 	};
-} */
+}
