@@ -1,5 +1,6 @@
 function init_points()
 {
+    alert(document.location.href);
 	var PoiList = [];
 
 	$.get(document.location.href + '&_ox', {}, function(xml)
@@ -15,10 +16,9 @@ function init_points()
 				Url : "poi.html?id=" + $(this).attr("poi-id")
 			};
 			//Poi.Url = "poi.html?id=" + Poi.Id;
-            //alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
+            alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
-        	});
-		                                                             
+        	});                                                            
 		calculate_route(PoiList);
 		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 

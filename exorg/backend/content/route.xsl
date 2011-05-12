@@ -47,11 +47,6 @@
                             <xsl:value-of select="name"/>
                         </xsl:attribute>
                     </input>
-                    <!--input type="hidden">
-                        <xsl:attribute name="value">
-                            <xsl:value-of select="@lat"/>
-                        </xsl:attribute>
-                    </input-->
                 </td>
 				<td>
 					<B><xsl:apply-templates select="name"/></B>

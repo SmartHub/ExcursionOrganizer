@@ -38,22 +38,36 @@ public class ConstructorYalet implements Yalet {
         this.poiService = ps;
     }
 
-    private void SetData(final InternalRequest req, InternalResponse res) {
+    private void SetPoiTypes(InternalResponse res) {
         try {
             List<PoiType> poiTypes = poiTypeService.getPoiTypes();
             for (PoiType t : poiTypes) {
                 res.addWrapped("type", new PoiTypeForWeb(t.getName()));
             }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void SetRoutePoints(final InternalRequest req, InternalResponse res) {
+        try {
             HttpSession s = req.getHttpServletRequest().getSession();
             List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
+
             if (rps != null) {
+                for (RoutePointForWeb p : rps) {
+                    System.out.println("SetRoutePoints: " + p.getOrder() + " " + p.getName());
+                }
                 for (RoutePointForWeb r : rps) {
                     POI poi = poiService.getPoiById(r.getPoiId());
-                    res.addWrapped("poi", new PoiShortForWeb(poi));
+                    //res.addWrapped("poi", new PoiShortForWeb(poi));
                     res.addWrapped("route_point", new RoutePointForWeb(rps.indexOf(r), poi));
                 }
+                //res.addWrapped("route", rps);
             }
+            else
+                System.out.println("empty route");
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -80,10 +94,10 @@ public class ConstructorYalet implements Yalet {
             POI poi = poiService.getPoiById(req.getLongParameter("poi_id"));
             if (req.getParameter("action") != null) {
 
-                System.out.println("action... : " + req.getParameter("action"));
+                System.out.println("action : " + req.getParameter("action"));
 
                 //System.out.println(req.getParameter("action").toString().equals('"delete"'));
-                System.out.println(req.getParameter("action").toString().length());
+                //System.out.println(req.getParameter("action").toString().length());
 
                 if (req.getParameter("action").toString().length()==8) { // delete
                     //System.out.println("deleting");
@@ -92,7 +106,7 @@ public class ConstructorYalet implements Yalet {
                 }
                 else { // add
                     if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
-                        res.addWrapped("poi", new PoiShortForWeb(poi));
+                        //res.addWrapped("poi", new PoiShortForWeb(poi));
                         int order = (rps.size() != 0) ? rps.get(rps.size()-1).getOrder()+1 : 0;
                         res.addWrapped("route_point", new RoutePointForWeb(order, poi));
                         rps.add(new RoutePointForWeb(order, poi));
@@ -101,12 +115,18 @@ public class ConstructorYalet implements Yalet {
             }
 
             res.addWrapped("route", rps);
+            SetRoutePoints(req, res);
+
+
+
             for (RoutePointForWeb p : rps) {
                 System.out.println("Item: " + p.getOrder() + " " + p.getName());
             }
 
         }
-        
-        SetData(req, res);
+        else {
+            SetPoiTypes(res);
+            SetRoutePoints(req, res);
+        }
     }
 }
