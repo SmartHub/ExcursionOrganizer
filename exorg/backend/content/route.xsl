@@ -17,8 +17,6 @@
 		</style>        
     	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>
     	<script src="js/route_constructor.js"></script>
-
-
 		<script src="js/route_show.js"></script>
 		<script src="js/jquery-latest.min.js"></script>
         <script src="js/change_order.js"></script>

@@ -323,7 +323,7 @@ public class PoiService {
         POI poi = getRawPoiById(poiId);
         if (poi.getId() != 0)
         {
-            int[] squares = getNearestSquares(poi.getSquareId(), 20, 20);      //hack, because we shoul take info about cols and rows from db or index
+            int[] squares = getNearestSquares(poi.getSquareId(), 20, 20);      //hack, because we should take info about cols and rows from db or index
             for (int i = 0; i < squares.length -1; ++i)
             {
                 pois.addAll(getPoisFromSquare(squares[i]));

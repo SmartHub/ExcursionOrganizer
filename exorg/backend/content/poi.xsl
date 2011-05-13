@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="css/map.css" type="text/css" media="all" />
     		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script> 
     		<script type="text/javascript" src="js/poi_map.js"></script>
+            <script src="js/jquery-latest.min.js"></script>
 	</xsl:template>
 
 
@@ -50,7 +51,10 @@
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
-		<input type="checkbox" name="option3" value="a3">Показать достопримечательности рядом!</input>
+        <input type="checkbox" name="option3" onclick="showNearestPoi(this.id, this.checked)" value="a3">
+            <xsl:attribute name="id"> <xsl:value-of select="page/data/poi/@id" /> </xsl:attribute>
+        </input>Показать достопримечательности рядом!
+		<!--input type="checkbox" name="option3" onClick="showNearestPoi(this.id, this.checked)" >Показать достопримечательности рядом!</input-->
 	</xsl:template>
 
 

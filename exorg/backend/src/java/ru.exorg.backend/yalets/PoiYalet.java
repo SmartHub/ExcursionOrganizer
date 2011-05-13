@@ -5,8 +5,11 @@ import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
 import org.springframework.beans.factory.annotation.Required;
 import ru.exorg.backend.model.PoiForWeb;
+import ru.exorg.backend.model.PoiNearestForWeb;
 import ru.exorg.backend.services.PoiService;
 import ru.exorg.core.model.POI;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -28,6 +31,11 @@ public class PoiYalet implements Yalet {
         try {
             POI p = poiService.getPoiById(poiId);
             res.addWrapped("poi", new PoiForWeb(p));
+
+            List<POI> nearestPois = poiService.getNearestPois(poiId);
+            for (POI poi : nearestPois) {
+                res.addWrapped("nearest_poi", new PoiNearestForWeb(poi));
+            }
         }
         catch (Exception e) {
             e.printStackTrace();

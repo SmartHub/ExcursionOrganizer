@@ -56,9 +56,9 @@ public class ConstructorYalet implements Yalet {
             List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
 
             if (rps != null) {
-                for (RoutePointForWeb p : rps) {
+                /*for (RoutePointForWeb p : rps) {
                     System.out.println("SetRoutePoints: " + p.getOrder() + " " + p.getName());
-                }
+                }*/
                 for (RoutePointForWeb r : rps) {
                     POI poi = poiService.getPoiById(r.getPoiId());
                     //res.addWrapped("poi", new PoiShortForWeb(poi));
@@ -117,11 +117,9 @@ public class ConstructorYalet implements Yalet {
             res.addWrapped("route", rps);
             SetRoutePoints(req, res);
 
-
-
-            for (RoutePointForWeb p : rps) {
+            /*for (RoutePointForWeb p : rps) {
                 System.out.println("Item: " + p.getOrder() + " " + p.getName());
-            }
+            }*/
 
         }
         else {
