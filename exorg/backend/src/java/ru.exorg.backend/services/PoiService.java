@@ -304,6 +304,7 @@ public class PoiService {
     {
         List<POI> pois = new ArrayList<POI>();
         try{
+            //sphinxClient.AddQuery("@square_num " + String.valueOf(square), "poi_index");
             SphinxResult result = sphinxClient.Query("@square_num " + String.valueOf(square), "poi_index");
             for (SphinxMatch match: result.matches)
             {
