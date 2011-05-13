@@ -24,7 +24,7 @@ function loadPoiList(Action)
         	});
         //alert("update");
         updateCheckBoxes(PoiList);
-        //calculate_route(PoiList);
+        calculate_route(PoiList);
         printPoiList(PoiList);
         //alert("update fin");
 	}, 'xml'); // указываем явно тип данных
