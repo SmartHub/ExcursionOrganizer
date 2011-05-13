@@ -10,4 +10,10 @@ case $1 in
         echo "Stopping..."
         ssh eom@exorg.ru "killall java; killall searchd"
         ;;
+    sync)
+	echo "Synchronizing..."
+	./archive-server.sh
+	scp svr.tar.bz2 eom@exorg.ru:eo-svr/
+	ssh eom@exorg.ru "cd eo-svr; tar -xjf svr.tar.bz2"
+	;;
 esac
