@@ -1,44 +1,95 @@
 var map;
-var markersArray = [];
+var nearestMarkersArray = [];
+var mainMarker;
+var testMarker;
+
 
 function show_infowindow(marker, name_poi, address, url){
-	var contentString = '<div style="color: black;">' + name_poi + ' Адрес: ' + address + '<a href="' + url + '" >подробнее...</a></div>';
+  var contentString = '<div style="color: black;">' + name_poi + ' Адрес: ' + address + '<a href="' + url + '" >подробнее...</a></div>';
   var infowindow = new google.maps.InfoWindow({
   	content: contentString
   }); 
   		
   google.maps.event.addListener(marker, 'click', function() {
-  	infowindow.open(map,marker);
+  	infowindow.open(map, marker);
   }); 
 }
 
  function initialize(lat, long, name_poi, address, url) {
   
   var posLatlng = new google.maps.LatLng(lat, long, name_poi);
-  var options = {
-    zoom:16,
-    mapTypeId: google.maps.MapTypeId.ROADMAP,
-    center: posLatlng
-  }
+    var options = {
+        zoom:16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: posLatlng
+     };
 	
-  map = new google.maps.Map(document.getElementById("map"), options);
-     var marker = new google.maps.Marker({
+     map = new google.maps.Map(document.getElementById("map"), options);
+     mainMarker = new google.maps.Marker({
 		position: posLatlng,
 		map: map,
 		title: name_poi
-	});
-	show_infowindow(marker, name_poi, address, url);
+	 });
+
+	 show_infowindow(mainMarker, name_poi, address, url);
 }
 
-function showPois (data) {
-	for (var i = 1; i < data.length - 1; i++) {
-        var marker = new google.maps.Marker ({
-            location: new google.maps.LatLng(data[i].Lat, data[i].Lng),
-            map: map,
-            title: data[i].Name
-        });
-        show_infowindow(marker, data[i].Name, data[i].Address, data[i].Url);
-	}
+function initializeFull(poiId, lat, long, name_poi, address, url, data) {
+
+  var posLatlng = new google.maps.LatLng(lat, long, name_poi);
+    var options = {
+        zoom:16,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        center: posLatlng
+     };
+
+     map = new google.maps.Map(document.getElementById("map"), options);
+
+     mainMarker = new google.maps.Marker({
+		position: posLatlng,
+		map: map,
+		title: name_poi
+	 });
+     show_infowindow(mainMarker, name_poi, address, url);
+
+    showNearestPoi(poiId, true);
+}
+
+function showPois () {
+	for (i in nearestMarkersArray)
+    {
+        nearestMarkersArray[i].setMap(map);
+    }
+
+}
+
+function hidePois()
+{
+    if (nearestMarkersArray)
+    {
+        for (i in nearestMarkersArray)
+        {
+            nearestMarkersArray[i].setMap(null);
+        }
+    }
+}
+
+
+
+function createNearestMarkersArray(data)
+{
+       for (var i = 1; i < data.length - 1; i++) {
+           nearestMarkersArray.push(new google.maps.Marker ({
+                location: new google.maps.LatLng(data[i].Lat, data[i].Lng),
+                map: map,
+                title: data[i].Name
+            }));
+       }
+       testMarker = new google.maps.Marker ({
+           lacation: new google.maps.LatLng(60.00889010, 30.37105520),
+           title: "test"
+       });
+       testMarker.setMap(map);
 }
 
 function showNearestPoi(poiId, checked) {
@@ -64,7 +115,8 @@ function showNearestPoi(poiId, checked) {
                 alert ("No places of interest found close to this!");
             else {
                 alert(PoiList.length);
-                showPois(PoiList);
+                createNearestMarkersArray(PoiList);
+                showPois();
             }
         }, 'xml');
     }
