@@ -9,7 +9,7 @@ function loadPoiList(Action)
     var PoiList = [];  
 	$.get('constructor.html?_ox' + Action, {}, function(xml)
 	{
-        $(xml).find('route_point').each(function()
+        $(xml).find('page').find('data').find('route_point').each(function() ///data/route_point
 		{
 			Poi =
 			{
@@ -20,10 +20,13 @@ function loadPoiList(Action)
 				Url : "poi.html?id=" + $(this).attr("poi-id")
 			};
 			PoiList.push(Poi);
+			//alert(Poi.Name);
         	});
+        //alert("update");
         updateCheckBoxes(PoiList);
         calculate_route(PoiList);
         printPoiList(PoiList);
+        //alert("update fin");
 	}, 'xml'); // указываем явно тип данных
 }
 
