@@ -24,19 +24,11 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #cd $EO_ROOT/processing/config
 #java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-echo "index database"
-$EO_ROOT/processing/script/index.py $EO_ROOT $username $password
-
-echo "start search daemon"
-searchd -c $EO_ROOT/backend/exorg.sphinx
-
-#echo "Running frontend HTTP server"
-#cd $EO_ROOT/frontend/config
-#$EO_ROOT/core/script/daemonize java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+echo "Indexing database..."
+java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "Running backend HTTP server"
 cd $EO_ROOT/backend/config
-#$EO_ROOT/core/script/daemonize
 java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "FINISH"

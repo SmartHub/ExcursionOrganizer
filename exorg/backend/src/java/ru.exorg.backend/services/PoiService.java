@@ -1,12 +1,7 @@
 package ru.exorg.backend.services;
 
 import org.apache.lucene.document.Document;
-import org.sphx.api.SphinxClient;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +23,6 @@ public class PoiService {
     private int sphinx_port;
     private Search searcher;
 
-    private SphinxClient sphinxClient;
-    private JdbcTemplate poiIndex;
     private POIMapper poiMapper;
 
     private static final int Id = 1;
@@ -82,24 +75,6 @@ public class PoiService {
     public void setSearcher(Search s) {
         this.searcher = s;
     }
-
-    public void setPoiIndex(JdbcTemplate jdbcTemplate) {
-        /*
-        this.poiIndex = jdbcTemplate;
-
-        try {
-            ResultSet rs = poiIndex.getDataSource().getConnection().prepareStatement("SELECT * FROM poi_index WHERE @id=1").executeQuery();
-            rs.first();
-            while (!rs.isLast()) {
-                System.out.println(rs.getString(2).toString());
-                rs.next();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        */
-    }
-
 
     public List<POI> getPoiListByType(final String type) throws Exception {
         return this.searcher.search(String.format("type: %s", type), this.poiMapper);
@@ -167,59 +142,21 @@ public class PoiService {
 
     public List<POI> getClusteredPoiList(long clusterId)
     {
-        /*
-        List<POI> pois = new ArrayList<POI>();
-
         try {
-            SphinxResult result = sphinxClient.Query("@cluster_id " + clusterId, "poi_index");
-            for(SphinxMatch match: result.matches)
-            {
-                pois.add(getPOIFromMatch(match));
-            }
-        } catch (SphinxException e) {
-            System.out.println("There is no any poi in the index with cluster_id = " + String.valueOf(clusterId));
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-        return pois;
-        */
-
-        try {
-            return this.poiIndex.query("SELECT * FROM poi_index WHERE cluster_id=?;", new Object[]{clusterId}, this.poiMapper);
+            return this.searcher.search(String.format("clusterId: %d", clusterId), this.poiMapper);
         } catch (Exception e) {
             e.printStackTrace();
-
             return null;
         }
     }
 
     private POI getRawPoiById(long id) throws Exception {
         try {
-            return this.poiIndex.query(String.format("SELECT %s FROM poi_index WHERE MATCH ('id %d') LIMIT 1000", POIFields, id), this.poiMapper).get(0);
+            return this.searcher.search(String.format("id: %d", id), this.poiMapper).get(0);
         } catch (Exception e) {
             e.printStackTrace();
-
             return null;
         }
-
-        /*
-        try{
-           SphinxResult result = sphinxClient.Query("@id " + String.valueOf(id), "poi_index");
-
-           for(SphinxMatch match: result.matches)
-            {
-                POI poi = getPOIFromMatch(match);
-
-                if (poi.getId() == id)
-                {
-                    return poi;
-                }
-            }
-        } catch (SphinxException e)
-        {
-             System.out.println("getRawPoiById: poi with id " + String.valueOf(id) + "is absent in the index");
-        }
-        return new POI();
-        */
     }
 
     private int[] getNearestSquares(int square, int rows, int columns)
@@ -273,31 +210,7 @@ public class PoiService {
     }
 
     private List<POI> getPoisFromSquare(int square) throws Exception {
-        /*
-        List<POI> pois = new ArrayList<POI>();
-        try{
-            //sphinxClient.AddQuery("@square_num " + String.valueOf(square), "poi_index");
-
-            SphinxResult result = sphinxClient.Query("@square_num " + String.valueOf(square), "poi_index");
-            for (SphinxMatch match: result.matches)
-            {
-                pois.add(getPOIFromMatch(match));
-            }
-
-        } catch (SphinxException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            System.out.println("getPoisFromSquare: failed");
-        }
-        return  pois;
-        */
-
-        try {
-            return this.poiIndex.query("SELECT * FROM poi_index WHERE square_num=?;", new Object[]{square}, this.poiMapper);
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return null;
-        }
+        return this.searcher.search(String.format("squareId: %d", square), this.poiMapper);
     }
 
     public List<POI> getNearestPois(long poiId) throws Exception {

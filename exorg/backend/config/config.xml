@@ -17,14 +17,15 @@
         <property name="password" value="${jdbc.password}"/>
     </bean>
 
+    <!--
     <bean id="poiIndexDataSource" destroy-method="close" class="org.apache.commons.dbcp.BasicDataSource" lazy-init="false">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://127.0.0.1:3307/?useUnicode=true&amp;characterEncoding=utf8&amp;maxAllowedPacket=512000"/>
         <property name="username" value="root"/>
         <property name="password" value=""/>
         <property name="initialSize" value="1"/>
-        <!--<property name="url" value="jdbc:mysql://127.0.0.1:3307/?maxAllowedPacket=100000&amp;characterEncoding=UTF-8&amp;socketTimeout=10000&amp;autoReconnect=true&amp;connectTimeout=10000&amp;interactiveClient=true&amp;useUnbufferedInput=false"/>-->
     </bean>
+    -->
 
     <!-- JDBC connections -->
 
@@ -32,11 +33,11 @@
         <constructor-arg ref="poiSource"/>
     </bean>
 
-    <bean id="poiIndex" class="org.springframework.jdbc.core.JdbcTemplate" lazy-init="false">
-        <constructor-arg ref="poiIndexDataSource"/>
+    <bean id="searcher" class="ru.exorg.core.lucene.Search">
+        <property name="directory" value="../index"/>
     </bean>
 
-    <!-- Server configguration -->
+    <!-- Server configuration -->
 
     <bean id="singleYaletProcessor" class="net.sf.xfresh.core.DefaultSingleYaletProcessor" >
         <property name="yaletResolver" ref="yaletResolver"/>
@@ -110,14 +111,6 @@
                         <bean class="org.eclipse.jetty.server.handler.HandlerCollection">
                             <property name="handlers">
                                 <list>
-                                    <!--
-                                    <bean class="ru.exorg.backend.handler.DirectYaletHandler">
-                                        <property name="yaletList">
-                                            <value>readyroutes</value>
-                                        </property>
-                                    </bean>
-                                    -->
-
                                     <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
                                         <property name="yaletList">
                                             <list>

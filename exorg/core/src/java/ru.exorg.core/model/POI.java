@@ -119,6 +119,10 @@ final public class POI {
         return descriptions;
     }
 
+    final public boolean hasDescription() {
+        return this.descriptions.size() > 0;
+    }
+
     final public void addDescription(final String text, final String source) {
         this.descriptions.add(new Description(text, source));
     }
@@ -198,6 +202,10 @@ final public class POI {
             }
         }
         return "";
+    }
+
+    final public boolean hasImage() {
+        return this.images.size() > 0;
     }
 
     final public void addImage(final String image) {

@@ -3,13 +3,16 @@ package ru.exorg.backend.services;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import ru.exorg.backend.model.Route;
-import ru.exorg.backend.model.RoutePoint;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import ru.exorg.backend.model.Route;
+import ru.exorg.backend.model.RoutePoint;
+
+import ru.exorg.core.lucene.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -18,21 +21,22 @@ import java.util.List;
  * Time: 3:37
  * To change this template use File | Settings | File Templates.
  */
+
 public class RecommendedRouteService {
-    private PoiService searcher;
+    private Search searcher;
+    private PoiService poiService;
     private JdbcTemplate jdbcTemplate;
 
-    public JdbcTemplate getJdbcTemplate() {
-        return jdbcTemplate;
+    public void setSearcher(Search s) {
+        this.searcher = s;
     }
 
-    @Required
-    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+    public void setJdbcTemplate(JdbcTemplate jdbc) {
+        this.jdbcTemplate = jdbc;
     }
 
     public void setPoiService(PoiService ps) {
-        this.searcher = ps;
+        this.poiService = ps;
     }
 
     public Route getRecommendedRoute(final long id) throws Exception
@@ -51,8 +55,6 @@ public class RecommendedRouteService {
         List<Route> list = jdbcTemplate.query(q, mapper);
         if (!list.isEmpty())
         {
-            //System.out.println ("getting route " + list.get(0).getId());
-
             String query = String.format(
                     "SELECT poi_id, order_num FROM route_poi WHERE route_id = %d;",
                     list.get(0).getId()
@@ -64,13 +66,15 @@ public class RecommendedRouteService {
 
                     try{
                         //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
-                        routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
+
+                        routePoint = new RoutePoint(poiService.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
 
                         //System.out.println("extract poi SphinxException");
                         //println(e.getMessage());
                     }
                     catch (Exception e)
                     {
+
                         //NOTE: we catch this when poi to extract doesn't exist
 
                         //System.out.println("extract poi IndexOutOfBoundsException");
