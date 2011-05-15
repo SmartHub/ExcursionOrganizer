@@ -1,28 +1,30 @@
 package ru.exorg.core.service;
 
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import ru.exorg.core.model.Location;
 import ru.exorg.core.model.POI;
 
-import java.sql.Connection;
+import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import ru.exorg.core.model.City;
+import ru.exorg.core.model.PoiType;
 import ru.exorg.core.model.LatLng;
 
 // ================================================================================
 
-public class DataProvider {
+public class DataProvider implements InitializingBean {
     private JdbcTemplate jdbc;
-    private Connection conn;
 
     private POIProvider poiProvider;
     private CafeProvider cafeProvider;
 
     private static CityMapper cityMapper = new CityMapper();
+    private static POITypeMapper poiTypeMapper = new POITypeMapper();
 
     private static class CityMapper implements RowMapper<City> {
         public City mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -39,12 +41,16 @@ public class DataProvider {
         }
     }
 
-    public DataProvider(JdbcTemplate jdbcTemplate) throws Exception {
-        this.jdbc = jdbcTemplate;
-        this.conn = this.jdbc.getDataSource().getConnection();
+    private static class POITypeMapper implements RowMapper<PoiType> {
+        public PoiType mapRow(ResultSet rs, int i) throws SQLException {
+            return new PoiType(rs.getLong("id"), rs.getString("name"));
+        }
+    }
 
-        this.poiProvider = new POIProvider(this);
-        this.cafeProvider = new CafeProvider(this);
+    public DataProvider() { }
+
+    public DataProvider(JdbcTemplate jdbcTemplate) {
+        this.jdbc = jdbcTemplate;
     }
 
     public POIProvider getPOIProvider() {
@@ -58,13 +64,13 @@ public class DataProvider {
     public JdbcOperations getJdbcOperations() {
         return jdbc;
     }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbc = jdbcTemplate;
+    }
     
     public JdbcTemplate getJdbcTemplate() {
         return jdbc;
-    }
-
-    public Connection getConnection() {
-        return conn;
     }
 
     public boolean isWithinCity(long cityId, final Location loc) {
@@ -100,5 +106,13 @@ public class DataProvider {
             /* Query result is empty */
             poi.setType(1);
         }
+    }
+
+    public List<PoiType> getPoiTypes() throws Exception {
+        return this.jdbc.query("SELECT * FROM poi_type", this.poiTypeMapper);
+    }
+
+    public void afterPropertiesSet() {
+        this.poiProvider = new POIProvider(this);
     }
 }

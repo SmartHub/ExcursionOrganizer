@@ -4,8 +4,13 @@ import org.sphx.api.SphinxClient;
 import org.sphx.api.SphinxException;
 import org.sphx.api.SphinxMatch;
 import org.sphx.api.SphinxResult;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import ru.exorg.core.model.PoiType;
 
+import java.sql.ResultSet;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,20 +22,37 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class PoiTypeService {
-
     private String sphinx_host;
-
     private int sphinx_port;
 
     private SphinxClient sphinxClient;
+    private JdbcTemplate poiIndex;
+    private POITypeMapper poiTypeMapper;
 
+    /*
     private static final int Id = 0;
     private static final int Name = 1;
+    */
+
+    private static final int Id = 1;
+    private static final int Name = 2;
+
+    private class POITypeMapper implements RowMapper<PoiType> {
+        public PoiType mapRow(ResultSet rs, int rowNum) {
+            try {
+                 return new PoiType(rs.getLong(Id), rs.getString(Name));
+            } catch (Exception e) {
+                 return new PoiType(0, "");
+            }
+        }
+    }
 
 
     public PoiTypeService() {
         sphinx_host = "localhost";
         sphinx_port = 9312;
+
+        /*
         this.sphinxClient = new SphinxClient(sphinx_host, sphinx_port);
 
         try {
@@ -38,8 +60,16 @@ public class PoiTypeService {
         } catch (Exception e) {
             System.out.println("Sun has raised in the west today :(");
         }
+        */
+
+        this.poiTypeMapper = new POITypeMapper();
     }
 
+    public void setPoiIndex(JdbcTemplate jdbcTemplate) {
+        this.poiIndex = jdbcTemplate;
+    }
+
+    /*
     private PoiType getPOIFromMatch(SphinxMatch match)
     {
         ArrayList<String> inf = match.attrValues;
@@ -52,7 +82,9 @@ public class PoiTypeService {
 
         return poiType;
     }
+    */
 
+    /*
     public PoiType getPoiTypeById(long id)
     {
         PoiType poiType = null;
@@ -75,7 +107,9 @@ public class PoiTypeService {
         }
         return poiType = null;
     }
+    */
 
+    /*
     public PoiType getPoiTypeByName(String name)
     {
         PoiType poiType = null;
@@ -101,9 +135,11 @@ public class PoiTypeService {
         }
         return poiType = null;
     }
+    */
 
     public List<PoiType> getPoiTypes()
     {
+        /*
         List<PoiType> typeList = new ArrayList<PoiType>();
         try {
             SphinxResult result = sphinxClient.Query("@* all", "poi_type_index");
@@ -118,6 +154,9 @@ public class PoiTypeService {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
         return typeList;
+        */
+
+         return this.poiIndex.query("SELECT type_id, name FROM poi_type_index LIMIT 10", this.poiTypeMapper);
     }
 
   /*

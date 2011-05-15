@@ -81,8 +81,11 @@ source poi_type
   sql_db   = excursion_organizer
   sql_port = 3306
 
+  #sql_query = \
+  #  SELECT poi_type.id, poi_type.id type_id, CONCAT(name, ' all ') name FROM poi_type
+
   sql_query = \
-    SELECT poi_type.id, poi_type.id type_id, CONCAT(name, ' all ') name FROM poi_type
+    SELECT poi_type.id, poi_type.id type_id, name FROM poi_type
 
   sql_query_pre = SET CHARSET utf8
 
@@ -145,8 +148,10 @@ searchd
 {
   # [hostname:]port[:protocol], or /unix/socket/path to listen on
   # known protocols are 'sphinx' (SphinxAPI) and 'mysql41' (SphinxQL)
-  listen = localhost:9312
-  # listen = 9306:mysql41
+  listen = 127.0.0.1:9312
+  listen = 127.0.0.1:3307:mysql41
+  compat_sphinxql_magics = 0
+  workers = fork
 
   # client read timeout, seconds
   # optional, default is 5
@@ -166,6 +171,8 @@ searchd
   max_matches = 1000
 
   pid_file = searchd
+
+  query_log = searchd_query.log
 }
 """
 

@@ -61,12 +61,12 @@ public class RecommendedRouteService {
 
                      try{
                          //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
-                         routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
+                         //routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
 
                          //System.out.println("extract poi SphinxException");
                          //println(e.getMessage());
                      }
-                     catch (IndexOutOfBoundsException e)
+                     catch (Exception e)
                      {
                          //NOTE: we catch this when poi to extract doesn't exist
 

@@ -48,8 +48,7 @@ public class RouteService {
         this.poiService = poiService;
     }
 
-    public Route getUserRoute(final long sid)
-    {
+    public Route getUserRoute(final long sid) {
         String q = String.format(
                                  "SELECT poi_id, ord_num FROM user_route WHERE sid = %d;",
                                        sid
@@ -60,8 +59,13 @@ public class RouteService {
                 Long poi_id = rs.getLong("poi_id");
 
                 RoutePoint routePoint = null;
-                POI poi = poiService.getPoiById(poi_id);
-                routePoint = new RoutePoint(poi, rs.getInt("ord_num"));
+
+                try {
+                    POI poi = poiService.getPoiById(poi_id);
+                    routePoint = new RoutePoint(poi, rs.getInt("ord_num"));
+                } catch (Exception e) {
+
+                }
 
 
                 return routePoint; // hack ??
