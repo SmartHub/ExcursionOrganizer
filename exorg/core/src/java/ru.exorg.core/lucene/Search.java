@@ -16,7 +16,6 @@ import org.springframework.beans.factory.InitializingBean;
 
 
 public class Search implements InitializingBean {
-    private QueryParser qp;
     private Directory indexDirectory;
     private IndexSearcher indexSearcher;
 
@@ -27,12 +26,17 @@ public class Search implements InitializingBean {
     }
 
     public void afterPropertiesSet() throws Exception {
-        this.qp = new QueryParser(Version.LUCENE_30, "id", new StandardAnalyzer(Version.LUCENE_30));
         this.indexSearcher = new IndexSearcher(indexDirectory);
+    }
+
+    private QueryParser createParser() {
+        return new QueryParser(Version.LUCENE_30, "id", new StandardAnalyzer(Version.LUCENE_30));
     }
 
     public <T> List<T> search(final String queryString, DocMapper<T> mapper) {
         try {
+            QueryParser qp = createParser();
+
             Query q = qp.parse(queryString);
             TopDocs rs = indexSearcher.search(q, 1000);
 
