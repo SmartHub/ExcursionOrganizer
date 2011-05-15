@@ -22,11 +22,11 @@ final public class POI {
     private int squareId;
     private Location location;
 
-    public POI(long id, final String name) {
+    private void init(long id, final String name) {
         this.id = id;
         this.name = name;
         this.type = 1;
-        
+
         this.descriptions = new ArrayList<Description>();
         this.images = new ArrayList<String>();
 
@@ -36,6 +36,14 @@ final public class POI {
         this.clusterHeadFlag = false;
         this.squareId = 0;
         this.url = "";
+    }
+
+    public POI(final String id, final String name) {
+        init(Long.valueOf(id), name);
+    }
+
+    public POI(long id, final String name) {
+        init(id, name);
     }
 
     public POI() {
@@ -83,12 +91,20 @@ final public class POI {
         }
     }
 
+    final public void setClusterId(String cid) {
+        this.setClusterId(Long.valueOf(cid));
+    }
+
     final public boolean isClusterHead() {
         return this.clusterHeadFlag;
     }
 
     final public void setClusterHeadFlag(boolean f) {
         this.clusterHeadFlag = f;
+    }
+
+    final public void setClusterHeadFlag(final String f) {
+        this.setClusterHeadFlag(Boolean.valueOf(f));
     }
 
     final public long getCityId() {
@@ -125,6 +141,10 @@ final public class POI {
     final public void setLocation(double lat, double lng) {
         this.location.setLat(lat);
         this.location.setLng(lng);
+    }
+
+    final public void setLocation(final String lat, final String lng) {
+        this.setLocation(Double.valueOf(lat), Double.valueOf(lng));
     }
 
     final public void setLocation(final Location loc) {
@@ -196,5 +216,9 @@ final public class POI {
 
     final public void setSquareId(int sqn) {
         this.squareId = sqn;
+    }
+
+    final public void setSquareId(final String sqn) {
+        this.setSquareId(Integer.valueOf(sqn));
     }
 }

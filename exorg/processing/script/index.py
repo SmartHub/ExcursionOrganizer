@@ -34,7 +34,7 @@ source poi
 
   sql_query =                                                                   \
     SELECT                                                                      \
-        poi.id, poi.id id,                                                      \
+        poi.id, poi.id id, CONCAT('x', poi.id, 'z') poiid,                     \
         poi.name,                                                               \
         (SELECT name FROM poi_type WHERE id=poi.type_id LIMIT 1) type,          \
         poi.address,                                                            \
@@ -67,6 +67,7 @@ source poi
   sql_field_string = cluster_id
   sql_field_string = is_head
   sql_field_string = square_num
+  sql_field_string = poiid
   #sql_field_string = source_url
 }
 

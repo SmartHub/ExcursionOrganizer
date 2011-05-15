@@ -19,7 +19,7 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class RecommendedRouteService {
-
+    private PoiService searcher;
     private JdbcTemplate jdbcTemplate;
 
     public JdbcTemplate getJdbcTemplate() {
@@ -31,12 +31,16 @@ public class RecommendedRouteService {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    public void setPoiService(PoiService ps) {
+        this.searcher = ps;
+    }
+
     public Route getRecommendedRoute(final long id) throws Exception
     {
         String q = String.format(
-                                 "SELECT descr, count_point, duration FROM route_recommended WHERE id = %d;",
-                                       id
-                                 );
+                "SELECT descr, count_point, duration FROM route_recommended WHERE id = %d;",
+                id
+        );
         RowMapper<Route> mapper = new RowMapper<Route>() {
             public Route mapRow(ResultSet rs, int i) throws SQLException {
                 Route route = new Route(id, rs.getString("descr"), rs.getInt("count_point"), rs.getDouble("duration"));
@@ -47,35 +51,34 @@ public class RecommendedRouteService {
         List<Route> list = jdbcTemplate.query(q, mapper);
         if (!list.isEmpty())
         {
-             //System.out.println ("getting route " + list.get(0).getId());
+            //System.out.println ("getting route " + list.get(0).getId());
 
-             String query = String.format(
-                     "SELECT poi_id, order_num FROM route_poi WHERE route_id = %d;",
-                     list.get(0).getId()
-             );
+            String query = String.format(
+                    "SELECT poi_id, order_num FROM route_poi WHERE route_id = %d;",
+                    list.get(0).getId()
+            );
 
-             RowMapper<RoutePoint> pointMapper = new RowMapper<RoutePoint>() {
-                 public RoutePoint mapRow(ResultSet rs, int i) throws SQLException {
-                     PoiService searcher = new PoiService();
-                     RoutePoint routePoint = null;
+            RowMapper<RoutePoint> pointMapper = new RowMapper<RoutePoint>() {
+                public RoutePoint mapRow(ResultSet rs, int i) throws SQLException {
+                    RoutePoint routePoint = null;
 
-                     try{
-                         //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
-                         //routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
+                    try{
+                        //System.out.println("extract poi "+rs.getInt("poi_id")+", order num "+rs.getInt("order_num"));
+                        routePoint = new RoutePoint(searcher.getPoiById(rs.getLong("poi_id")), rs.getInt("order_num"));
 
-                         //System.out.println("extract poi SphinxException");
-                         //println(e.getMessage());
-                     }
-                     catch (Exception e)
-                     {
-                         //NOTE: we catch this when poi to extract doesn't exist
+                        //System.out.println("extract poi SphinxException");
+                        //println(e.getMessage());
+                    }
+                    catch (Exception e)
+                    {
+                        //NOTE: we catch this when poi to extract doesn't exist
 
-                         //System.out.println("extract poi IndexOutOfBoundsException");
-                         //println(e.getMessage());
-                     }
-                     return routePoint;
-                 }
-             };
+                        //System.out.println("extract poi IndexOutOfBoundsException");
+                        System.out.println(e.getMessage());
+                    }
+                    return routePoint;
+                }
+            };
             try {
                 list.get(0).setPoints(jdbcTemplate.query(query, pointMapper));
                 //System.out.println("list.get(0).points size = " + list.get(0).getCountPoints());
@@ -99,7 +102,7 @@ public class RecommendedRouteService {
             List<Route> result = new ArrayList<Route>();
             for(int i: routeIds)
             {
-                 result.add(getRecommendedRoute(i));
+                result.add(getRecommendedRoute(i));
             }
             return result;
         }

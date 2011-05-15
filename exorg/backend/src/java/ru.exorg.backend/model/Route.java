@@ -81,7 +81,7 @@ public class Route {
             this.points.clear();
         else
             this.points = new ArrayList<RoutePoint>();
-        
+
         for (RoutePoint rp : points) {
             if (rp != null)
                 this.points.add(rp);
@@ -107,11 +107,16 @@ public class Route {
     }
 
     public String getImage () {
-        for (RoutePoint p : points) {
-            if (p.getPoi().getImage().length() > 1) {
-                return p.getPoi().getImage();
+        try {
+            for (RoutePoint p : points) {
+                if (p.getPoi().getImage() != null) {
+                    return p.getPoi().getImage();
+                }
             }
+        } catch (Exception e) {
+
         }
+
         return "";
     }
 }

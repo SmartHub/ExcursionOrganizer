@@ -14,12 +14,7 @@ import java.util.List;
 // ================================================================================
 
 public class RecommendedRoutesYalet implements Yalet {
-    private SessionManager sm;
     private RecommendedRouteService rrs;
-
-    /*final public void setSessionManager(SessionManager sm) {
-        this.sm = sm;
-    }*/
 
     @Required
     public void setRecommendedRouteService (final RecommendedRouteService rrs) {

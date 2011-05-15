@@ -7,6 +7,8 @@ import org.springframework.jdbc.core.RowMapper;
 import ru.exorg.core.model.Location;
 import ru.exorg.core.model.POI;
 
+import java.lang.Object;
+
 import java.util.List;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -109,7 +111,11 @@ public class DataProvider implements InitializingBean {
     }
 
     public List<PoiType> getPoiTypes() throws Exception {
-        return this.jdbc.query("SELECT * FROM poi_type", this.poiTypeMapper);
+        return this.jdbc.query("SELECT * FROM poi_type", poiTypeMapper);
+    }
+
+    public PoiType getPoiType(long typeId) {
+        return this.jdbc.queryForObject("SELECT * FROM poi_type WHERE id=?", poiTypeMapper, new Object[]{typeId});
     }
 
     public void afterPropertiesSet() {

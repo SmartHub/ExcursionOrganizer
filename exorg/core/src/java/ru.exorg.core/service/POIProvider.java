@@ -123,30 +123,6 @@ final public class POIProvider {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    final public void serializeDescriptionsAndPhotos(final POI poi) {
-        JSONObject photos = new JSONObject();
-        photos.put("photos", poi.getImages());
-
-        JSONObject descrs = new JSONObject();
-        descrs.put("descriptions", poi.getDescriptions());
-
-        this.jdbc.update("UPDATE place_of_interest SET descrs=? WHERE id=?", descrs.toString(), poi.getId());
-        this.jdbc.update("UPDATE place_of_interest SET photos=? WHERE id=?", photos.toString(), poi.getId());
-    }
-
-    final public void guessPOIType(POI poi) {
-        try {
-            int t = jdbc.queryForInt("SELECT id FROM poi_type WHERE lcase(?) rlike poi_type.guess_rx;", poi.getName());
-            if (t != 0) {
-                poi.setType(t);
-            }
-        } catch (Exception e) {
-            /* Query result is empty */
-            poi.setType(1);
-        }
-    }
-
     final public List<String> getPOINames() {
         class POINamesMapper implements RowMapper<String> {
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
