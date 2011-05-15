@@ -16,6 +16,13 @@
         </layout>
     </appender>
 
+    <appender name="perf" class="org.apache.log4j.FileAppender">
+        <param name="File" value="perf.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%t %d %p %m IN %c%n"/>
+        </layout>
+    </appender>
+
     <logger name="org.webharvest.definition.XmlParser" additivity="false">
         <level value="WARN" />
         <appender-ref ref="console" />
@@ -24,6 +31,11 @@
     <logger name="ru.exorg.backend.handler.LoggingHandler" additivity="true">
         <level value="DEBUG" />
         <appender-ref ref="server" />
+    </logger>
+
+    <logger name="Performance" additivity="true">
+        <level value="DEBUG" />
+        <appender-ref ref="perf" />
     </logger>
 
     <root>
