@@ -57,9 +57,7 @@
 
     <bean id="saxGenerator" class="net.sf.xfresh.core.DefaultSaxGenerator"/>
 
-    <bean id = "recommendedRouteService" class="ru.exorg.backend.services.RecommendedRouteService">
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
-    </bean>
+    <bean id = "recommendedRouteService" class="ru.exorg.backend.services.RecommendedRouteService"/>
 
     <bean id="poiService" class="ru.exorg.backend.services.PoiService"/>
 

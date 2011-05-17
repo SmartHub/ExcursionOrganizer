@@ -10,6 +10,8 @@ import ru.exorg.core.model.POI;
 import ru.exorg.core.lucene.Search;
 import ru.exorg.core.lucene.DocMapper;
 
+import ru.exorg.core.lucene.*;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -152,7 +154,10 @@ public class PoiService {
 
     private POI getRawPoiById(long id) throws Exception {
         try {
-            return this.searcher.search(String.format("id: %d", id), this.poiMapper).get(0);
+            String q = String.format("DocType:\"%s\" AND id:%d", Indexer.DocTypePOI, id);
+            System.out.println("Querying: " + q);
+
+            return this.searcher.search(q, this.poiMapper).get(0);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

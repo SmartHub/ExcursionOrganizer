@@ -110,24 +110,28 @@ public class Indexer implements InitializingBean  {
         rs.first();
         while(!rs.isAfterLast()) {
             List<Long> pois = this.dataProvider.getJdbcTemplate().queryForList(
-                    "SELECT poi_id FROM route_recommended WHERE route_id = ? ORDER BY ord_num",
+                    "SELECT poi_id FROM route_poi WHERE route_id = ? ORDER BY order_num",
                     new Object[]{rs.getLong("id")},
                     Long.class);
 
             String poiList = "";
 
             for (Long poi : pois) {
-                poiList += String.valueOf(poi) + " ";
+                if (this.poiProvider.queryById(poi).getLocation().isValid()) {
+                    poiList += String.valueOf(poi) + " ";
+                }
             }
 
             Document doc = new Document();
 
             doc.add(createField("DocType", DocTypeReadyRoute));
-            doc.add(createField("routeId", rs.getLong("id")));
-            doc.add(createField("description", rs.getLong("desrc")));
+            doc.add(createField("id", rs.getLong("id")));
+            doc.add(createField("description", rs.getString("descr")));
             doc.add(createField("poiList", poiList));
 
             iw.addDocument(doc);
+
+            rs.next();
         }
 
     }
