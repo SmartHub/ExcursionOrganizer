@@ -1,15 +1,10 @@
 package ru.exorg.core.lucene;
 
-import org.springframework.beans.factory.InitializingBean;
-import ru.exorg.core.model.POI;
-import ru.exorg.core.model.PoiType;
-import ru.exorg.core.service.DataProvider;
-import ru.exorg.core.service.POIProvider;
-
 import java.util.List;
-
-import java.io.IOException;
 import java.io.File;
+
+import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.beans.factory.InitializingBean;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -19,6 +14,13 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.util.Version;
 import org.apache.lucene.store.SimpleFSDirectory;
 
+import ru.exorg.core.model.POI;
+import ru.exorg.core.model.PoiType;
+import ru.exorg.core.service.DataProvider;
+import ru.exorg.core.service.POIProvider;
+
+import org.springframework.jdbc.core.RowMapper;
+
 public class Indexer implements InitializingBean  {
     private POIProvider poiProvider;
     private DataProvider dataProvider;
@@ -26,6 +28,7 @@ public class Indexer implements InitializingBean  {
 
     final public static String DocTypePOI = "1";
     final public static String DocTypePOIType = "2";
+    final public static String DocTypeReadyRoute = "3";
 
     public Indexer() { }
 
@@ -87,21 +90,57 @@ public class Indexer implements InitializingBean  {
         return doc;
     }
 
+    private void indexPOI(IndexWriter iw) throws Exception {
+        List<POI> poiList = this.poiProvider.poiList();
+        for (POI poi : poiList) {
+            if (poi.hasAddress() && poi.getLocation().isValid())
+                iw.addDocument(createDoc(poi));
+        }
+    }
+
+    private void indexPOITypes(IndexWriter iw) throws Exception {
+        List<PoiType> poiTypes = this.dataProvider.getPoiTypes();
+        for (PoiType poiType : poiTypes) {
+            iw.addDocument(createDoc(poiType));
+        }
+    }
+
+    private void indexReadyRoutes(IndexWriter iw) throws Exception {
+        SqlRowSet rs = this.dataProvider.getJdbcTemplate().queryForRowSet("SELECT * FROM route_recommended");
+        rs.first();
+        while(!rs.isAfterLast()) {
+            List<Long> pois = this.dataProvider.getJdbcTemplate().queryForList(
+                    "SELECT poi_id FROM route_recommended WHERE route_id = ? ORDER BY ord_num",
+                    new Object[]{rs.getLong("id")},
+                    Long.class);
+
+            String poiList = "";
+
+            for (Long poi : pois) {
+                poiList += String.valueOf(poi) + " ";
+            }
+
+            Document doc = new Document();
+
+            doc.add(createField("DocType", DocTypeReadyRoute));
+            doc.add(createField("routeId", rs.getLong("id")));
+            doc.add(createField("description", rs.getLong("desrc")));
+            doc.add(createField("poiList", poiList));
+
+            iw.addDocument(doc);
+        }
+
+    }
+
     final public void afterPropertiesSet() {
         try {
             SimpleFSDirectory fsd = new SimpleFSDirectory(new File(this.indexDirectory));
             IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_30, new StandardAnalyzer(Version.LUCENE_30));
             IndexWriter iw = new IndexWriter(fsd, iwc);
 
-            List<POI> poiList = this.poiProvider.poiList();
-            for (POI poi : poiList) {
-                iw.addDocument(createDoc(poi));
-            }
-
-            List<PoiType> poiTypes = this.dataProvider.getPoiTypes();
-            for (PoiType poiType : poiTypes) {
-                iw.addDocument(createDoc(poiType));
-            }
+            this.indexPOI(iw);
+            this.indexPOITypes(iw);
+            this.indexReadyRoutes(iw);
 
             iw.close();
 

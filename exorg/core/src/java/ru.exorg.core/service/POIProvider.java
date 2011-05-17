@@ -7,13 +7,8 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.ArrayList;
 
 import java.sql.ResultSet;
-
-import org.json.simple.JSONObject;
 
 import ru.exorg.core.model.*;
 

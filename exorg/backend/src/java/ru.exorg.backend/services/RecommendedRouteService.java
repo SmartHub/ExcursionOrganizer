@@ -1,18 +1,16 @@
 package ru.exorg.backend.services;
 
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.apache.lucene.document.Document;
 
 import ru.exorg.backend.model.Route;
 import ru.exorg.backend.model.RoutePoint;
 
 import ru.exorg.core.lucene.*;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -26,6 +24,29 @@ public class RecommendedRouteService {
     private Search searcher;
     private PoiService poiService;
     private JdbcTemplate jdbcTemplate;
+    private RRMapper rrMapper;
+
+    private class RRMapper implements DocMapper<Route> {
+        public Route mapDoc(Document doc) {
+            List<RoutePoint> poiList = new ArrayList<RoutePoint>();
+            String[] pois_raw = doc.get("poiList").split(" ");
+
+            for (int i = 0; i < pois_raw.length; i++) {
+                long poiId = Long.parseLong(pois_raw[i]);
+                poiList.add(new RoutePoint(poiService.getPoiById(Long.parseLong(poiId), i + 1)));
+
+            }
+
+            Route route = new Route(doc.get("id"), doc.get("description"));
+            route.setPoints(poiList);
+
+            return route;
+        }
+    }
+
+    public RecommendedRouteService() {
+        rrMapper = new RRMapper();
+    }
 
     public void setSearcher(Search s) {
         this.searcher = s;
@@ -41,6 +62,8 @@ public class RecommendedRouteService {
 
     public Route getRecommendedRoute(final long id) throws Exception
     {
+        return this.searcher.search(String.format("DocType:\"%s\" AND id:%d", Indexer.DocTypeReadyRoute, id), rrMapper).get(0);
+        /*
         String q = String.format(
                 "SELECT descr, count_point, duration FROM route_recommended WHERE id = %d;",
                 id
@@ -95,10 +118,13 @@ public class RecommendedRouteService {
         else
             System.out.println ("FUCK");
         return list.get(0);
+        */
     }
 
     public List<Route> getRecommendedRouteList()  throws Exception
     {
+        return this.searcher.search(String.format("DocType:\"%s\"", Indexer.DocTypeReadyRoute), rrMapper);
+        /*
         String q = new String("SELECT id FROM route_recommended;");
         List<Integer> routeIds = jdbcTemplate.queryForList(q, Integer.class);
         if(!routeIds.isEmpty())
@@ -111,5 +137,6 @@ public class RecommendedRouteService {
             return result;
         }
         return null;
+        */
     }
 }

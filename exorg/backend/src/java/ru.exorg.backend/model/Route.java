@@ -24,7 +24,7 @@ public class Route {
 
     private List<RoutePoint> points = null;
 
-    public Route(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
+    private void init(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
         this.id = id;
         this.description = description;
         this.countPoints = countPoints;
@@ -32,12 +32,16 @@ public class Route {
         this.points = points;
     }
 
+    public Route(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
+        this.init(id, description, countPoints, duration, points);
+    }
+
     public Route(long id, String description, int countPoints, double duration) {
-        this.id = id;
-        this.description = description;
-        this.countPoints = countPoints;
-        this.duration = duration;
-        points = new ArrayList<RoutePoint>();
+        this.init(id, description, countPoints, duration, new ArrayList<RoutePoint>());
+    }
+
+    public Route(final String id, final String description) {
+        this.init(Long.parseLong(id), description, 0, 0, new ArrayList<RoutePoint>());
     }
 
     public long getId() {
