@@ -1,3 +1,5 @@
+var not_add = false;
+
 function init_inner_frame()
 {
 	loadPoiList("");
@@ -6,13 +8,12 @@ function init_inner_frame()
 
 function loadPoiList(Action)
 {
-    var PoiList = [];  
+    var PoiList = [];
 	$.get('constructor.html?_ox' + Action, {}, function(xml)
 	{
         $(xml).find('page').find('data').find('route_point').each(function() ///data/route_point
 		{
-			Poi =
-			{
+			var Poi ={
 				Id : $(this).attr("poi-id"),
 				Name : $(this).find('name').text(),
 				Lat : $(this).attr("lat"),
@@ -24,7 +25,10 @@ function loadPoiList(Action)
         	});
         //alert("update");
         updateCheckBoxes(PoiList);
-        calculate_route(PoiList);
+        if (PoiList.length != 0)
+        {
+            calculate_route(PoiList);
+        }
         printPoiList(PoiList);
         //alert("update fin");
 	}, 'xml'); // указываем явно тип данных
@@ -32,23 +36,26 @@ function loadPoiList(Action)
 
 function add_poi(id, checked)
 {
-	var action = '';
-	if(checked == false){
-		action = '&action="delete"';
-	}
-    else{
-        action = '&action="add"';
-    }
-    //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
+    if (not_add == false)
+    {
+        var action = '';
+        if(checked == false){
+            action = '&action="delete"';
+        }
+        else{
+            action = '&action="add"';
+        }
+        //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 
-    loadPoiList('&poi_id=' + id + action);
-		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
+        loadPoiList('&poi_id=' + id + action);
+            /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
+	}
 };
 
 
 function updateCheckBoxes(List)
 {
-
+    not_add = true;
     $(top.frames["inner-frame"].document).find('.cb').each(function(){
         $(this).attr('checked', false);
     });
@@ -63,11 +70,13 @@ function updateCheckBoxes(List)
 			cb.checked = true;
 		}
 	}
+	not_add = false;
 }
 
 
 function printPoiList(List)
 {
+
     //alert("printPoiList()" + List.length);
 	$('#poi-print').html('');
 	$('#poi-print').append('<br/>Выбранные для посещения POI:<br/><hr/>');
@@ -80,4 +89,7 @@ function printPoiList(List)
 		    ", false);' ></input>");
 		$('#poi-print').append('<hr/>');
 	};
+
+
+	//$('#poi-print').load('constructor.html?_ox');
 }

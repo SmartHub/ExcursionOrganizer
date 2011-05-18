@@ -40,7 +40,7 @@
 
     <bean id="routeService" class="ru.exorg.backend.services.RouteService">
         <property name="poiService" ref="poiService"/>
-        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+        <!--property name="jdbcTemplate" ref="jdbcTemplate"/-->
     </bean>
 
     <bean id="readyroutesYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
