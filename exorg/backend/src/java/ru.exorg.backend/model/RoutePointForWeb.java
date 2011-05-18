@@ -56,8 +56,9 @@ public class RoutePointForWeb {
 
     public static int getListIndexOf(final List<RoutePointForWeb> list, final String name) {
         for (RoutePointForWeb r : list) {
-            if (r.getName().equals(name))
+            if (r.getName().equals(name)) {
                 return list.indexOf(r);
+            }
         }
         return -1;
     }

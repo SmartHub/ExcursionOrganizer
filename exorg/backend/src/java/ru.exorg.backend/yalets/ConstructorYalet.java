@@ -102,7 +102,13 @@ public class ConstructorYalet implements Yalet {
                 if (req.getParameter("action").toString().length()==8) { // delete
                     //System.out.println("deleting");
                     //System.out.println(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
-                    rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+
+
+
+                    int idx = RoutePointForWeb.getListIndexOf(rps, poi.getName());
+                    if (idx != -1) {
+                        rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+                    }
                 }
                 else { // add
                     if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
