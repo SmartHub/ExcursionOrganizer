@@ -38,14 +38,7 @@
 
     <bean id="poiTypeService" class="ru.exorg.backend.services.PoiTypeService"/>
 
-<<<<<<< HEAD
-    <bean id="routeService" class="ru.exorg.backend.services.RouteService">
-        <property name="poiService" ref="poiService"/>
-        <!--property name="jdbcTemplate" ref="jdbcTemplate"/-->
-    </bean>
-=======
     <bean id="routeService" class="ru.exorg.backend.services.RouteService"/>
->>>>>>> 9bed202fc194fb0f6cb2faeabf8759157294a598
 
     <bean id="readyroutesYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>

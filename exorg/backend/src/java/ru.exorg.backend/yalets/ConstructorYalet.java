@@ -103,8 +103,6 @@ public class ConstructorYalet implements Yalet {
                     //System.out.println("deleting");
                     //System.out.println(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
 
-
-
                     int idx = RoutePointForWeb.getListIndexOf(rps, poi.getName());
                     if (idx != -1) {
                         rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
@@ -114,7 +112,7 @@ public class ConstructorYalet implements Yalet {
                     if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
                         //res.addWrapped("poi", new PoiShortForWeb(poi));
                         int order = (rps.size() != 0) ? rps.get(rps.size()-1).getOrder()+1 : 0;
-                        res.addWrapped("route_point", new RoutePointForWeb(order, poi));
+                        //res.addWrapped("route_point", new RoutePointForWeb(order, poi));
                         rps.add(new RoutePointForWeb(order, poi));
                     }
                 }
