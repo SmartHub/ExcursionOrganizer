@@ -3,6 +3,7 @@ package ru.exorg.backend.yalets;
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import ru.exorg.backend.model.Route;
 import ru.exorg.backend.model.RoutePoint;
@@ -27,6 +28,7 @@ public class RouteYalet implements Yalet {
     private RouteService rs;
     private RecommendedRouteService rrs;
     private PoiService poiService;
+    private static Logger log = Logger.getLogger("Performance");
 
     @Required
     public void setRouteService (final RouteService rs) {
@@ -44,6 +46,10 @@ public class RouteYalet implements Yalet {
     }
 
     private void SetRoutePoints (InternalRequest req, InternalResponse res) {
+
+        long start = System.currentTimeMillis();
+        log.debug(String.format("RouteYalet : Started setting route points"));
+
         int routeId  = 0;
         if (req.getAllParameters().containsKey("id")) {
             routeId = req.getIntParameter("id");
@@ -69,8 +75,13 @@ public class RouteYalet implements Yalet {
 
                 s.setAttribute("route", rps);
             } catch (Exception e) {
+                log.error(e);
                 e.printStackTrace();
             }
+
+            long stop = System.currentTimeMillis();
+            log.debug(String.format("RouteYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));
+
             return;
         }
         else { // user route
@@ -81,6 +92,8 @@ public class RouteYalet implements Yalet {
                 POI p = poiService.getPoiById(rps.get(i).getPoiId());
                 res.addWrapped("route_point", new RoutePointForWeb(i, p));
             }
+            long stop = System.currentTimeMillis();
+            log.debug(String.format("RouteYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));            
         }
     }
 

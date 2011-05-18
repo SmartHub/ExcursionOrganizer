@@ -3,6 +3,7 @@ package ru.exorg.backend.yalets;
 import net.sf.xfresh.core.InternalRequest;
 import net.sf.xfresh.core.InternalResponse;
 import net.sf.xfresh.core.Yalet;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 import ru.exorg.backend.model.PoiShortForWeb;
 import ru.exorg.backend.model.PoiTypeForWeb;
@@ -27,6 +28,7 @@ import java.util.Map;
 public class ConstructorYalet implements Yalet {
     private PoiTypeService poiTypeService;
     private PoiService poiService;
+    private static Logger log = Logger.getLogger("Performance");
 
     @Required
     public void setPoiTypeService (final PoiTypeService pts) {
@@ -40,18 +42,28 @@ public class ConstructorYalet implements Yalet {
 
     private void SetPoiTypes(InternalResponse res) {
         try {
+            long start = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Started processing poi types"));
+
             List<PoiType> poiTypes = poiTypeService.getPoiTypes();
             for (PoiType t : poiTypes) {
                 res.addWrapped("type", new PoiTypeForWeb(t.getName()));
             }
+            
+            long stop = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Stopped processing poi types. Time elapsed: %d ms", stop - start));
         }
         catch (Exception e) {
+            log.error(e);
             e.printStackTrace();
         }
     }
 
     private void SetRoutePoints(final InternalRequest req, InternalResponse res) {
         try {
+            long start = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Started setting route points"));
+
             HttpSession s = req.getHttpServletRequest().getSession();
             List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
 
@@ -68,8 +80,12 @@ public class ConstructorYalet implements Yalet {
             }
             else
                 System.out.println("empty route");
+
+            long stop = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));
         }
         catch (Exception e) {
+            log.error(e);
             e.printStackTrace();
         }
     }
@@ -85,6 +101,10 @@ public class ConstructorYalet implements Yalet {
         
 
         if (req.getParameter("poi_id") != null) {
+
+            long start = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Started processing route point (poi %d)", req.getLongParameter("poi_id")));
+
             HttpSession s = req.getHttpServletRequest().getSession();
             List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
             if (rps == null) {
@@ -93,16 +113,9 @@ public class ConstructorYalet implements Yalet {
             }
             POI poi = poiService.getPoiById(req.getLongParameter("poi_id"));
             if (req.getParameter("action") != null) {
-
                 System.out.println("action : " + req.getParameter("action"));
 
-                //System.out.println(req.getParameter("action").toString().equals('"delete"'));
-                //System.out.println(req.getParameter("action").toString().length());
-
                 if (req.getParameter("action").toString().length()==8) { // delete
-                    //System.out.println("deleting");
-                    //System.out.println(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
-
                     int idx = RoutePointForWeb.getListIndexOf(rps, poi.getName());
                     if (idx != -1) {
                         rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
@@ -110,9 +123,7 @@ public class ConstructorYalet implements Yalet {
                 }
                 else { // add
                     if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
-                        //res.addWrapped("poi", new PoiShortForWeb(poi));
                         int order = (rps.size() != 0) ? rps.get(rps.size()-1).getOrder()+1 : 0;
-                        //res.addWrapped("route_point", new RoutePointForWeb(order, poi));
                         rps.add(new RoutePointForWeb(order, poi));
                     }
                 }
@@ -124,6 +135,10 @@ public class ConstructorYalet implements Yalet {
             /*for (RoutePointForWeb p : rps) {
                 System.out.println("Item: " + p.getOrder() + " " + p.getName());
             }*/
+
+            long stop = System.currentTimeMillis();
+            log.debug(String.format("ConstructorYalet : Stopped processing route point (poi %d). Time elapsed: %d ms", req.getLongParameter("poi_id"), stop - start));                      
+
 
         }
         else {
