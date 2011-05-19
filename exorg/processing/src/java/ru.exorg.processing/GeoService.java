@@ -116,6 +116,12 @@ final public class GeoService implements InitializingBean {
 
 
     public List<Location> parseGeoInfo(final JSONObject gi) {
+        if (gi == null || gi.get("status ") == null) {
+            System.out.println("Invalid geographic info");
+
+            return null;
+        }
+
         if (((String)gi.get("status")).equals("OK")) {
             List<Location> r = new ArrayList<Location>();
             JSONArray results = (JSONArray)gi.get("results");
