@@ -1,4 +1,6 @@
-var map;
+var map
+var end;
+var start;
 var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var markersArray = [];
@@ -31,29 +33,40 @@ function initialize() {
 
 function calculate_route(data){
 
-	//var waypts = [];
+    clearMap();
+    var waypts = [];
 	var count = data.length;
 	for (var i = 1; i < count - 1; i++) {
-		markersArray.push({
+		waypts.push({
 			location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
 			stopover:true
 		});
 	}
 
-	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
-	var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
+	start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
+	end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
 	
 	var request = {
 		origin: start, 
 		destination: end,
-		waypoints: markersArray,
+		waypoints: waypts,
 		optimizeWaypoints: true,
 		travelMode: google.maps.DirectionsTravelMode.WALKING
 	};	
-  
+
+
 	directionsService.route(request, function(result, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
 			directionsDisplay.setDirections(result);
+            var myRoute = result.routes[0].legs[0];
+            for (var i = 0; i < myRoute.steps.length; i++) {
+                var marker = new google.maps.Marker({
+                    position: myRoute.steps[i].start_point,
+                    map: map
+                });
+                show_infowindow(marker, "", "", "");
+                markersArray[i] = marker;
+            }
 		}
 	});
 }
@@ -65,5 +78,6 @@ function clearMap() {
     }
     markersArray = [];
   }
+
 }
 
