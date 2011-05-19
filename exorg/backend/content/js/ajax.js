@@ -1,3 +1,4 @@
+
 var not_add = false;
 
 function init_inner_frame()
@@ -26,7 +27,8 @@ function loadPoiList(Action)
         //alert("update");
         updateCheckBoxes(PoiList);
         clearMap();
-        if (PoiList.length != 0)
+        //if (PoiList.length != 0)
+        if (PoiList.length >= 0)
         {
             calculate_route(PoiList);
         }

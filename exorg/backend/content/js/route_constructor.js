@@ -58,29 +58,64 @@ function calculate_route(data){
 		    if (status == google.maps.DirectionsStatus.OK) {
 			    directionsDisplay.setDirections(result);
                 var myRoute = result.routes[0].legs[0];
+
+
                 for (var i = 0; i < myRoute.steps.length; i++) {
                     var marker = new google.maps.Marker({
-                        position: myRoute.steps[i].start_point,
-                        map: map
+                        position: myRoute.steps[i].start_location,
+                        map: null
                     });
                     show_infowindow(marker, myRoute.steps[i].instructions, "", "");
                     markersArray[i] = marker;
+                    if (i == myRoute.steps.length - 1)
+                    {
+                        var last = new google.maps.Marker({
+                            position: myRoute.steps[i].end_location,
+                            map: null
+                        });
+                        show_infowindow(last, "", "", "");
+                        markersArray[i+1] = last;
+                    }
+
                 }
+
 		    }
 	    });
     }
     else {
-        map.setCenter(posCity);
+        initialize();
+        /*
+        if (count == 1)
+        {
+            clearMap();
+            var pos= new google.maps.LatLng(data[0].Lat, data[0].Lng);
+            var singleMarker = new google.maps.Marker({
+                position: pos,
+                map: map,
+                title: data[0].Name
+            });
+            map.setCenter(pos);
+            markersArray.push(singleMarker);
+            show_infowindow(singleMarker, "Адрес: " + data[0].Address);
+        }
+        */
+
     }
+
 }
 
 function clearMap() {
+  var restDir = directionsDisplay.getDirections();
   if (markersArray) {
     for (i in markersArray) {
       markersArray[i].setMap(null);
     }
     markersArray = [];
+    map.setCenter(posCity);
+    map.setZoom(8);
   }
+
+  var test = directionsDisplay.getDirections();
 
 }
 
