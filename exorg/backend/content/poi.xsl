@@ -18,7 +18,7 @@
 
 
 	<!-- писать только одной строкой! -->
-	<xsl:template name="template-init-function">initialize(<xsl:value-of select="page/data/poi/@lat"/>, <xsl:value-of select="page/data/poi/@lng"/>, '<xsl:value-of select="page/data/poi/name"/>', '<xsl:value-of select="page/data/poi/address"/>')</xsl:template>
+	<xsl:template name="template-init-function">initializeFull(<xsl:value-of select="page/data/poi/@id" />, <xsl:value-of select="page/data/poi/@lat"/>, <xsl:value-of select="page/data/poi/@lng"/>, '<xsl:value-of select="page/data/poi/name"/>', '<xsl:value-of select="page/data/poi/address"/>', 'poi.html?id='+'<xsl:value-of select="page/data/poi/@id" />')</xsl:template>
 
 
 	<xsl:template name="template-content">

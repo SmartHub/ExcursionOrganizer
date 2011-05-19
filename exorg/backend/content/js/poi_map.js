@@ -54,7 +54,7 @@ function initializeFull(poiId, lat, long, name_poi, address, url) {
 
     //createNearestMarkersArray(poiId);
 
-
+    nearestMarkersArray = [];
     var PoiList = [];
     $.get('poi.html?id='+poiId+'&_ox', {}, function(xml)
     {
@@ -69,15 +69,24 @@ function initializeFull(poiId, lat, long, name_poi, address, url) {
                 Lng : $(this).attr("lng"),
                 Url : "poi.html?id=" + $(this).attr("id")
             };
-            PoiList.push(Poi);
+            //PoiList.push(Poi);
+            var nearestMarker =  new google.maps.Marker ({
+                    location: new google.maps.LatLng(Poi.Lat, Poi.Lng),
+                    map: map,
+                    title: Poi.Name
+            });
+            nearestMarkersArray.push(nearestMarker);
+            show_infowindow(nearestMarker, Poi.Name, Poi.Address, Poi.Url);
         });
-        if (PoiList.length == 0)
+
+        if (nearestMarkersArray.length == 0)
         {
             alert ("No places of interest found close to this!");
         }
         else
         {
-            alert(PoiList.length);
+            alert(nearestMarkersArray.length);
+            /*
             nearestMarkersArray = [];
             for (var i = 1; i < PoiList.length - 1; i++) {
                 var nearestMarker =  new google.maps.Marker ({
@@ -88,17 +97,20 @@ function initializeFull(poiId, lat, long, name_poi, address, url) {
                 nearestMarkersArray.push(nearestMarker);
                 show_infowindow(nearestMarker, PoiList[i].Name, PoiList[i].Address, PoiList[i].Url);
             }
+            */
         }
     }, 'xml');
 
 
-     testMarker = new google.maps.Marker({
+     /*
+        testMarker = new google.maps.Marker({
+
          location: new google.maps.LatLng(PoiList[1].Lat, PoiList[1].Lng),
          map: map,
          title: PoiList[1].Name
      });
      show_infowindow(testMarker, PoiList[1].Name, PoiList[1].Address, PoiList[i].Url);
-
+      */
 
 
 
