@@ -6,7 +6,7 @@ var markersArray = [];
 
 
 function show_infowindow(marker, name_poi, address, url){
-	var contentString = '<div style="color: black;">' + name_poi + ' Адрес: ' + address + '<a href="' + url + '" >подробнее...</a></div>';
+	var contentString = '<div style="color: blue">' + name_poi + ' </div><br/>'; //<div style="color: black"> Адрес: ' + address + ' </div><br/> ' + '<div><a href="' + url + '" >подробнее...</a></div>';
 	var infowindow = new google.maps.InfoWindow({
 		content: contentString
 	}); 
@@ -63,7 +63,7 @@ function calculate_route(data){
                         position: myRoute.steps[i].start_point,
                         map: map
                     });
-                    show_infowindow(marker, "", "", "");
+                    show_infowindow(marker, myRoute.steps[i].instructions, "", "");
                     markersArray[i] = marker;
                 }
 		    }
