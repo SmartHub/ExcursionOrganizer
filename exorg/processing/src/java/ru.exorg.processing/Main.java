@@ -201,6 +201,10 @@ final public class Main implements InitializingBean {
                 this.addGeoInfo(poi);
                 this.guessType(poi);
 
+                if (poi.getImage().length() == 0) {
+                    poi.addImage("img/default.jpg");
+                }
+
                 this.poiProvider.sync(poi);
             } catch (SocketTimeoutException e) {
                 System.out.println("Failed to retrieve geographic information for " + poi.getName());
