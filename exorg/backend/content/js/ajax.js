@@ -25,6 +25,7 @@ function loadPoiList(Action)
         	});
         //alert("update");
         updateCheckBoxes(PoiList);
+        clearMap();
         if (PoiList.length != 0)
         {
             calculate_route(PoiList);
