@@ -22,14 +22,22 @@
 
 
 	<xsl:template name="template-content">
-		<table cellpadding = "10">
+		<table cellpadding = "10" width = "100%">
 			<tr>
 				<td>
-					<B><xsl:apply-templates select="page/data/poi/name"/></B>
-					<br/>
-					<br/>				
+                    <B><xsl:apply-templates select="page/data/poi/name"/></B>
+                    <br/>
+                    <br/>
 					<img src="{page/data/poi/img-url}" alt="pic1" />
+					<!--br/>
+					<br/-->
 				</td>
+                <td>
+                    <div id="div_button" align = "right">
+                            <input type="button" value="Показать &#13;достопримечательности &#13;рядом" id="poi_button" style="height: 100px; width: 250px; font:bold 16px Arial" onclick="showNearestPoiButton();">
+                            </input>
+                    </div>                      
+                </td>
 			</tr>
 			<tr>
 				<td>
@@ -39,7 +47,8 @@
 									[дальше]
 								</font>
 							</a>
-						<br/><br/>
+						<br/>
+                        <br/>
 						<B>Адрес:</B>
 						<xsl:apply-templates select="page/data/poi/address"/>
 				</td>
@@ -51,10 +60,6 @@
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
-        <input type="checkbox" name="option3" onclick="showNearestPoi(this.id, this.checked)" value="a3">
-            <xsl:attribute name="id"> <xsl:value-of select="page/data/poi/@id" /> </xsl:attribute>
-        </input>Показать достопримечательности рядом!
-		<!--input type="checkbox" name="option3" onClick="showNearestPoi(this.id, this.checked)" >Показать достопримечательности рядом!</input-->
 	</xsl:template>
 
 

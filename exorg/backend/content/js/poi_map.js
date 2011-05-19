@@ -127,4 +127,18 @@ function showNearestPoi(poiId, checked) {
     }
 }
 
+var pois_shown = false;
+function showNearestPoiButton() {
+    var enter = String.fromCharCode(13) + String.fromCharCode(10);
+    if (pois_shown) {
+        pois_shown = false;
+        hidePois();
+        $("#poi_button").attr("value", "Показать" +  enter + "достопримечательности" + enter + "рядом");
+    } else {
+        pois_shown = true;
+        showPois();
+        $("#poi_button").attr("value", "Скрыть" + enter + "достопримечательности");    
+    }
+}
+
 
