@@ -41,7 +41,7 @@ function loadPoiList() {
 function showPoiList(List) {
 	$('#poi-print').html('');
 
-    s = "<table cellpadding = '10'>";
+    s = "<table cellpadding = '5'>";
 	for(var i = 0; i < List.length; ++i)
 	{
 	    s += '<tr><td>';
@@ -49,6 +49,7 @@ function showPoiList(List) {
         s +="<input type='button' class='up' value = '^' id='" + List[i].Id + "u' onClick='up_poi(" +
 		    List[i].Id +
 		    ");' ></input>";
+		s += "<td/><td>";
 		s +="<input type='button' value = 'V' id='" + List[i].Id + "d' onClick='down_poi(" +
 		    List[i].Id +
 		    ");' ></input>";
