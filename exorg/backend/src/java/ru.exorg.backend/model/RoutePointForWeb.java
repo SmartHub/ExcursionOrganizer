@@ -34,6 +34,10 @@ public class RoutePointForWeb {
         return order;
     }
 
+    public void setOrder (final int order) {
+        this.order = order;
+    }
+
     public String getName() {
         return name;
     }
@@ -69,5 +73,14 @@ public class RoutePointForWeb {
                 return true;
         }
         return false;
+    }
+
+    public static void setOrder (List<RoutePointForWeb> list, final long poi_id, final int order) {
+        for (RoutePointForWeb r : list) {
+            if (r.getPoiId() == poi_id) {
+                r.setOrder(order);
+                return;
+            }
+        }
     }
 }
