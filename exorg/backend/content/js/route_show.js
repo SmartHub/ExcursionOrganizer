@@ -1,9 +1,17 @@
 function init_points()
 {
 //    alert(document.location.href);
-	var PoiList = [];
-
-	$.get(document.location.href + '&_ox', {}, function(xml)
+	PoiList = [];
+    var href = document.location.href;
+    if (href.substr(href.length - 4, 4) == 'html')
+    {
+        suf = '?_ox';
+    }
+    else
+    {
+        suf = '&_ox';
+    }
+	$.get(document.location.href + suf, {}, function(xml)
 	{
         $(xml).find('route_point').each(function()
 		{
