@@ -82,7 +82,7 @@ function printPoiList(List)
 
     //alert("printPoiList()" + List.length);
 	$('#poi-print').html('');
-	$('#poi-print').append('<br/>Выбранные для посещения POI:<br/><hr/>');
+	$('#poi-print').append('<br/>Выбранные для посещения достопримечательности:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
 		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a><br/>');

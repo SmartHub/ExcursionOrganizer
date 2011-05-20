@@ -57,7 +57,9 @@ function calculate_route(data){
         directionsService.route(request, function(result, status) {
 		    if (status == google.maps.DirectionsStatus.OK) {
 			    directionsDisplay.setDirections(result);
+                /*
                 var myRoute = result.routes[0].legs[0];
+
 
 
                 for (var i = 0; i < myRoute.steps.length; i++) {
@@ -78,6 +80,7 @@ function calculate_route(data){
                     }
 
                 }
+                */
 
 		    }
 	    });
@@ -105,17 +108,17 @@ function calculate_route(data){
 }
 
 function clearMap() {
-  var restDir = directionsDisplay.getDirections();
+  //var restDir = directionsDisplay.getDirections();
   if (markersArray) {
     for (i in markersArray) {
       markersArray[i].setMap(null);
     }
     markersArray = [];
-    map.setCenter(posCity);
-    map.setZoom(8);
+    //map.setCenter(posCity);
+    //map.setZoom(8);
   }
 
-  var test = directionsDisplay.getDirections();
+  //var test = directionsDisplay.getDirections();
 
 }
 
