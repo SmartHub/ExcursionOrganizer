@@ -11,6 +11,7 @@ mkdir svr-distr/backend
 
 cp -R backend/content svr-distr/backend
 cp -R backend/config  svr-distr/backend
+cp -R backend/index   svr-distr/backend
 
 rm svr.tar.bz2
 cd svr-distr

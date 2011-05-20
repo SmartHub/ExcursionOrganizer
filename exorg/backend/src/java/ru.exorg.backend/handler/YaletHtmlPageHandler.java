@@ -45,9 +45,9 @@ public class YaletHtmlPageHandler extends YaletHandler {
                 try {
                     HttpSession hs = request.getSession(true);
 
-                    long start = System.currentTimeMillis();
                     log.debug(String.format("Started handling request for %s from %s (%s)", target, request.getRemoteAddr(), hs.getId()));
 
+                    long start = System.currentTimeMillis();
                     String s = String.format(xmlTemplate, resName, this.yalets.get(resName));
                     this.processor.process(request, response, s, true);
                     baseRequest.setHandled(true);

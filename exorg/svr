@@ -8,7 +8,7 @@ case $1 in
 
     stop) 
         echo "Stopping..."
-        ssh eom@exorg.ru "killall java; killall searchd"
+        ssh eom@exorg.ru "killall java"
         ;;
     sync)
 	echo "Synchronizing..."
