@@ -46,10 +46,10 @@ function showPoiList(List) {
 	{
 	    s += '<tr><td>';
 
-        s +="<input type='button' value = '^' onClick='up_poi(" +
+        s +="<input type='button' class='up' value = '^' id='" + List[i].Id + "u' onClick='up_poi(" +
 		    List[i].Id +
 		    ");' ></input>";
-		s +="<input type='button' value = 'V' onClick='down_poi(" +
+		s +="<input type='button' value = 'V' id='" + List[i].Id + "d' onClick='down_poi(" +
 		    List[i].Id +
 		    ");' ></input>";
 
@@ -62,9 +62,12 @@ function showPoiList(List) {
 	};
 
 	s += '<table/>';
-	s += "<input type='button' value = 'Сохранить изменения' onClick='save_order();'></input>";
+	s += "<input type='button' value = 'Сохранить изменения' onClick='save_order();' id='666'></input>";
 
 	$('#poi-print').append(s);
+
+    $('#' + PoiList[0].Id + 'u').attr('disabled', true);
+    $('#' + PoiList[PoiList.length - 1].Id + 'd').attr('disabled', true);
 }
 
 function swap_poi(i, j) {
