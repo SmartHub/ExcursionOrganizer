@@ -22,6 +22,10 @@ public final class Description implements JSONAware {
         return text;
     }
 
+    public void setText(final String t) {
+        this.text = t;
+    }
+
     public String getSourceURL() {
         return sourceUrl;
     }

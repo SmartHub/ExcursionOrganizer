@@ -2,6 +2,7 @@ package ru.exorg.processing;
 
 import org.springframework.beans.factory.InitializingBean;
 import ru.exorg.core.model.City;
+import ru.exorg.core.model.Description;
 import ru.exorg.core.model.Location;
 import ru.exorg.core.model.POI;
 import ru.exorg.core.service.CafeProvider;
@@ -198,6 +199,12 @@ final public class Main implements InitializingBean {
 
         for (POI poi : this.pois) {
             try {
+                List<Description> dl = poi.getDescriptions();
+
+                for (Description d : dl) {
+                    d.setText(d.getText().replaceAll("<.*?>", ""));
+                }
+
                 this.addGeoInfo(poi);
                 this.guessType(poi);
 

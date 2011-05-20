@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 public class YaletHtmlPageHandler extends YaletHandler {
     private static Logger log = Logger.getLogger("Performance");
+    private static Logger error = Logger.getLogger("ErrorLog");
 
     private Map<String, String> yalets;
 
@@ -55,6 +56,7 @@ public class YaletHtmlPageHandler extends YaletHandler {
                     long stop = System.currentTimeMillis();
                     log.debug(String.format("Handling request for %s from %s (%s) finished for %d ms", target, request.getRemoteAddr(), hs.getId(), stop - start));
                 } catch (Exception e) {
+                    error.error("Exception was caught: ", e);
                     e.printStackTrace();
                 }
             }
