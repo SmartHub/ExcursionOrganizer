@@ -40,7 +40,7 @@
 
     <bean id="routeService" class="ru.exorg.backend.services.RouteService"/>
 
-    <bean id="readyroutesYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
+    <bean id="indexYalet" class="ru.exorg.backend.yalets.RecommendedRoutesYalet">
         <property name="recommendedRouteService" ref="recommendedRouteService"/>
     </bean>
 
@@ -84,7 +84,7 @@
                                     <bean class="ru.exorg.backend.handler.YaletHtmlPageHandler">
                                         <property name="yaletList">
                                             <list>
-                                                <value>readyroutes</value>
+                                                <value>index</value>
                                                 <value>route</value>
                                                 <value>constructor</value>
                                                 <value>constructor_frame</value>
