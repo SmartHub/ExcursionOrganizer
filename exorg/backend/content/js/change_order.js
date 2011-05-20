@@ -22,6 +22,7 @@ function loadPoiList() {
 				Id : $(this).attr("poi-id"),
 				Order : $(this).attr("order"),
 				Name : $(this).find('name').text(),
+				Addr : $(this).find('address').text(),
 				Lat : $(this).attr("lat"),
 				Lng : $(this).attr("lng"),
 				Url : "poi.html?id=" + $(this).attr("poi-id")
@@ -53,7 +54,9 @@ function showPoiList(List) {
 		    ");' ></input>";
 
 		s += "<td/><td><a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>';
-		s += "<td/><td>ADDRESS<td>";
+		s += "<td/><td>";
+		s += List[i].Addr;
+		s += "<td>";
 
         s += '<td/><tr/>';
 	};
@@ -75,11 +78,25 @@ function swap_poi(i, j) {
 }
 
 function up_poi(id) {
-    PoiList.length = length;
+    //PoiList.length = length;
     for (i = 1; i < PoiList.length; ++i) {
         if (PoiList[i].Id == id)
         {
             swap_poi(i, i-1);
+            showPoiList(PoiList);
+            calculate_route(PoiList);
+            return;
+        }
+    }
+}
+
+function down_poi(id) {
+    //PoiList.length = length;
+    for (i = 0; i < PoiList.length-1; ++i) {
+        if (PoiList[i].Id == id)
+        {
+            swap_poi(i, i+1);
+
             showPoiList(PoiList);
             calculate_route(PoiList);
             return;
@@ -94,40 +111,9 @@ function save_order()
         s += "&" + PoiList[i].Id + "=" + PoiList[i].Order;
     }
     	//$.get('constructor.html?_ox' + s, {}, {}, 'xml');
-	$.get('constructor.xml?_ox' + s, {}, function(xml)
-	{
-        $(xml).find('page').find('data').find('route_point').each(function() ///data/route_point
-		{
-			var Poi ={
-				Id : $(this).attr("poi-id"),
-				Order : $(this).attr("order"),
-				Name : $(this).find('name').text(),
-				Lat : $(this).attr("lat"),
-				Lng : $(this).attr("lng"),
-				Url : "poi.html?id=" + $(this).attr("poi-id")
-			};
-			//PoiList.push(Poi);
-			//alert(Poi.Name);
-        	});
-        //alert("update fin");
-        showPoiList(PoiList);
-        calculate_route(PoiList);
-        length = PoiList.length;
-	}, 'xml'); // указываем явно тип данных
+	$.get('constructor.html?_ox' + s, {}, function(xml){}, 'xml'); // указываем явно тип данных
 }
 
-function down_poi(id) {
-    PoiList.length = length;
-    for (i = 0; i < PoiList.length-1; ++i) {
-        if (PoiList[i].Id == id)
-        {
-            swap_poi(i, i+1);
 
-            showPoiList(PoiList);
-            calculate_route(PoiList);
-            return;
-        }
-    }
-}
 
 
