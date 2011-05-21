@@ -22,43 +22,12 @@
         <script src="js/change_order.js"></script>
 	</xsl:template>
 
-	<xsl:template name="template-init-function">initialize();init_points()</xsl:template>
+	<xsl:template name="template-init-function">initialize();init_points_()</xsl:template>
 	<xsl:template name="template-content">
-		<table cellpadding = "10">
-		<xsl:for-each select="page/data/route_point">
-			<tr>
-                <td>
-                    <input id="" type="text" maxlength="2" size="2" class="number">
-                        <xsl:attribute name="value">
-                            <xsl:value-of select="@order"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="lat">
-                            <xsl:value-of select="@lat"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="lng">
-                            <xsl:value-of select="@lng"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="poi-id">
-                            <xsl:value-of select="@poi-id"/>
-                        </xsl:attribute>
-                        <xsl:attribute name="name">
-                            <xsl:value-of select="name"/>
-                        </xsl:attribute>
-                    </input>
-                </td>
-				<td>
-					<B><xsl:apply-templates select="name"/></B>
-				</td>
-				<td>
-					<xsl:apply-templates select="address"/>
-				</td>
+        <div id="poi-print">
 
-			</tr>
-            
-		</xsl:for-each>
-		</table>
+        </div>
 	</xsl:template>
-
 	<xsl:template name="template-right-column">
 		<div id="map">
 		</div>
