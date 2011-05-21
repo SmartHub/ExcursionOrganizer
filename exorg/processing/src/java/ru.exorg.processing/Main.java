@@ -65,6 +65,30 @@ final public class Main implements InitializingBean {
     }
 
 
+    private void addGeoInfo(POI poi, int api) throws Exception {
+        List<Location> locs = this.geoService.lookupLocation(poi.getLocation(), poi.getName(), api);
+        if (locs != null) {
+            for (Location loc : locs) {
+                if (this.dataProvider.isWithinCity(poi.getLocation().getCityId(), loc)) {
+                    double lat = loc.getLat();
+                    double lng = loc.getLng();
+
+                    poi.getLocation().setAddress(loc.getAddress());
+                    poi.getLocation().setLat(lat);
+                    poi.getLocation().setLng(lng);
+
+                    City c = this.dataProvider.queryCity(poi.getCityId());
+                    int sqId = (int)(Math.abs(lat - c.getNeLatLng().getLat())/c.getLngSubdivLen()*c.getLatSubdivs()
+                            +
+                            Math.abs(lng - c.getSwLatLng().getLng())/c.getLatSubdivLen() + 1);
+
+                    poi.setSquareId(sqId);
+                    break;
+                }
+            }
+        }
+    }
+
     private void addGeoInfo(POI poi) throws Exception {
         if (!poi.getLocation().isValid()) {
             if (poi.hasAddress()) {
@@ -73,26 +97,9 @@ final public class Main implements InitializingBean {
                 System.out.println("Quering for " + poi.getName());
             }
 
-            List<Location> locs = this.geoService.lookupLocation(poi.getLocation(), poi.getName());
-            if (locs != null) {
-                for (Location loc : locs) {
-                    if (this.dataProvider.isWithinCity(poi.getLocation().getCityId(), loc)) {
-                        double lat = loc.getLat();
-                        double lng = loc.getLng();
-
-                        poi.getLocation().setAddress(loc.getAddress());
-                        poi.getLocation().setLat(lat);
-                        poi.getLocation().setLng(lng);
-
-                        City c = this.dataProvider.queryCity(poi.getCityId());
-                        int sqId = (int)(Math.abs(lat - c.getNeLatLng().getLat())/c.getLngSubdivLen()*c.getLatSubdivs()
-                                +
-                                Math.abs(lng - c.getSwLatLng().getLng())/c.getLatSubdivLen() + 1);
-
-                        poi.setSquareId(sqId);
-                        break;
-                    }
-                }
+            this.addGeoInfo(poi, GeoService.API_YANDEX);
+            if (!poi.getLocation().isValid()) {
+                this.addGeoInfo(poi, GeoService.API_GOOGLE);
             }
 
             if (!poi.getLocation().isValid()) {
