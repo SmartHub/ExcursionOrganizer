@@ -107,6 +107,96 @@ function calculate_route(data){
 
 }
 
+
+
+
+
+
+function calculate_route_unoptimal(data){
+
+    clearMap();
+    var waypts = [];
+	var count = data.length;
+    if (count > 0) {
+	    for (var i = 1; i < count - 1; i++) {
+		    waypts.push({
+			    location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
+			    stopover:true
+		    });
+	    }
+
+    	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
+	    var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
+
+    	var request = {
+    		origin: start,
+	    	destination: end,
+		    waypoints: waypts,
+		    optimizeWaypoints: false,
+		    travelMode: google.maps.DirectionsTravelMode.WALKING
+	    };
+
+        directionsService.route(request, function(result, status) {
+		    if (status == google.maps.DirectionsStatus.OK) {
+			    directionsDisplay.setDirections(result);
+
+		    }
+	    });
+    }
+    else {
+        initialize();
+
+    }
+
+}
+
+
+function calculate_route_optimize(data, optimize){
+
+    clearMap();
+    var waypts = [];
+	var count = data.length;
+    if (count > 0) {
+	    for (var i = 1; i < count - 1; i++) {
+		    waypts.push({
+			    location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
+			    stopover:true
+		    });
+	    }
+
+    	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
+	    var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
+
+    	var request = {
+    		origin: start,
+	    	destination: end,
+		    waypoints: waypts,
+		    optimizeWaypoints: optimize,
+		    travelMode: google.maps.DirectionsTravelMode.WALKING
+	    };
+
+        directionsService.route(request, function(result, status) {
+		    if (status == google.maps.DirectionsStatus.OK) {
+			    directionsDisplay.setDirections(result);
+
+		    }
+	    });
+    }
+    else {
+        initialize();
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
 function clearMap() {
   //var restDir = directionsDisplay.getDirections();
   if (markersArray) {
