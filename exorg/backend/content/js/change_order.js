@@ -11,6 +11,9 @@ $(document).ready(
 	}
 );
 
+function sortRoutePoints (a, b) {
+    return a.Order - b.Order;
+}
 
 function loadPoiList() {
     PoiList.length = 0;
@@ -31,6 +34,7 @@ function loadPoiList() {
 			//alert(Poi.Name);
         	});
         //alert("update fin");
+        PoiList.sort(sortRoutePoints);
         showPoiList(PoiList);
         calculate_route(PoiList);
         length = PoiList.length;
@@ -114,8 +118,8 @@ function save_order()
     for (i = 0; i < PoiList.length; ++i) {
         s += "&" + PoiList[i].Id + "=" + PoiList[i].Order;
     }
-    	//$.get('constructor.html?_ox' + s, {}, {}, 'xml');
-	$.get('constructor.html?_ox' + s, {}, function(xml){}, 'xml'); // указываем явно тип данных
+    window.location = 'route.html?' + s;
+	//$.get('route.html?_ox' + s, {}, function(xml){}, 'xml'); // указываем явно тип данных
 }
 
 

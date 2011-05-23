@@ -74,46 +74,14 @@ public class ConstructorYalet implements Yalet {
                 for (RoutePointForWeb r : rps) {
                     POI poi = poiService.getPoiById(r.getPoiId());
                     res.addWrapped("poi", new PoiShortForWeb(poi));
-                    res.addWrapped("route_point", r);//new RoutePointForWeb(rps.indexOf(r), poi));
+                    res.addWrapped("route_point", r);
                 }
-                //res.addWrapped("route", rps);
             }
             else
                 System.out.println("empty route");
 
             long stop = System.currentTimeMillis();
             log.debug(String.format("ConstructorYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));
-        }
-        catch (Exception e) {
-            log.error(e);
-            e.printStackTrace();
-        }
-    }
-
-    private void changeOrder (final InternalRequest req, InternalResponse res) {
-        try {
-            long start = System.currentTimeMillis();
-            log.debug(String.format("ConstructorYalet : Started changing order of route points"));
-
-            HttpSession s = req.getHttpServletRequest().getSession();
-            List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
-
-            Map<String, List<String>> m = req.getAllParameters();
-            for (Map.Entry<String, List<String>> e : m.entrySet()) {
-                try {
-                    long poi_id = Long.parseLong(e.getKey());
-                    int order = Integer.parseInt(e.getValue().get(0));
-                    RoutePointForWeb.setOrder(rps, poi_id, order);
-                }
-                catch (NumberFormatException ex) {
-                    System.out.println("NumberFormatException");
-                    continue;
-                }
-            }
-            res.addWrapped("route", rps);
-
-            long stop = System.currentTimeMillis();
-            log.debug(String.format("ConstructorYalet : Stopped changing order of route points. Time elapsed: %d ms", stop - start));
         }
         catch (Exception e) {
             log.error(e);
@@ -133,18 +101,22 @@ public class ConstructorYalet implements Yalet {
         }
         POI poi = poiService.getPoiById(req.getLongParameter("poi_id"));
         if (req.getParameter("action") != null) {
-        System.out.println("action : " + req.getParameter("action"));
+            System.out.println("action : " + req.getParameter("action"));
 
-        if (req.getParameter("action").toString().length()==8) { // delete
-            int idx = RoutePointForWeb.getListIndexOf(rps, poi.getName());
-            if (idx != -1) {
-                rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+            if (req.getParameter("action").toString().length()==8) { // delete
+                int idx = RoutePointForWeb.getListIndexOf(rps, poi.getName());
+                if (idx != -1) {
+                    for (RoutePointForWeb rp : rps) {
+                        if (rp.getOrder() > rps.get(idx).getOrder())
+                            rp.decreaseOrder();
+                    }
+                    rps.remove(RoutePointForWeb.getListIndexOf(rps, poi.getName()));
+
+                }
             }
-        }
-        else { // add
-            if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
-                int order = (rps.size() != 0) ? rps.get(rps.size()-1).getOrder()+1 : 0;
-                    rps.add(new RoutePointForWeb(order, poi));
+            else { // add
+                if (!RoutePointForWeb.existsInList(rps, poi.getName())) {
+                    rps.add(new RoutePointForWeb(rps.size(), poi));
                 }
             }
         }
@@ -169,19 +141,11 @@ public class ConstructorYalet implements Yalet {
             System.out.println("Param: " + e.getKey() + ", value:" + e.getValue().get(0));
         }*/
 
-        if (req.getParameter("poi_id") != null) {
+        if (req.getParameter("poi_id") != null)
             addRoutePoint(req, res);
-            SetRoutePoints(req, res);
-            return;
-        }
+        else
+            SetPoiTypes(res);
 
-        if (req.getParameter("change_order") != null) {
-            changeOrder(req, res);
-            SetRoutePoints(req, res);
-            return ;
-        }
-
-        SetPoiTypes(res);
         SetRoutePoints(req, res);
     }
 }

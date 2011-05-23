@@ -16,6 +16,7 @@ import ru.exorg.core.model.POI;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by IntelliJ IDEA.
@@ -25,79 +26,95 @@ import java.util.ArrayList;
  * To change this template use File | Settings | File Templates.
  */
 public class RouteYalet implements Yalet {
-    private RouteService rs;
     private RecommendedRouteService rrs;
-    private PoiService poiService;
     private static Logger log = Logger.getLogger("Performance");
-
-    @Required
-    public void setRouteService (final RouteService rs) {
-        this.rs = rs;
-    }
 
     @Required
     public void setRecommendedRouteService (final RecommendedRouteService rrs) {
         this.rrs = rrs;
     }
 
-    @Required
-    public void setPoiService(final PoiService ps) {
-        this.poiService = ps;
-    }
-
-    private void SetRoutePoints (InternalRequest req, InternalResponse res) {
-
+    private void SetResponseRoutePoints (final InternalRequest req, InternalResponse res) {
         long start = System.currentTimeMillis();
         log.debug(String.format("RouteYalet : Started setting route points"));
 
-        int routeId  = 0;
-        if (req.getAllParameters().containsKey("id")) {
-            routeId = req.getIntParameter("id");
+        HttpSession s = req.getHttpServletRequest().getSession();
+        List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
+
+        for (RoutePointForWeb rp : rps) {
+            res.addWrapped("route_point", rp);
+            //System.out.println("Item: " + rp.getOrder() + " " + rp.getName());
         }
 
-        final String routeType = req.getParameter("type");
+        long stop = System.currentTimeMillis();
+        log.debug(String.format("RouteYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));
+    }
 
-        if (routeType != null)
-        {  // recommended route
-            HttpSession s = req.getHttpServletRequest().getSession();
-            List<RoutePointForWeb> rps = new ArrayList<RoutePointForWeb>();
+    private void SetRouteByRecommendedRoute (InternalRequest req) {
+        long start = System.currentTimeMillis();
+        log.debug(String.format("RouteYalet : Started setting route by recommended route"));
 
-            try {
-                Route r = rrs.getRecommendedRoute(routeId);
-                for (RoutePoint rp : r.getPoints()) {
-                    POI p = rp.getPoi();
-                    if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1)
-                        continue;
+        HttpSession s = req.getHttpServletRequest().getSession();
+        List<RoutePointForWeb> rps = new ArrayList<RoutePointForWeb>();
+        try {
+            int routeId = req.getIntParameter("id");
+            Route r = rrs.getRecommendedRoute(routeId);
+            for (RoutePoint rp : r.getPoints()) {
+                POI p = rp.getPoi();
+                if (p.getLocation().getLat() == -1 || p.getLocation().getLng() == -1)
+                    continue;
 
-                    res.addWrapped("route_point", new RoutePointForWeb(rp.getOrder(), p));
-                    rps.add(new RoutePointForWeb(rp.getOrder(), p));
-                }
-
-                s.setAttribute("route", rps);
-            } catch (Exception e) {
-                log.error(e);
-                e.printStackTrace();
+                rps.add(new RoutePointForWeb(rp));
             }
-
+            s.setAttribute("route", rps);
             long stop = System.currentTimeMillis();
-            log.debug(String.format("RouteYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));
-
-            return;
+            log.debug(String.format("RouteYalet : Stopped setting route by recommended route. Time elapsed: %d ms", stop - start));
         }
-        else { // user route
+        catch (Exception e) {
+            log.error(e);
+            e.printStackTrace();
+        }
+    }
+
+    private void ChangeOrder (InternalRequest req) {
+        try {
+            long start = System.currentTimeMillis();
+            log.debug(String.format("RouteYalet : Started changing order of route points"));
+
             HttpSession s = req.getHttpServletRequest().getSession();
             List<RoutePointForWeb> rps = (List<RoutePointForWeb>)s.getAttribute("route");
 
-            for (int i = 0; i < rps.size(); ++i) {
-                POI p = poiService.getPoiById(rps.get(i).getPoiId());
-                res.addWrapped("route_point", new RoutePointForWeb(i, p));
+            Map<String, List<String>> m = req.getAllParameters();
+            for (Map.Entry<String, List<String>> e : m.entrySet()) {
+                try {
+                    long poi_id = Long.parseLong(e.getKey());
+                    int order = Integer.parseInt(e.getValue().get(0));
+                    RoutePointForWeb.setOrder(rps, poi_id, order);
+                }
+                catch (NumberFormatException ex) {
+                    //System.out.println("NumberFormatException");
+                    continue;
+                }
             }
+            s.setAttribute("route", rps);
+
             long stop = System.currentTimeMillis();
-            log.debug(String.format("RouteYalet : Stopped setting route points. Time elapsed: %d ms", stop - start));            
+            log.debug(String.format("RouteYalet : Stopped changing order of route points. Time elapsed: %d ms", stop - start));
+        }
+        catch (Exception e) {
+            log.error(e);
+            e.printStackTrace();
         }
     }
 
     public void process (InternalRequest req, InternalResponse res) {
-        SetRoutePoints(req, res);
+        if (req.getParameter("change_order") != null) {
+            //System.out.println("change order");
+            ChangeOrder(req);
+        }
+        if (req.getParameter("type") != null) {
+            SetRouteByRecommendedRoute(req);
+        }
+        SetResponseRoutePoints(req, res);
     }
 }

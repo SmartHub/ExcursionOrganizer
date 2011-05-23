@@ -19,7 +19,6 @@ public class RoutePointForWeb {
     private double lng;
     private String name;
     private String address;
-    //private String image;
 
     public RoutePointForWeb (final int order, final POI poi) {
         this.order = order;
@@ -30,12 +29,20 @@ public class RoutePointForWeb {
         lng = poi.getLocation().getLng();
     }
 
+    public RoutePointForWeb (final RoutePoint rp) {
+        this(rp.getOrder(), rp.getPoi());
+    }
+
     public int getOrder () {
         return order;
     }
 
     public void setOrder (final int order) {
         this.order = order;
+    }
+
+    public void decreaseOrder () {
+        order -= 1;
     }
 
     public String getName() {
