@@ -7,6 +7,10 @@ function init_inner_frame()
 	//alert();
 }
 
+function element(id) {
+    return top.frames["inner-frame"].document.getElementById(id);
+}
+
 function loadPoiList(Action)
 {
     var PoiList = [];
@@ -25,7 +29,7 @@ function loadPoiList(Action)
 			//alert(Poi.Name);
         	});
         //alert("update");
-        updateCheckBoxes(PoiList);
+        updateButtons(PoiList);
         clearMap();
         //if (PoiList.length != 0)
         if (PoiList.length >= 0)
@@ -37,16 +41,20 @@ function loadPoiList(Action)
 	}, 'xml'); // указываем явно тип данных
 }
 
-function add_poi(id, checked)
+function add_poi(id, caption)
 {
     if (not_add == false)
     {
         var action = '';
-        if(checked == false){
-            action = '&action="delete"';
-        }
-        else{
+        if(caption == 'visit') {
             action = '&action="add"';
+            element(id).value = 'remove';
+            element(id).innerText = 'Удалить';
+        }
+        else {
+            action = '&action="delete"';
+            element(id).value = 'visit';
+            element(id).innerText = 'Хочу посетить!';
         }
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 
@@ -56,21 +64,22 @@ function add_poi(id, checked)
 };
 
 
-function updateCheckBoxes(List)
+function updateButtons(List)
 {
     not_add = true;
-    $(top.frames["inner-frame"].document).find('.cb').each(function(){
-        $(this).attr('checked', false);
+    $(top.frames["inner-frame"].document).find('.cb').each(function() {
+        $(this).attr('value', 'visit');
+        $(this).attr('innerText', "Хочу посетить!");
     });
-
 
 	for(var i = 0; i < List.length; ++i)
 	{
 		/* HACK */
-		var cb = top.frames["inner-frame"].document.getElementById(List[i].Id);
+		var cb = element(List[i].Id);
 		if (cb != undefined)
 		{
-			cb.checked = true;
+            cb.value = 'remove';
+            cb.innerText = "Удалить";
 		}
 	}
 	not_add = false;
@@ -87,7 +96,7 @@ function printPoiList(List)
 	{
 		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a><br/>');
 		$('#poi-print').append(
-		    "<br/><input type='button' value = 'удалить' onClick='add_poi(" +
+		    "<br/><input type='button' value='remove' onClick='add_poi(" +
 		    List[i].Id +
 		    ", false);' ></input>");
 		$('#poi-print').append('<hr/>');

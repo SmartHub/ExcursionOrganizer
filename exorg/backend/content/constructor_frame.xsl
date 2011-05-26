@@ -13,7 +13,6 @@
 		</script>
 	</head>
 	<body onLoad = "parent.init_inner_frame()">
-                <input type="button" value="refresh" onclick="parent.init_inner_frame();"/>
   				<ul list-style="none">
 					<xsl:for-each select="page/data/poi">
     					<li>
@@ -23,9 +22,10 @@
 								<img><xsl:attribute name="src"><xsl:value-of select="img-url" /></xsl:attribute></img>
 						</a>
 
-						<input type="checkbox" class="cb" onclick="parent.add_poi(this.id, this.checked);">
+						<button type="button" class="cb" onclick="parent.add_poi(this.id, this.value);">
                             <xsl:attribute name="id"> <xsl:value-of select="@id" /> </xsl:attribute>
-                        </input>Хочу посетить!<br/>
+                        </button>
+
 
 						<HR/>
 
