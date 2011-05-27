@@ -132,6 +132,7 @@ CREATE TABLE poi_distance (
 DROP TABLE IF EXISTS route_recommended;
 CREATE TABLE route_recommended (
     id           INT AUTO_INCREMENT PRIMARY KEY,
+	name         VARCHAR(100) NOT NULL,
     descr        TEXT NULL,
     count_point  INT NOT NULL,
     duration     INT NULL

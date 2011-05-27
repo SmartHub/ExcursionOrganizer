@@ -126,6 +126,7 @@ public class Indexer implements InitializingBean  {
 
             doc.add(createField("DocType", DocTypeReadyRoute));
             doc.add(createField("id", rs.getLong("id")));
+            doc.add(createField("name", rs.getString("name")));
             doc.add(createField("description", rs.getString("descr")));
             doc.add(createField("poiList", poiList));
 

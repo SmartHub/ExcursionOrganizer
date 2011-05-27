@@ -32,7 +32,7 @@ public class RecommendedRoutesYalet implements Yalet {
             for (Route r : rrlist) {
 
                 //System.out.println("SetRecRouteList"+r.getId());
-                res.addWrapped("rec_routes", new RecommendedRouteForWeb(r.getId(), r.getDescription(), r.getImage()));
+                res.addWrapped("rec_routes", new RecommendedRouteForWeb(r.getId(), r.getName(), r.getDescription(), r.getImage()));
             }
             long stop = System.currentTimeMillis();
             log.debug(String.format("RecommendedRoutesYalet : Stopped processing recommended routes list. Time elapsed: %d ms", stop - start));

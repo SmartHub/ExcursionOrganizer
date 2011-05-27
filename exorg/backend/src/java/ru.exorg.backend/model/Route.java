@@ -16,6 +16,8 @@ public class Route {
 
     private long id;
 
+    private String name;
+
     private String description;
 
     private int countPoints;
@@ -24,24 +26,26 @@ public class Route {
 
     private List<RoutePoint> points = null;
 
-    private void init(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
+    private void init(long id, String name, String description, int countPoints, double duration, List<RoutePoint> points) {
         this.id = id;
+        this.name = name;
         this.description = description;
         this.countPoints = countPoints;
         this.duration = duration;
         this.points = points;
     }
 
-    public Route(long id, String description, int countPoints, double duration, List<RoutePoint> points) {
-        this.init(id, description, countPoints, duration, points);
+    // kate: i commented this because it is unused
+    public Route(long id, String name, String description, int countPoints, double duration, List<RoutePoint> points) {
+        this.init(id, name, description, countPoints, duration, points);
     }
 
-    public Route(long id, String description, int countPoints, double duration) {
-        this.init(id, description, countPoints, duration, new ArrayList<RoutePoint>());
+    public Route(final String id, final String name, final String description) {
+        this.init(Long.parseLong(id), name, description, 0, 0, new ArrayList<RoutePoint>());
     }
 
-    public Route(final String id, final String description) {
-        this.init(Long.parseLong(id), description, 0, 0, new ArrayList<RoutePoint>());
+    public Route(long id, String name, String description, int countPoints, double duration) {
+        this.init(id, name, description, countPoints, duration, new ArrayList<RoutePoint>());
     }
 
     public long getId() {
@@ -54,6 +58,10 @@ public class Route {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public void setDescription(String description) {

@@ -35,7 +35,7 @@ public class RecommendedRouteService {
                 poiList.add(new RoutePoint(poiService.getPoiById(poiId), i + 1));
             }
 
-            Route route = new Route(doc.get("id"), doc.get("description"));
+            Route route = new Route(doc.get("id"), doc.get("name"), doc.get("description"));
             route.setPoints(poiList);
 
             return route;

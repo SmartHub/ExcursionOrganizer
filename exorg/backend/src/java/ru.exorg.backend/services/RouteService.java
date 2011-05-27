@@ -73,7 +73,7 @@ public class RouteService {
         };
         List<RoutePoint> listPoints = jdbcTemplate.query(q, mapper);
 
-        Route route = new Route(sid, "user route", listPoints.size(), 0, listPoints);
+        Route route = new Route(sid, "name", "user route", listPoints.size(), 0, listPoints);
 
         return route;
     }

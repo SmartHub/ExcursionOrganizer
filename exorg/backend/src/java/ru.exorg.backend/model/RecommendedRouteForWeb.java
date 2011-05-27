@@ -9,11 +9,13 @@ package ru.exorg.backend.model;
  */
 public class RecommendedRouteForWeb {
     private long id;
+    private String name;
     private String description;
     private String img;
 
-    public RecommendedRouteForWeb (final long id, final String description, final String imgUrl) {
+    public RecommendedRouteForWeb (final long id, final String name, final String description, final String imgUrl) {
         this.id = id;
+        this.name = name;
         this.description = description;
         this.img = imgUrl;
     }
@@ -29,6 +31,9 @@ public class RecommendedRouteForWeb {
     }
     public long getId() {
         return id;
+    }
+    public String getName () {
+        return name;
     }
     public String getDescription () {
         return description;
