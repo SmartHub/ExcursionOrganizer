@@ -31,7 +31,9 @@
 		<div id="rotator">
   			<ul>
 				<xsl:for-each select="page/data/rec_routes">
-    					<li> <!-- class="show"-->
+    					<li>
+							<xsl:attribute name="id"><xsl:value-of select="@id" />
+							</xsl:attribute>
 						<a>
 							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
 							</xsl:attribute>
@@ -49,6 +51,15 @@
 	</xsl:template>
 
 	<xsl:template name="template-right-column">
+        <select id="selector" size="10" onClick="selectorChanged();" onChange="selectorChanged();">
+            <xsl:for-each select="page/data/rec_routes">
+    	        <option>
+                    <xsl:attribute name="value"><xsl:value-of select="@id" />
+				    </xsl:attribute>
+                    <p><xsl:value-of select="description" /></p>
+                </option>
+            </xsl:for-each>
+    </select>
 	</xsl:template>
 
 	<xsl:include href="common.xsl"/>

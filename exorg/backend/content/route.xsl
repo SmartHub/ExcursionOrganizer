@@ -24,7 +24,7 @@
 
 	<xsl:template name="template-init-function">initialize();init_points_()</xsl:template>
 	<xsl:template name="template-content">
-        <div id="poi-print">
+        <div id="route-print">
 
         </div>
 	</xsl:template>

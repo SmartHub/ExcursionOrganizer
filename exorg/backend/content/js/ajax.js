@@ -48,13 +48,19 @@ function add_poi(id, caption)
         var action = '';
         if(caption == 'visit') {
             action = '&action="add"';
-            element(id).value = 'remove';
-            element(id).innerText = 'Удалить';
+            if (element(id) != undefined)
+		    {
+                element(id).value = 'remove';
+                element(id).innerText = 'Удалить';
+            }
         }
         else {
             action = '&action="delete"';
-            element(id).value = 'visit';
-            element(id).innerText = 'Хочу посетить!';
+            if (element(id) != undefined)
+		    {
+                element(id).value = 'visit';
+                element(id).innerText = 'Хочу посетить!';
+            }
         }
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 
@@ -94,11 +100,11 @@ function printPoiList(List)
 	$('#poi-print').append('<br/>Выбранные для посещения достопримечательности:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
-		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a><br/>');
-		$('#poi-print').append(
-		    "<br/><input type='button' value='remove' onClick='add_poi(" +
-		    List[i].Id +
-		    ", false);' ></input>");
+        $('#poi-print').append(
+            "<input type='button' value='X' onClick='add_poi(" +
+            List[i].Id +
+            ", false);' ></input>");
+		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>');
 		$('#poi-print').append('<hr/>');
 	};
 

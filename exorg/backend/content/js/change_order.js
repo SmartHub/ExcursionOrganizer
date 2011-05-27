@@ -43,7 +43,7 @@ function loadPoiList() {
 
 
 function showPoiList(List) {
-	$('#poi-print').html('');
+	$('#route-print').html('');
 
     s = "<table cellpadding = '5'>";
 	for(var i = 0; i < List.length; ++i)
@@ -69,7 +69,7 @@ function showPoiList(List) {
 	s += '<table/>';
 	s += "<input type='button' value = 'Сохранить изменения' onClick='save_order();' id='666'></input>";
 
-	$('#poi-print').append(s);
+	$('#route-print').append(s);
 
     $('#' + PoiList[0].Id + 'u').attr('disabled', true);
     $('#' + PoiList[PoiList.length - 1].Id + 'd').attr('disabled', true);
