@@ -27,7 +27,7 @@ function init_points()
             //alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
         	});                                                            
-		calculate_route(PoiList);
+		calculate_route_unoptimal(PoiList);
 		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
 	}, 'xml'); // указываем явно тип данных

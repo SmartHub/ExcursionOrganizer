@@ -54,6 +54,8 @@
                                     </a>
                                 </li>
                             </ul>
+                            <p id="poi-print">
+                            </p>                            
                         </div>
                         <!-- End Left column -->
 

@@ -53,9 +53,6 @@
   <xsl:template name="template-right-column">
     <div id="map">
     </div>
-    <div id="poi-print">
-
-    </div>
   </xsl:template>
     
   

@@ -11,7 +11,7 @@ a{
 #wrapper{ 
 	margin:0 auto;
 	width:100%;
-	min-width:1320px;
+	min-width:1000px;
 	overflow: hidden;
 }
 
@@ -23,6 +23,10 @@ a{
 	margin:0 0 5px 0;
 	line-height:50px;
 	text-align:right;
+	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
+}
+#poi-print{
+	text-align:left;
 	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
 }
 #main{
