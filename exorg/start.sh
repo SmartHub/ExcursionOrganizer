@@ -20,9 +20,9 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #cd $EO_ROOT/miner/config
 #java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-echo "run processing"
-cd $EO_ROOT/processing/config
-java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+#echo "run processing"
+#cd $EO_ROOT/processing/config
+#java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "Indexing database..."
 rm $EO_ROOT/backend/index/*

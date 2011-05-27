@@ -10,7 +10,6 @@
                 <xsl:text disable-output-escaping="yes">
                     <![CDATA[
 	  <link rel="stylesheet" type="text/css" href="css/style.css" />
-          <script src="js/global_var.js"></script>
 	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           ]]>
                 </xsl:text>

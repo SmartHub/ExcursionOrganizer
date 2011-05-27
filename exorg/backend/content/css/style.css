@@ -29,6 +29,12 @@ a{
 	text-align:left;
 	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
 }
+#poi-description{
+    test-align:justify;
+}
+#title{
+	font:bold 16px Verdana, Arial, Helvetica, sans-serif;
+}
 #main{
 	float:left;
 	width:100%;
