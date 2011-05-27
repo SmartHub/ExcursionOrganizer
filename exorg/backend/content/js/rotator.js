@@ -36,6 +36,8 @@ function rotate(fast) {
 	// Прячем текущую картинку
 	current.animate({opacity: 0.0}, delay)
 	.removeClass('show');
+
+    $("#selector").attr("value", $('div#rotator ul li.show').attr("id"));
 };
 
 function rotate_back(fast) {	
@@ -62,10 +64,13 @@ function rotate_back(fast) {
 	// Прячем текущую картинку
 	current.animate({opacity: 0.0}, delay)
 	.removeClass('show');
+
+	$("#selector").attr("value", $('div#rotator ul li.show').attr("id"));
 };
 
 function init_rotator() {
 	$('div#rotator ul li:first').addClass('show');
+	$("#selector").attr("value", $('div#rotator ul li.show').attr("id"));
 };
 
  
@@ -86,4 +91,21 @@ $(document).ready(function() {
     });
 
 });
+
+function selectorChanged()
+{
+    //alert("selectorChanged();");
+
+    clearInterval(intervalID);
+
+    $('div#rotator ul li.show')
+    .animate({opacity: 0.0}, 0)
+    .removeClass('show');
+
+    var id = $("#selector").attr("value");
+    $('div#rotator ul li#' + id)
+    .addClass('show')
+	.animate({opacity: 1.0}, 0);
+
+}
 
