@@ -18,7 +18,7 @@ a{
 #header{
 	/*min-width:1020px;*/
 	background:#bdda7e;
-	height:150px; 
+	height:120px; 
 	border:1px solid #a4ce60;
 	margin:0 0 5px 0;
 	line-height:50px;
@@ -57,7 +57,7 @@ a{
 	line-height:30px;
 	background:#f6f6f6;
 	text-align:left;
-	min-height: 78%;/* expression(document.body.clientHeight - 110 + "px");*/
+	min-height: 80%;/* expression(document.body.clientHeight - 110 + "px");*/
 	width:auto;
 
 	padding-bottom: 32767px;
@@ -69,7 +69,7 @@ a{
 	width:250px;
 	margin:0 -252px 0 0;
 	background:#e1edbf;
-	height:650px;
+	height:680px;
 	line-height:350px;
 	border-top:1px solid #bed63a;
 	border-bottom:1px solid #bed63a;
