@@ -38,14 +38,15 @@
                             <p id="title">
                                 <xsl:value-of select="name" />
                             </p>
-                            <br/>                            
+                            <br/>
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="img" />
 								</xsl:attribute>
 							</img>
-						</a>	
-						<p id = "poi-description"><xsl:value-of select="description" /></p>
+						</a>
+                        <p><xsl:value-of select="description" /></p>
+						<!--p id = "poi-description"><xsl:value-of select="description" /></p-->
     					</li>
 				</xsl:for-each>
 			</ul>
