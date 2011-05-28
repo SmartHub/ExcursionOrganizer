@@ -26,7 +26,7 @@ a{
 	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
 }
 #logo{
-	text-align:center;
+	text-align:left;
 }
 #city{
 	text-align:right;
@@ -37,6 +37,7 @@ a{
 }
 #poi-description{
     text-align:justify;
+    padding:20px 20px 20px 20px;
 }
 #title{
 	font:bold 16px Verdana, Arial, Helvetica, sans-serif;
