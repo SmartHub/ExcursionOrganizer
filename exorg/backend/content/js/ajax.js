@@ -23,7 +23,8 @@ function loadPoiList(Action)
 				Name : $(this).find('name').text(),
 				Lat : $(this).attr("lat"),
 				Lng : $(this).attr("lng"),
-				Url : "poi.html?id=" + $(this).attr("poi-id")
+				Url : "poi.html?id=" + $(this).attr("poi-id"),
+                Address: $(this).find('address').text()
 			};
 			PoiList.push(Poi);
         	});

@@ -25,7 +25,7 @@ function loadPoiList() {
 				Id : $(this).attr("poi-id"),
 				Order : $(this).attr("order"),
 				Name : $(this).find('name').text(),
-				Addr : $(this).find('address').text(),
+				Address : $(this).find('address').text(),
 				Lat : $(this).attr("lat"),
 				Lng : $(this).attr("lng"),
 				Url : "poi.html?id=" + $(this).attr("poi-id")
@@ -60,7 +60,7 @@ function showPoiList(List) {
 
 		s += "<td/><td><a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>';
 		s += "<td/><td>";
-		s += List[i].Addr;
+		s += List[i].Address;
 		s += "<td>";
 
         s += '<td/><tr/>';
