@@ -56,7 +56,7 @@ function update_points()
 
     //alert('update');
     PoiList.sort(Comparator);
-    calculate_route(PoiList);
+    calculate_route_unoptimal(PoiList);
     /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
 };

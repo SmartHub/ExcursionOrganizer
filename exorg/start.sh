@@ -24,10 +24,10 @@ EO_CP=$(echo $(find $EO_LIB -follow -name *jar) | sed 's/ /:/g')
 #cd $EO_ROOT/processing/config
 #java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
-#echo "Indexing database..."
-#rm $EO_ROOT/backend/index/*
-#cd $EO_ROOT/indexer/config
-#java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
+echo "Indexing database..."
+rm $EO_ROOT/backend/index/*
+cd $EO_ROOT/indexer/config
+java -cp $EO_CP ru.exorg.core.util.Starter config.xml $EO_ROOT
 
 echo "Running backend HTTP server"
 cd $EO_ROOT/backend/config

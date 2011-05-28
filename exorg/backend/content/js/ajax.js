@@ -47,9 +47,9 @@ function add_poi(id, caption)
             if (element(id) != undefined)
 		    {
                 element(id).value = 'remove';
-                element(id).innerHtml = '<img src="img/icons/delete.png"/>';
+                //element(id).innerHtml = '<img src="img/icons/delete.png"/>';
 				//element(id).title = 'Удалить из списка для посещения';
-				element(id).innerText = 'Удалить';
+				//element(id).innerText = 'Удалить';
             }
         }
         else {
@@ -57,7 +57,7 @@ function add_poi(id, caption)
             if (element(id) != undefined)
 		    {
                 element(id).value = 'visit';
-                element(id).innerText = 'Хочу посетить!';
+                //element(id).innerText = 'Хочу посетить!';
             }
         }
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
@@ -82,7 +82,8 @@ function updateButtons(List)
 		if (cb != undefined)
 		{
             cb.value = 'remove';
-            //cb.innerHtml = '<img src="img/icons/delete.png"> Удалить';
+            //cb.innerHTML = "<img src='img/icons/delete.png'/>"; // Удалить
+            //$('#' + List[i].Id).html("<img src='img/icons/delete.png'/>");
 			//cb.title = 'Удалить из списка для посещения';
 			cb.innerText = 'Удалить';
 		}
@@ -97,7 +98,7 @@ function printPoiList(List)
 	$('#poi-print').append('<br/>  Выбранные для посещения достопримечательности:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
-        $('#poi-print').append("<button type='button' value='remove' onClick='add_poi(" + List[i].Id + ", this.value);' ><img src='img/icons/delete.png'></button>");
+        $('#poi-print').append("<button type='button' value='remove' onClick='add_poi(" + List[i].Id + ", this.value);' ><img src='img/icons/delete.png'/></button>");
 		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>');
 		$('#poi-print').append('<hr/>');
 	};

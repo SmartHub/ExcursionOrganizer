@@ -23,7 +23,8 @@
 						</a>
 
 						<button type="button" class="cb" onclick="parent.add_poi(this.id, this.value);">
-                            <xsl:attribute name="id"> <xsl:value-of select="@id" /> </xsl:attribute>
+                            <xsl:attribute name="id"><xsl:value-of select="@id" /></xsl:attribute>
+                            <p></p>
                         </button>
 
 
