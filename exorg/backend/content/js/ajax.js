@@ -9,6 +9,7 @@ function init_inner_frame()
 
 function element(id) {
     return top.frames["inner-frame"].document.getElementById(id);
+    //return ("#" + id, $("#inner-frame"));
 }
 
 function loadPoiList(Action)
@@ -50,15 +51,15 @@ function add_poi(id, caption)
                 element(id).value = 'remove';
                 //element(id).innerHtml = '<img src="img/icons/delete.png"/>';
 				//element(id).title = 'Удалить из списка для посещения';
-				//element(id).innerText = 'Удалить';
+				element(id).innerHTML = 'Удалить';
             }
         }
         else {
             action = '&action="delete"';
             if (element(id) != undefined)
 		    {
-                element(id).value = 'visit';
-                //element(id).innerText = 'Хочу посетить!';
+                //element(id).value = 'visit';
+                element(id).innerHTML = 'Хочу посетить!';
             }
         }
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
@@ -73,7 +74,7 @@ function updateButtons(List)
     not_add = true;
     $(top.frames["inner-frame"].document).find('.cb').each(function() {
         $(this).attr('value', 'visit');
-        $(this).attr('innerText', "Хочу посетить!");
+        $(this).attr('innerHTML', "Хочу посетить!");
     });
 
 	for(var i = 0; i < List.length; ++i)
@@ -86,7 +87,7 @@ function updateButtons(List)
             //cb.innerHTML = "<img src='img/icons/delete.png'/>"; // Удалить
             //$('#' + List[i].Id).html("<img src='img/icons/delete.png'/>");
 			//cb.title = 'Удалить из списка для посещения';
-			cb.innerText = 'Удалить';
+			cb.innerHTML = 'Удалить';
 		}
 	}
 	not_add = false;

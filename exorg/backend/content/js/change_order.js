@@ -36,7 +36,7 @@ function loadPoiList() {
         //alert("update fin");
         PoiList.sort(sortRoutePoints);
         showPoiList(PoiList);
-        calculate_route(PoiList);
+        calculate_route_unoptimal(PoiList);
         length = PoiList.length;
 	}, 'xml'); // указываем явно тип данных
 }
@@ -92,7 +92,7 @@ function up_poi(id) {
         {
             swap_poi(i, i-1);
             showPoiList(PoiList);
-            calculate_route(PoiList);
+            calculate_route_unoptimal(PoiList);
             return;
         }
     }
@@ -106,7 +106,7 @@ function down_poi(id) {
             swap_poi(i, i+1);
 
             showPoiList(PoiList);
-            calculate_route(PoiList);
+            calculate_route_unoptimal(PoiList);
             return;
         }
     }
