@@ -21,12 +21,14 @@ function init_points()
 				Name : $(this).find('name').text(),
 				Lat : $(this).attr("lat"),
 				Lng : $(this).attr("lng"),
-				Url : "poi.html?id=" + $(this).attr("poi-id")
+				Url : "poi.html?id=" + $(this).attr("poi-id"),
+                Address: $(this).find('address').text()
 			};
 			//Poi.Url = "poi.html?id=" + Poi.Id;
             //alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + "; " + Poi.Lng);
 			PoiList.push(Poi);
-        	});                                                            
+        	});
+        initialize_full(PoiList);
 		calculate_route_unoptimal(PoiList);
 		/* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
@@ -47,7 +49,8 @@ function update_points()
             Name : $(this).attr('name'),
             Lat : $(this).attr("lat"),
             Lng : $(this).attr("lng"),
-            Url : "poi.html?id=" + $(this).attr("poi-id")
+            Url : "poi.html?id=" + $(this).attr("poi-id"),
+            Address: $(this).find('address').text()
         };
         //alert(Poi.Id + "; " + Poi.Name + " ; " + Poi.Lat + 3"; " + Poi.Lng);
         PoiList.push(Poi);
@@ -56,7 +59,7 @@ function update_points()
 
     //alert('update');
     PoiList.sort(Comparator);
-    calculate_route(PoiList);
+    calculate_route_unoptimal(PoiList);
     /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 
 };
