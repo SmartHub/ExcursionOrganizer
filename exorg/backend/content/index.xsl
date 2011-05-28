@@ -33,12 +33,12 @@
 							<xsl:attribute name="id"><xsl:value-of select="@id" />
 							</xsl:attribute>
 						<a>
+							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
+							</xsl:attribute>
                             <p id="title">
                                 <xsl:value-of select="name" />
                             </p>
-                            <br/>
-							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
-							</xsl:attribute>
+                            <br/>                            
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="img" />
