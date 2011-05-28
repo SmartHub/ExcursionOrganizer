@@ -1,20 +1,18 @@
 package ru.exorg.processing;
 
-import java.util.*;
-import java.net.URLEncoder;
-
-import org.springframework.beans.factory.InitializingBean;
-
 import org.apache.commons.httpclient.HttpConnection;
 import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.HttpState;
 import org.apache.commons.httpclient.methods.GetMethod;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-
+import org.springframework.beans.factory.InitializingBean;
 import ru.exorg.core.model.Location;
+
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 final public class GeoService implements InitializingBean {
     final private static int    httpPort = 80;
@@ -25,8 +23,8 @@ final public class GeoService implements InitializingBean {
 
 
     final private static String YAPI_PROTO = "http://";
-    final private static String YAPI_SERVER = "geocode-maps.yandex.ru/";
-    final private static String YAPI_PATH = "1.x/?";
+    final private static String YAPI_SERVER = "geocode-maps.yandex.ru";
+   final private static String YAPI_PATH = "/1.x/?";
     final private static String YAPI_Q_FOOTER = "&key=ANvK1k0BAAAAdOSwLAIAN1YUetQwuIkOfKscfc9OprS8ed8AAAAAAAAAAABpeUFMBr_TjUPQr01cqWYXU6dxUA==&format=json";
 
     final public static int API_GOOGLE = 1;
