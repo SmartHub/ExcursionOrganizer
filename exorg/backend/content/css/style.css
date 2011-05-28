@@ -30,7 +30,7 @@ a{
 	font:bold 13px Verdana, Arial, Helvetica, sans-serif;
 }
 #poi-description{
-    test-align:justify;
+    text-align:justify;
 }
 #title{
 	font:bold 16px Verdana, Arial, Helvetica, sans-serif;

@@ -24,7 +24,7 @@
 	<xsl:template name="template-init-function">init_rotator();</xsl:template>
 
 	<xsl:template name="template-content">
-		<input type="button" id="prev" name="prev" value="Листать назад"/>
+		<input type="button" id="prev" name="prev" value="Листать назад" />
 		<input type="button" id="next" name="next" value="Листать вперед"/>
 		<div id="rotator">
   			<ul>
@@ -45,8 +45,8 @@
 								</xsl:attribute>
 							</img>
 						</a>
-                        <p><xsl:value-of select="description" /></p>
-						<!--p id = "poi-description"><xsl:value-of select="description" /></p-->
+                        <!--p><xsl:value-of select="description" /></p-->
+						<p id = "poi-description"><xsl:value-of select="description" /></p>
     					</li>
 				</xsl:for-each>
 			</ul>
