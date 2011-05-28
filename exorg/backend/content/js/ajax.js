@@ -27,18 +27,14 @@ function loadPoiList(Action)
                 Address: $(this).find('address').text()
 			};
 			PoiList.push(Poi);
-			//alert(Poi.Name);
         	});
-        //alert("update");
         updateButtons(PoiList);
         clearMap();
-        //if (PoiList.length != 0)
         if (PoiList.length >= 0)
         {
             calculate_route(PoiList);
         }
         printPoiList(PoiList);
-        //alert("update fin");
 	}, 'xml'); // указываем явно тип данных
 }
 
@@ -52,7 +48,9 @@ function add_poi(id, caption)
             if (element(id) != undefined)
 		    {
                 element(id).value = 'remove';
-                element(id).innerText = 'Удалить';
+                element(id).innerHtml = '<img src="img/icons/delete.png"/>';
+				//element(id).title = 'Удалить из списка для посещения';
+				element(id).innerText = 'Удалить';
             }
         }
         else {
@@ -66,7 +64,6 @@ function add_poi(id, caption)
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 
         loadPoiList('&poi_id=' + id + action);
-            /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 	}
 };
 
@@ -86,7 +83,9 @@ function updateButtons(List)
 		if (cb != undefined)
 		{
             cb.value = 'remove';
-            cb.innerText = "Удалить";
+            //cb.innerHtml = '<img src="img/icons/delete.png"> Удалить';
+			//cb.title = 'Удалить из списка для посещения';
+			cb.innerText = 'Удалить';
 		}
 	}
 	not_add = false;
@@ -95,20 +94,12 @@ function updateButtons(List)
 
 function printPoiList(List)
 {
-
-    //alert("printPoiList()" + List.length);
 	$('#poi-print').html('');
-	$('#poi-print').append('<br/>Выбранные для посещения достопримечательности:<br/><hr/>');
+	$('#poi-print').append('<br/>  Выбранные для посещения достопримечательности:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
-        $('#poi-print').append(
-            "<input type='button' value='X' onClick='add_poi(" +
-            List[i].Id +
-            ", false);' ></input>");
+        $('#poi-print').append("<button type='button' value='remove' onClick='add_poi(" + List[i].Id + ", this.value);' ><img src='img/icons/delete.png'></button>");
 		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>');
 		$('#poi-print').append('<hr/>');
 	};
-
-
-	//$('#poi-print').load('constructor.html?_ox');
 }

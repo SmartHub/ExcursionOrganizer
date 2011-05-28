@@ -36,15 +36,20 @@
       <ul>
 	<xsl:for-each select="page/data/type">
 	  <li>
-	    <a href="#" id="{name}" onClick="document.getElementById('inner-frame').src= 'constructor_frame.html?name={name}';loadPoiList('');">
-              <xsl:value-of select="name"/>
-	      </a>
+        <!--a>
+		    <xsl:attribute name="onClick">parent.location.href='poi.html?id=<xsl:value-of select="@id" />'</xsl:attribute>
+			<img><xsl:attribute name="src"><xsl:value-of select="img-url" /></xsl:attribute></img>
+		</a-->
+
+	    <a href="#" id="{name}" title="{name}" onClick="document.getElementById('inner-frame').src= 'constructor_frame.html?name={name}';loadPoiList('');">
+              <img><xsl:attribute name="src"><xsl:value-of select="icon" /></xsl:attribute></img>
+	    </a>
 	  </li>
 	</xsl:for-each>
       </ul>
     </div>
 
-    <div class="innertube">
+    <div class="innertube">	
       <iframe frameborder="0" id="inner-frame" src="constructor_frame.html?name=музей" width="100%" height="80%"></iframe>
     </div>
   </xsl:template>

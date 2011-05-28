@@ -34,7 +34,8 @@ DROP TABLE IF EXISTS poi_type;
 CREATE TABLE poi_type (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     name        VARCHAR(100) NOT NULL,
-    guess_rx    VARCHAR(300) NULL
+    guess_rx    VARCHAR(300) NULL,
+	icon        VARCHAR(100) NOT NULL
 ) DEFAULT CHARACTER SET=utf8;
 
 /* таблица достопримечательностей */

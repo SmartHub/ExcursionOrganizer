@@ -10,22 +10,25 @@ package ru.exorg.core.model;
 public class PoiType {
     private long id;
     private String name;
+    private String icon;
 
-    private void init(long id, final String name) {
+    private void init(long id, final String name, final String icon) {
         this.id = id;
         this.name = name;
+        this.icon = icon;
     }
 
-    public PoiType(long id, final String name) {
-        this.init(id, name);
+    public PoiType(long id, final String name, final String icon) {
+        this.init(id, name, icon);
     }
 
-    public PoiType(final String id, final String name) {
-        this.init(Long.valueOf(id), name);
+    public PoiType(final String id, final String name, final String icon) {
+        this.init(Long.valueOf(id), name, icon);
     }
 
-    public PoiType(String name) {
+    public PoiType(final String name, final String icon) {
         this.name = name;
+        this.icon = icon;
     }
 
     public long getId() {
@@ -36,11 +39,7 @@ public class PoiType {
         return name;
     }
 
-
-    // like Searcher.queryByType
-    public int[] GetAllPoiTypes () {
-        return null;
-        
+    public String getIcon() {
+        return icon;
     }
-
 }

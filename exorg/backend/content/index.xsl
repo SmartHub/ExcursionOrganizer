@@ -21,12 +21,10 @@
 		<script type="text/javascript" src="js/rotator.js"></script>
 	</xsl:template>
 
-	<xsl:template name="template-init-function">
-		init_rotator()
-	</xsl:template>
+	<xsl:template name="template-init-function">init_rotator();</xsl:template>
 
 	<xsl:template name="template-content">
-		<input type="button" id="prev" name="prev" value="Листать назад"/>
+		<input type="button" id="prev" name="prev" value="Листать назад" />
 		<input type="button" id="next" name="next" value="Листать вперед"/>
 		<div id="rotator">
   			<ul>
@@ -35,18 +33,19 @@
 							<xsl:attribute name="id"><xsl:value-of select="@id" />
 							</xsl:attribute>
 						<a>
+							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
+							</xsl:attribute>
                             <p id="title">
                                 <xsl:value-of select="name" />
                             </p>
                             <br/>
-							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
-							</xsl:attribute>
 							<img>
 								<xsl:attribute name="src">
 									<xsl:value-of select="img" />
 								</xsl:attribute>
 							</img>
-						</a>	
+						</a>
+                        <!--p><xsl:value-of select="description" /></p-->
 						<p id = "poi-description"><xsl:value-of select="description" /></p>
     					</li>
 				</xsl:for-each>

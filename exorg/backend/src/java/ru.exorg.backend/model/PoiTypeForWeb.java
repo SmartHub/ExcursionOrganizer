@@ -9,12 +9,17 @@ package ru.exorg.backend.model;
  */
 public class PoiTypeForWeb {
     private String name;
+    private String icon;
 
-    public PoiTypeForWeb(final String name) {
+    public PoiTypeForWeb(final String name, final String icon) {
         this.name = name;
+        this.icon = icon;
     }
 
     public String getName () {
         return name;
+    }
+    public String getIcon () {
+        return icon;
     }
 }

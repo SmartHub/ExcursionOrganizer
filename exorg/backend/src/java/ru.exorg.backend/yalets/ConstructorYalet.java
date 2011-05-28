@@ -47,7 +47,7 @@ public class ConstructorYalet implements Yalet {
 
             List<PoiType> poiTypes = poiTypeService.getPoiTypes();
             for (PoiType t : poiTypes) {
-                res.addWrapped("type", new PoiTypeForWeb(t.getName()));
+                res.addWrapped("type", new PoiTypeForWeb(t.getName(), t.getIcon()));
             }
             
             long stop = System.currentTimeMillis();
