@@ -47,7 +47,7 @@ function add_poi(id, caption)
             if (element(id) != undefined)
 		    {
                 element(id).value = 'remove';
-                //element(id).innerHtml = '<img src="img/icons/delete.png"> Удалить';
+                element(id).innerHtml = '<img src="img/icons/delete.png"/>';
 				//element(id).title = 'Удалить из списка для посещения';
 				element(id).innerText = 'Удалить';
             }
