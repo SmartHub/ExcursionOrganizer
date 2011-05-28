@@ -44,7 +44,7 @@
       </ul>
     </div>
 
-    <div class="innertube">
+    <div class="innertube">	
       <iframe frameborder="0" id="inner-frame" src="constructor_frame.html?name=музей" width="100%" height="80%"></iframe>
     </div>
   </xsl:template>

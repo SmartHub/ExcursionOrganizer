@@ -35,9 +35,10 @@
 							<xsl:attribute name="id"><xsl:value-of select="@id" />
 							</xsl:attribute>
 						<a>
-                            <p id="title">
+                            <!--p id="title">
                                 <xsl:value-of select="name" />
-                            </p>
+                            </p-->
+                            <p><xsl:value-of select="name" /></p>
                             <br/>
 							<xsl:attribute name="href">route.html?type=r&amp;id=<xsl:value-of select="@id" />
 							</xsl:attribute>
@@ -46,8 +47,9 @@
 									<xsl:value-of select="img" />
 								</xsl:attribute>
 							</img>
-						</a>	
-						<p id = "poi-description"><xsl:value-of select="description" /></p>
+						</a>
+                        <p><xsl:value-of select="description" /></p>
+						<!--p id = "poi-description"><xsl:value-of select="description" /></p-->
     					</li>
 				</xsl:for-each>
 			</ul>

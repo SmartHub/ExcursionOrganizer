@@ -51,7 +51,10 @@ function add_poi(id, caption)
             if (element(id) != undefined)
 		    {
                 element(id).value = 'remove';
-                element(id).innerText = 'Удалить';
+                element(id).innerHtml = '<img src="img/icons/delete.png"> Удалить';
+				//element(id).innerText = ' Удалить';
+				element(id).title = 'Удалить из списка для посещения';
+				//$('#poi-print').html('<button type="button" id="myb"><img src="img/icons/add.png">Add!</button>');
             }
         }
         else {
@@ -65,7 +68,6 @@ function add_poi(id, caption)
         //$.get('constructor.html?poi_id=' + id + '&_ox' + action, {}, {},'xml');
 
         loadPoiList('&poi_id=' + id + action);
-            /* в этом месте будет вызвана функция для отрисовки маршрута с тем же массивом объектов в кач-ве параметра */
 	}
 };
 
@@ -85,7 +87,9 @@ function updateButtons(List)
 		if (cb != undefined)
 		{
             cb.value = 'remove';
-            cb.innerText = "Удалить";
+            cb.innerHtml = '<img src="img/icons/delete.png"> Удалить';
+			//cb.innerText = ' Удалить';
+			cb.title = 'Удалить из списка для посещения';
 		}
 	}
 	not_add = false;
@@ -94,20 +98,13 @@ function updateButtons(List)
 
 function printPoiList(List)
 {
-
-    //alert("printPoiList()" + List.length);
 	$('#poi-print').html('');
-	$('#poi-print').append('<br/>Выбранные для посещения достопримечательности:<br/><hr/>');
+$('#poi-print').html('<button type="button" id="myb"><img src="img/icons/add.png">Add!</button>');
+	$('#poi-print').append('<br/>  Выбранные для посещения достопримечательности:<br/><hr/>');
 	for(var i = 0; i < List.length; ++i)
 	{
-        $('#poi-print').append(
-            "<input type='button' value='X' onClick='add_poi(" +
-            List[i].Id +
-            ", false);' ></input>");
+        $('#poi-print').append("<button type='button' value='remove' onClick='add_poi(" + List[i].Id + ", this.value);' ><img src='img/icons/delete.png'>Del</button>");
 		$('#poi-print').append("<a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>');
 		$('#poi-print').append('<hr/>');
 	};
-
-
-	//$('#poi-print').load('constructor.html?_ox');
 }
