@@ -23,12 +23,17 @@
                 <div id="wrapper">
                     <!-- Begin Header -->
                     <div id="header">
+                        <div id="city">
                         Ваш город:
                         <select name="guidelinks">
                             <option value="spb">
                                 Санкт-Петербург
                             </option>
                         </select>
+                        </div>
+                        <div id="logo">
+                            <img src="img/logo4.png" alt="logo"></img>
+                        </div>
                     </div>
                     <!-- End Header -->
 

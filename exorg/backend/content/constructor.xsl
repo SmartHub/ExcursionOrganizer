@@ -50,7 +50,7 @@
     </div>
 
     <div class="innertube">	
-      <iframe frameborder="0" id="inner-frame" src="constructor_frame.html?name=музей" width="100%" height="80%"></iframe>
+      <iframe frameborder="0" id="inner-frame" src="constructor_frame.html?name=музей" width="100%" height="70%"></iframe>
     </div>
   </xsl:template>
   
