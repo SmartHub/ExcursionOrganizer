@@ -21,9 +21,7 @@
 		<script type="text/javascript" src="js/rotator.js"></script>
 	</xsl:template>
 
-	<xsl:template name="template-init-function">
-		init_rotator()
-	</xsl:template>
+	<xsl:template name="template-init-function">init_rotator();</xsl:template>
 
 	<xsl:template name="template-content">
 		<input type="button" id="prev" name="prev" value="Листать назад"/>
