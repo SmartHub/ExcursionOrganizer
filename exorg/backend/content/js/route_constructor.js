@@ -4,6 +4,7 @@ var directionsDisplay;
 var directionsService = new google.maps.DirectionsService();
 var markersArray = [];
 var waypointsOrder = [];
+var markerIcons = [];
 
 
 function show_infowindow(marker, name_poi, address, url){
@@ -50,14 +51,22 @@ function initialize_full(data){
 	    map = new google.maps.Map(document.getElementById("map"), options);
 	    directionsDisplay.setMap(map);
         markersArray = [];
+        markerIcons = [];
         for (i in data){
             var marker = new google.maps.Marker({
                     map: map,
                     position: new google.maps.LatLng(data[i].Lat, data[i].Lng),
-                    title: data[i].Name
+                    title: data[i].Name,
+                    icon: image
             });
             markersArray.push(marker);
             show_infowindow(marker, data[i].Name, data[i].Address, data[i].Url);
+            var image = new google.maps.MarkerImage('http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld='+i+'|F31121|000000',
+                      new google.maps.Size(20, 34),
+                      new google.maps.Point(0, 0),
+                      new google.maps.Point(10, 34)
+            );
+            markerIcons.push(image);
         }
     }
 }
@@ -97,9 +106,33 @@ function calculate_route(data){
         directionsService.route(request, function(result, status) {
 	        if (status == google.maps.DirectionsStatus.OK) {
                 directionsDisplay.setDirections(result);
-                waypointsOrder = result.waypoint_order;
             }
 	    });
+        var directions = directionsDisplay.getDirections();
+        //waypointsOrder = result.waypoint_order;
+        for (i in markersArray) {
+            var pos = markersArray[i].getPosition();
+            switch (pos.toString()) {
+                case start.toString():
+                    markersArray[i].setIcon(markerIcons[0]);
+                    break
+                case end.toString():
+                    markersArray[i].setIcon(markerIcons[count-1]);
+                    break
+                default:
+                    for (j in result.waypoint_order) {
+                        if (waypts[parseInt(result.waypoint_order[j])].location.toString() == pos.toString()) {
+                            var index = parseInt(j, 10) + parseInt(1, 10);
+                            markersArray[i].setIcon(markerIcons[index]);
+                            break
+                        }
+                    }
+                    break
+            }
+
+        }
+
+
         showMarkers();
     }
     else {
@@ -125,7 +158,7 @@ function calculate_route_unoptimal(data){
 
     	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
 	    var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
-
+        waypointsOrder = waypts;
     	var request = {
     		origin: start,
 	    	destination: end,
@@ -141,6 +174,23 @@ function calculate_route_unoptimal(data){
                 showMarkers();
             }
 	    });
+        for (i in markersArray) {
+            var pos = markersArray[i].getPosition();
+            switch (pos.toString()) {
+                case start.toString():
+                    markersArray[i].setIcon(markerIcons[0]);
+                    break
+                case end.toString():
+                    markersArray[i].setIcon(markerIcons[count-1]);
+                    break
+                default:
+                    markersArray[i].setIcon(markerIcons[findIcon(pos)]);
+                    break
+            }
+
+        }
+
+
         showMarkers();
     }
     else {
@@ -149,6 +199,14 @@ function calculate_route_unoptimal(data){
     }
 }
 
+function findIcon(pos) {
+    for (j in waypointsOrder) {
+        if (waypointsOrder[j].location.toString() == pos.toString()) {
+            var index = parseInt(1, 10) + parseInt(j, 10);
+            return index;
+        }
+    }
+}
 
 function calculate_route_optimize(data, optimize){
 
