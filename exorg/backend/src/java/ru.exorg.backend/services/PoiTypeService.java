@@ -21,9 +21,9 @@ public class PoiTypeService {
     private static class POITypeMapper implements DocMapper<PoiType> {
         public PoiType mapDoc(Document doc) {
             try {
-                 return new PoiType(doc.get("id"), doc.get("name"));
+                 return new PoiType(doc.get("id"), doc.get("name"), doc.get("icon"));
             } catch (Exception e) {
-                 return new PoiType(0, "");
+                 return new PoiType(0, "", "");
             }
         }
     }

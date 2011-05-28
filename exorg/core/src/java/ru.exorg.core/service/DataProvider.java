@@ -45,7 +45,7 @@ public class DataProvider implements InitializingBean {
 
     private static class POITypeMapper implements RowMapper<PoiType> {
         public PoiType mapRow(ResultSet rs, int i) throws SQLException {
-            return new PoiType(rs.getLong("id"), rs.getString("name"));
+            return new PoiType(rs.getLong("id"), rs.getString("name"), rs.getString("icon"));
         }
     }
 

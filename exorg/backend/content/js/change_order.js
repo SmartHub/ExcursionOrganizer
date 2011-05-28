@@ -50,13 +50,13 @@ function showPoiList(List) {
 	{
 	    s += '<tr><td>';
 
-        s +="<input type='button' class='up' value = '^' id='" + List[i].Id + "u' onClick='up_poi(" +
+        s +="<button type='button' class='up' value = '^' id='" + List[i].Id + "u' onClick='up_poi(" +
 		    List[i].Id +
-		    ");' ></input>";
+		    ");' ><img src='img/icons/up.gif'></button>";
 		s += "<td/><td>";
-		s +="<input type='button' value = 'V' id='" + List[i].Id + "d' onClick='down_poi(" +
+		s +="<button type='button' value = 'V' id='" + List[i].Id + "d' onClick='down_poi(" +
 		    List[i].Id +
-		    ");' ></input>";
+		    ");' ><img src='img/icons/down.gif'></button>";
 
 		s += "<td/><td><a href='poi.html?id=" + List[i].Id + "'>" + List[i].Name + '</a>';
 		s += "<td/><td>";

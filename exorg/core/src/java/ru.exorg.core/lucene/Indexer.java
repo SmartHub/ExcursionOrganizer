@@ -86,7 +86,7 @@ public class Indexer implements InitializingBean  {
         doc.add(createField("DocType", DocTypePOIType));
         doc.add(createField("id", poiType.getId()));
         doc.add(createField("name", poiType.getName()));
-
+        doc.add(createField("icon", poiType.getIcon()));
         return doc;
     }
 
