@@ -32,7 +32,7 @@
                         </select>
                         </div>
                         <div id="logo">
-                            <img src="img/logo6.png" alt="logo"></img>
+                            <img src="img/logo8.png" alt="logo"></img>
                         </div>
                     </div>
                     <!-- End Header -->
