@@ -70,6 +70,7 @@ function initialize_full(data){
             );
             markerIcons.push(image);
         }
+
     }
 }
 
@@ -108,38 +109,17 @@ function calculate_route(data){
         directionsService.route(request, function(result, status) {
 	        if (status == google.maps.DirectionsStatus.OK) {
 
+                if (data.length == 1) {
+                    var currentPos = result.routes[0].legs[0].start_location;
+                    markersArray[0].setPosition(currentPos);
+                    map.setZoom(4);
+                }
                 directionsDisplay.setDirections(result);
             }
 	    });
         showMarkers();
-        /*
-        var directions = directionsDisplay.getDirections();
 
-        //waypointsOrder = result.waypoint_order;
-        for (i in markersArray) {
-            var pos = markersArray[i].getPosition();
-            switch (pos.toString()) {
-                case start.toString():
-                    markersArray[i].setIcon(markerIcons[0]);
-                    break
-                case end.toString():
-                    markersArray[i].setIcon(markerIcons[count-1]);
-                    break
-                default:
-                    for (j in result.waypoint_order) {
-                        if (waypts[parseInt(result.waypoint_order[j])].location.toString() == pos.toString()) {
-                            var index = parseInt(j, 10) + parseInt(1, 10);
-                            markersArray[i].setIcon(markerIcons[index]);
-                            break
-                        }
-                    }
-                    break
-            }
 
-        }
-
-        showMarkers();
-          */
     }
     else {
         initialize();
@@ -206,6 +186,9 @@ function calculate_route_unoptimal(data){
 
 
         showMarkers();
+        if (data.length == 1) {
+            map.setCenter(markersArray[0].getPosition());
+        }
     }
     else {
         initialize();
@@ -220,44 +203,6 @@ function findIcon(pos) {
             return index;
         }
     }
-}
-
-function calculate_route_optimize(data, optimize){
-
-    var waypts = [];
-	var count = data.length;
-    if (count > 0) {
-	    for (var i = 1; i < count - 1; i++) {
-		    waypts.push({
-			    location:new google.maps.LatLng(data[i].Lat, data[i].Lng),
-			    stopover:true
-		    });
-	    }
-
-    	var start = new google.maps.LatLng(data[0].Lat, data[0].Lng);
-	    var end = new google.maps.LatLng(data[count-1].Lat, data[count-1].Lng);
-
-    	var request = {
-    		origin: start,
-	    	destination: end,
-		    waypoints: waypts,
-		    optimizeWaypoints: optimize,
-		    travelMode: google.maps.DirectionsTravelMode.WALKING
-	    };
-
-        directionsService.route(request, function(result, status) {
-	        if (status == google.maps.DirectionsStatus.OK) {
-                directionsDisplay.setDirections(result);
-                waypointsOrder = result.waypoint_order;
-                showMarkers();
-            }
-	    });
-    }
-    else {
-        initialize();
-
-    }
-
 }
 
 

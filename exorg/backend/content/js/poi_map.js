@@ -84,8 +84,9 @@ function initializeFull(poiId, lat, long, name_poi, address, url) {
                 var testMarker = new google.maps.Marker({
 		            position: new google.maps.LatLng(PoiList[j].Lat, PoiList[j].Lng),
                     map: map,
-		            title: "test"
+		            title: PoiList[j].Name
                 });
+
                 show_infowindow(testMarker, PoiList[j].Name, PoiList[j].Address, PoiList[j].Url);
                 nearestMarkersArray[j] = testMarker;
             }
