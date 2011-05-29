@@ -38,12 +38,14 @@ function initialize_full(data){
     }
     else {
         directionsDisplay = new google.maps.DirectionsRenderer();
+
         directionsDisplay.setOptions({
                 suppressMarkers: true
         });
+
 	    posCity = new google.maps.LatLng(59.63380760, 29.42479870);
 	    var options = {
-		    zoom:8,
+		    zoom:4,
 		    mapTypeId: google.maps.MapTypeId.ROADMAP,
 		    center: posCity
 	    }
@@ -102,13 +104,17 @@ function calculate_route(data){
 		    optimizeWaypoints: true,
 		    travelMode: google.maps.DirectionsTravelMode.WALKING
 	    };
-
+        showDefaultIcons();
         directionsService.route(request, function(result, status) {
 	        if (status == google.maps.DirectionsStatus.OK) {
+
                 directionsDisplay.setDirections(result);
             }
 	    });
+        showMarkers();
+        /*
         var directions = directionsDisplay.getDirections();
+
         //waypointsOrder = result.waypoint_order;
         for (i in markersArray) {
             var pos = markersArray[i].getPosition();
@@ -132,13 +138,20 @@ function calculate_route(data){
 
         }
 
-
         showMarkers();
+          */
     }
     else {
         initialize();
     }
 
+}
+
+function showDefaultIcons()
+{
+    for (i in markersArray) {
+        markersArray[i].setIcon(null);
+    }
 }
 
 function calculate_route_unoptimal(data){
@@ -169,9 +182,10 @@ function calculate_route_unoptimal(data){
 
         directionsService.route(request, function(result, status) {
 	        if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setOptions({
+                    suppressMarkers: true
+                });
                 directionsDisplay.setDirections(result);
-                waypointsOrder = result.waypoint_order;
-                showMarkers();
             }
 	    });
         for (i in markersArray) {
