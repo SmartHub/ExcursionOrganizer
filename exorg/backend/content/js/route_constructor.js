@@ -206,6 +206,7 @@ function findIcon(pos) {
 }
 
 
+
 function clearMap() {
   if (markersArray) {
     for (i in markersArray) {
